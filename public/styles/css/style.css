@@ -4,6 +4,18 @@
   box-sizing: border-box;
 }
 
+@keyframes transaction-menu-open {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-menu-open {
+  animation: transaction-menu-open 0.3s linear;
+}
+
 #login-form {
   display: flex;
   justify-content: center;
@@ -94,7 +106,8 @@
 #sidebar-header-image {
   width: 32px;
   height: 32px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   position: absolute;
   right: 0;
   top: 0;
@@ -137,6 +150,71 @@
   color: black;
   background-color: rgba(7, 35, 72, 0.4980392157);
   cursor: default !important;
+}
+
+.form-basic {
+  padding: 1rem 0;
+}
+
+.form-radio {
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0;
+}
+.form-radio section {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-date {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.form-date label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.form-date input[type=date] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.form-text {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.form-text label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.form-text input[type=text] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.form-submit {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.form-submit:hover {
+  background-color: #0056b3;
 }
 
 .main-page {
@@ -239,17 +317,18 @@
 }
 .main-page #menu {
   position: fixed;
-  bottom: 0px;
+  bottom: 10px;
   right: 50px;
 }
 .main-page #menu svg {
   width: 60px;
   height: 60px;
   color: rgba(25, 79, 150, 0.9215686275);
-  transition: 0.5s;
+  transition: 0.3s;
+  cursor: pointer;
 }
 .main-page #menu svg:hover {
-  transform: rotate(360deg);
+  transform: scale(1.2);
 }
 .main-page #navbar {
   display: flex;

@@ -1,11 +1,4 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLocation,
-} from "@remix-run/react";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from "@remix-run/react";
 
 import style from "../public/styles/css/style.css";
 import { LinksFunction } from "@remix-run/node";
@@ -29,7 +22,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const pathName = location.pathname;
   const isExceptionPath = exceptionPathName.includes(pathName);
-  
+
   return (
     <html lang="en">
       <head>

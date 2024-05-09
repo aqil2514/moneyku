@@ -1,6 +1,8 @@
-import { MetaFunction } from "@remix-run/node";
+import { MetaFunction, json } from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
 import TransactionData from "./data";
+import * as fs from "fs";
+import { useLoaderData } from "@remix-run/react";
 
 export const meta: MetaFunction = () => [
   {
@@ -9,7 +11,7 @@ export const meta: MetaFunction = () => [
 ];
 
 export interface TransactionType {
-  header: Date;
+  header: string;
   body: {
     category: string;
     asset: string;
@@ -23,55 +25,18 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-const fakeData: TransactionType[] = [
-  {
-    header: new Date(2024, 4, 1),
-    body: {
-      category: "Gajian",
-      asset: "Bank BRI",
-      item: "Gajian",
-      price: 10000000,
-    },
-  },
-  {
-    header: new Date(2024, 4, 2),
-    body: {
-      category: "Investasi",
-      asset: "Bank Jago",
-      item: "Deposito Syariah",
-      price: -1000000,
-    },
-  },
-  {
-    header: new Date(2024, 4, 3),
-    body: {
-      category: "Investasi",
-      asset: "Bank Jago",
-      item: "Bahana Liquid",
-      price: -500000,
-    },
-  },
-  {
-    header: new Date(2024, 4, 4),
-    body: {
-      category: "Transportasi",
-      asset: "Dompoet Transportasi",
-      item: "Bensin",
-      price: -35000,
-    },
-  },
-  {
-    header: new Date(2024, 4, 5),
-    body: {
-      category: "Kebutuhan Harian",
-      asset: "Dompet Kebutuhan",
-      item: "Skincare",
-      price: -50000,
-    },
-  },
-];
+export const loader = async () => {
+  const isThere = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType[] | undefined;
+
+  const data = isThere && Array.isArray(isThere) ? isThere : [];
+
+  return json({ data });
+};
 
 export default function Transaction() {
+  const data = useLoaderData<typeof loader>();
+  const fakeData = data.data;
+
   return (
     <div className="main-page">
       <h1>Transaksi</h1>
