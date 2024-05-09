@@ -1,0 +1,24 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(179, 178, 178, 0.4980392157);
+}
+.container .form {
+  width: 50%;
+  height: 80%;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+.container .form h1 {
+  text-decoration: underline;
+}/*# sourceMappingURL=login.css.map */

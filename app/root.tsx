@@ -4,9 +4,32 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "@remix-run/react";
 
+import style from "../public/styles/css/style.css";
+import { LinksFunction } from "@remix-run/node";
+import Sidebar from "components/layout/Sidebar";
+import React from "react";
+
+export const link: LinksFunction = () => [{ rel: "stylesheet", href: style }];
+
+export const exceptionPathName = ["/login", "/register"];
+
+const activeStyle: React.CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "20% auto",
+};
+
+const nonActiveStyle: React.CSSProperties = {
+  display: "block",
+};
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  const pathName = location.pathname;
+  const isExceptionPath = exceptionPathName.includes(pathName);
+  
   return (
     <html lang="en">
       <head>
@@ -16,7 +39,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <div style={isExceptionPath ? nonActiveStyle : activeStyle}>
+          <Sidebar />
+          {children}
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
