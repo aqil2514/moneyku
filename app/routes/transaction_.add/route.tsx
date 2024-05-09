@@ -1,9 +1,16 @@
-import { ActionFunctionArgs, MetaFunction, json, redirect } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  MetaFunction,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import * as fs from "fs";
 import { TransactionType } from "../transaction/route";
 
-export const meta: MetaFunction = () => [{ title: "Tambah Transaksi | Money Management" }];
+export const meta: MetaFunction = () => [
+  { title: "Tambah Transaksi | Money Management" },
+];
 
 interface ErrorsTransaction {
   type: string;
@@ -11,7 +18,9 @@ interface ErrorsTransaction {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const isThere = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType[] | undefined;
+  const isThere = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as
+    | TransactionType[]
+    | undefined;
 
   const oldData = isThere && Array.isArray(isThere) ? isThere : [];
 
@@ -22,6 +31,8 @@ export async function action({ request }: ActionFunctionArgs) {
   const categoryTransaction = String(formData.get("transaction-category"));
   const assetsTransaction = String(formData.get("transaction-assets"));
   const noteTransaction = String(formData.get("transaction-note"));
+  const price =
+    typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
 
   const errors: ErrorsTransaction = {} as ErrorsTransaction;
 
@@ -47,7 +58,7 @@ export async function action({ request }: ActionFunctionArgs) {
       asset: assetsTransaction,
       category: categoryTransaction,
       item: noteTransaction,
-      price: totalTransaction,
+      price,
     },
   };
 
@@ -68,11 +79,21 @@ export default function AddTransaction() {
       <form action="/transaction/add" className="form-basic" method="post">
         <div className="form-radio">
           <section>
-            <input type="radio" name="type-data" value={"Pengeluaran"} id="outcome-data" />
+            <input
+              type="radio"
+              name="type-data"
+              value={"Pengeluaran"}
+              id="outcome-data"
+            />
             <label htmlFor="outcome-data">Pengeluaran</label>
           </section>
           <section>
-            <input type="radio" name="type-data" value={"Pemasukan"} id="income-data" />
+            <input
+              type="radio"
+              name="type-data"
+              value={"Pemasukan"}
+              id="income-data"
+            />
             <label htmlFor="income-data">Pemasukan</label>
           </section>
         </div>
@@ -85,15 +106,25 @@ export default function AddTransaction() {
         <div className="form-text">
           <label htmlFor="transaction-total">Total</label>
           <input type="text" name="transaction-total" id="transaction-total" />
-          <em style={{ color: "red" }}>{errors?.total ? errors.total : null}</em>
+          <em style={{ color: "red" }}>
+            {errors?.total ? errors.total : null}
+          </em>
         </div>
         <div className="form-text">
           <label htmlFor="transaction-category">Kategori</label>
-          <input type="text" name="transaction-category" id="transaction-category" />
+          <input
+            type="text"
+            name="transaction-category"
+            id="transaction-category"
+          />
         </div>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
-          <input type="text" name="transaction-assets" id="transaction-assets" />
+          <input
+            type="text"
+            name="transaction-assets"
+            id="transaction-assets"
+          />
         </div>
         <div className="form-text">
           <label htmlFor="transaction-note">Catatan</label>
