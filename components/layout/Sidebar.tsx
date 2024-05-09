@@ -1,4 +1,4 @@
-import { useLocation } from "@remix-run/react";
+import { NavLink, useLocation } from "@remix-run/react";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { CiLight } from "react-icons/ci";
 import { FaLanguage } from "react-icons/fa";
@@ -19,40 +19,70 @@ export default function Sidebar() {
     <div id="sidebar">
       <div id="sidebar-header">
         <h1 id="sidebar-header-title">Money Management</h1>
-        <img id="sidebar-header-image" src="/images/icon-money.png" alt="icon-money" />
+        <img
+          id="sidebar-header-image"
+          src="/images/icon-money.png"
+          alt="icon-money"
+        />
       </div>
       <div id="sidebar-menu">
         <h2>Menu</h2>
-        <section className="sidebar-list">
+        <NavLink
+          to={"/transaction"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
+          }
+        >
           <AiOutlineTransaction />
           <p>Transaksi</p>
-        </section>
-        <section className="sidebar-list">
+        </NavLink>
+        <NavLink
+          to={"/statistic"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
+          }
+        >
           <TfiStatsUp />
           <p>Statistik</p>
-        </section>
-        <section className="sidebar-list">
+        </NavLink>
+        <NavLink
+          to={"/assets"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
+          }
+        >
           <MdOutlineMoney />
           <p>Aset</p>
-        </section>
-        <section className="sidebar-list">
+        </NavLink>
+        <NavLink
+          to={"/planning"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
+          }
+        >
           <SiPlangrid />
           <p>Rencana</p>
-        </section>
-        <section className="sidebar-list">
+        </NavLink>
+        <NavLink to={"budgeting"} replace className={({ isActive }) =>
+            isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
+          }>
           <TbMoneybag />
           <p>Budgeting</p>
-        </section>
+        </NavLink>
       </div>
       <div id="sidebar-footer">
         <h2>Setting</h2>
         <section className="sidebar-list">
           <CiLight />
-          <p>Light Mode</p> 
+          <p>Light Mode</p>
         </section>
         <section className="sidebar-list">
           <FaLanguage />
-          <p>Bahasa</p> 
+          <p>Bahasa</p>
         </section>
         <section className="sidebar-list">
           <FiLogOut />
