@@ -19,11 +19,18 @@ interface ErrorsTransaction {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const isThere = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as
-    | TransactionType[]
-    | undefined;
+  let oldData: TransactionType[];
 
-  const oldData = isThere && Array.isArray(isThere) ? isThere : [];
+  if (
+    fs.existsSync("fakeData.json") &&
+    fs.statSync("fakeData.json").size !== 0
+  ) {
+    oldData = JSON.parse(
+      fs.readFileSync("fakeData.json", "utf8")
+    ) as TransactionType[];
+  } else {
+    oldData = [];
+  }
 
   const formData = await request.formData();
   const typeTransaction = String(formData.get("type-data"));
@@ -40,8 +47,8 @@ export async function action({ request }: ActionFunctionArgs) {
   if (isNaN(dateTransaction.getTime())) {
     errors.date = "Tanggal belum diisi";
   }
-  
-  if(dateTransaction > new Date()){
+
+  if (dateTransaction > new Date()) {
     errors.date = "Tanggal transaksi tidak boleh dari masa depan";
   }
 

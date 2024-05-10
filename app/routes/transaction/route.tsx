@@ -27,9 +27,28 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
 });
 
 export const loader = async () => {
-  const isThere = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType[] | undefined;
+  if (
+    !fs.existsSync("fakeData.json") ||
+    fs.statSync("fakeData.json").size === 0
+  ) {
+    const data: TransactionType[] = [];
+    return json({ data });
+  }
 
-  const data = isThere && Array.isArray(isThere) ? isThere : [];
+  const isThere = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as
+    | TransactionType[]
+    | undefined;
+
+  const response = isThere && Array.isArray(isThere) ? isThere : [];
+
+  const data = response.sort((a, b) => {
+    const dateA = new Date(a.header);
+    const dateB = new Date(b.header);
+
+    const timeDiff = dateA.getTime() - dateB.getTime();
+    const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+    return dayDiff;
+  });
 
   return json({ data });
 };
@@ -45,11 +64,19 @@ export default function Transaction() {
 
       <TransactionNavbar price={allPrice} />
 
-      <main>
-        {fakeData.map((data, i: number) => (
-          <TransactionData key={i++} data={data} />
-        ))}
-      </main>
+      {fakeData.length === 0 ? (
+        <main>
+          <p style={{ textAlign: "center" }}>
+            Belum ada transaksi. Ayo tambahkan
+          </p>
+        </main>
+      ) : (
+        <main>
+          {fakeData.map((data, i: number) => (
+            <TransactionData key={i++} data={data} />
+          ))}
+        </main>
+      )}
 
       <TransactionMenu />
     </div>
