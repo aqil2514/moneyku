@@ -3,6 +3,7 @@ import TransactionMenu from "./transaction-menu";
 import TransactionData from "./data";
 import * as fs from "fs";
 import { useLoaderData } from "@remix-run/react";
+import TransactionNavbar from "./transaction-navbar";
 
 export const meta: MetaFunction = () => [
   {
@@ -35,26 +36,14 @@ export const loader = async () => {
 
 export default function Transaction() {
   const data = useLoaderData<typeof loader>();
+  const allPrice = data.data.map((d) => d.body.price);
   const fakeData = data.data;
 
   return (
     <div className="main-page">
       <h1>Transaksi</h1>
 
-      <header id="navbar">
-        <section>
-          <p>Pemasukan</p>
-          <p>Rp. 3.000.000</p>
-        </section>
-        <section>
-          <p>Pengeluaran</p>
-          <p>Rp. 2.000.000</p>
-        </section>
-        <section>
-          <p>Saldo</p>
-          <p>Rp. 1.000.000</p>
-        </section>
-      </header>
+      <TransactionNavbar price={allPrice} />
 
       <main>
         {fakeData.map((data, i: number) => (

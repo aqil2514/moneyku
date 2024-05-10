@@ -106,8 +106,7 @@
 #sidebar-header-image {
   width: 32px;
   height: 32px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   position: absolute;
   right: 0;
   top: 0;
@@ -129,6 +128,68 @@
 }
 #sidebar-footer h2 {
   color: white;
+}
+
+.button-navigation-1 {
+  background-color: #007bff;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 1rem;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.button-navigation-1:hover {
+  background-color: #0056b3;
+}
+.button-navigation-1:focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+.button-navigation-1-active {
+  background-color: #0056b3;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-weight: bold;
+  cursor: default !important;
+  outline: 2px solid #fff;
+}
+
+.income-section p {
+  margin: 0;
+}
+.income-section p:nth-child(1) {
+  color: white;
+  font-weight: bold;
+}
+.income-section p:nth-child(2) {
+  color: #85db79;
+  font-weight: bold;
+}
+
+.outcome-section p {
+  margin: 0;
+}
+.outcome-section p:nth-child(1) {
+  color: white;
+  font-weight: bold;
+}
+.outcome-section p:nth-child(2) {
+  color: #e12b31;
+  font-weight: bold;
+}
+
+.total-section p {
+  margin: 0;
+}
+.total-section p:nth-child(1) {
+  color: white;
+  font-weight: bold;
+}
+.total-section p:nth-child(2) {
+  color: #1ae3cc;
+  font-weight: bold;
 }
 
 .sidebar-list {
@@ -156,16 +217,6 @@
   padding: 1rem 0;
 }
 
-.form-radio {
-  display: flex;
-  gap: 2rem;
-  margin: 1rem 0;
-}
-.form-radio section {
-  display: flex;
-  gap: 0.5rem;
-}
-
 .form-date {
   display: flex;
   flex-direction: column;
@@ -185,6 +236,35 @@
   color: #333;
 }
 
+.form-navigation {
+  display: flex;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+.form-radio {
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0;
+}
+.form-radio section {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-submit {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.form-submit:hover {
+  background-color: #0056b3;
+}
+
 .form-text {
   display: flex;
   flex-direction: column;
@@ -202,19 +282,6 @@
   outline: none;
   background-color: #f9f9f9;
   color: #333;
-}
-
-.form-submit {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.form-submit:hover {
-  background-color: #0056b3;
 }
 
 .main-page {
@@ -335,7 +402,7 @@
   justify-content: space-evenly;
   padding: 0.5rem 1rem;
   gap: 0.2rem;
-  background-color: #3a3ab8;
+  background-color: #4a420e;
   width: 100%;
   margin: 1rem 0;
   border-radius: 0.7rem;
