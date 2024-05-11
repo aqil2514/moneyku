@@ -6,7 +6,7 @@ import {
 } from "@remix-run/node";
 import { Form, useActionData, useSearchParams } from "@remix-run/react";
 import * as fs from "fs";
-import { TransactionType } from "../transaction/route";
+import { TransactionBodyType, TransactionType } from "../transaction/route";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Money Management" },
@@ -19,17 +19,17 @@ interface ErrorsTransaction {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  let oldData: TransactionType[];
+  let oldData: TransactionType[] = [];
 
   if (
     fs.existsSync("fakeData.json") &&
     fs.statSync("fakeData.json").size !== 0
   ) {
-    oldData = JSON.parse(
+    const jsonData = JSON.parse(
       fs.readFileSync("fakeData.json", "utf8")
     ) as TransactionType[];
-  } else {
-    oldData = [];
+
+    oldData = (jsonData);
   }
 
   const formData = await request.formData();
@@ -64,25 +64,35 @@ export async function action({ request }: ActionFunctionArgs) {
     errors.total = "Total transaksi tidak boleh 0";
   }
 
+
+  const sameDate = oldData.find((d) => {
+    return d.header === dateTransaction.toString()});
+
   if (Object.keys(errors).length > 0) {
     return json({ errors });
   }
 
-  const finalData: TransactionType = {
-    header: String(dateTransaction),
-    body: {
-      asset: assetsTransaction,
-      category: categoryTransaction,
-      item: noteTransaction,
-      price,
-    },
+  const dataBody: TransactionBodyType = {
+    asset: assetsTransaction,
+    category: categoryTransaction,
+    item: noteTransaction,
+    price,
   };
 
-  console.log(finalData);
+  const finalData: TransactionType = {
+    header: String(dateTransaction),
+    body: [],
+  };
 
-  oldData.push(finalData);
 
-  fs.writeFileSync("fakeData.json", JSON.stringify(oldData));
+  if (sameDate) {
+    sameDate.body.push(dataBody);
+    fs.writeFileSync("fakeData.json", JSON.stringify(sameDate));
+  } else {
+    finalData.body.push(dataBody);
+    oldData.push(finalData);
+    fs.writeFileSync("fakeData.json", JSON.stringify(oldData));
+  }
 
   return redirect("/transaction");
 }

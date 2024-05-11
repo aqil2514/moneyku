@@ -1,8 +1,12 @@
-import { TransactionType, currencyFormat } from "./route";
+import { TransactionBodyType, TransactionType, currencyFormat } from "./route";
 
 const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
-export default function TransactionDataHeader({ data, price }: { data: TransactionType["header"]; price: TransactionType["body"]["price"] }) {
+export default function TransactionDataHeader({ data, body }: { data: TransactionType["header"]; body: TransactionBodyType[] }) {
+
+  const allPrices = body.map(d => d.price);
+  const price = allPrices.reduce((acc, curr) => acc + curr, 0);
+
   const newDate = new Date(data);
   const day = dayNames[newDate.getDay()];
   const date = newDate.getDate().toString().padStart(2, "0");
@@ -11,6 +15,7 @@ export default function TransactionDataHeader({ data, price }: { data: Transacti
 
   const income = currencyFormat.format(price > 0 ? price : 0);
   const outcome = currencyFormat.format(price < 0 ? price : 0);
+
 
   return (
     <header>
@@ -29,4 +34,5 @@ export default function TransactionDataHeader({ data, price }: { data: Transacti
       </div>
     </header>
   );
+
 }

@@ -1,9 +1,9 @@
 import { MetaFunction, json } from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
-import TransactionData from "./data";
 import * as fs from "fs";
 import { useLoaderData } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
+import TransactionData from "./data";
 
 export const meta: MetaFunction = () => [
   {
@@ -11,20 +11,25 @@ export const meta: MetaFunction = () => [
   },
 ];
 
+export interface TransactionBodyType {
+  category: string;
+  asset: string;
+  item: string;
+  price: number;
+}
+
+// Ubah agar body menjadi array dan tangani errornya
 export interface TransactionType {
   header: string;
-  body: {
-    category: string;
-    asset: string;
-    item: string;
-    price: number;
-  };
+  body: TransactionBodyType[];
 }
 
 export const currencyFormat = new Intl.NumberFormat("id-ID", {
   style: "currency",
   currency: "IDR",
 });
+
+// TODO : FIX ERROR DI SINI 
 
 export const loader = async () => {
   if (
@@ -50,13 +55,34 @@ export const loader = async () => {
     return dayDiff;
   });
 
+
   return json({ data });
 };
 
 export default function Transaction() {
   const data = useLoaderData<typeof loader>();
-  const allPrice = data.data.map((d) => d.body.price);
   const fakeData = data.data;
+  const noPrice = [0];
+
+  if (!fakeData || fakeData.length === 0)
+    return (
+      <div className="main-page">
+        <h1>Transaksi</h1>
+
+        <TransactionNavbar price={noPrice} />
+
+        <main>
+          <p style={{ textAlign: "center" }}>
+            Belum ada transaksi. Ayo tambahkan
+          </p>
+        </main>
+
+        <TransactionMenu />
+      </div>
+    );
+
+  const allBody = fakeData.map((d) => d.body)[0];
+  const allPrice = allBody.map((d) => d.price);
 
   return (
     <div className="main-page">
@@ -64,21 +90,13 @@ export default function Transaction() {
 
       <TransactionNavbar price={allPrice} />
 
-      {fakeData.length === 0 ? (
-        <main>
-          <p style={{ textAlign: "center" }}>
-            Belum ada transaksi. Ayo tambahkan
-          </p>
-        </main>
-      ) : (
-        <main>
-          {fakeData.map((data, i: number) => (
-            <TransactionData key={i++} data={data} />
-          ))}
-        </main>
-      )}
+      <main>
+        <TransactionData data={fakeData} />
+      </main>
 
       <TransactionMenu />
     </div>
   );
+
+  return <></>;
 }

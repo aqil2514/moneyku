@@ -1,23 +1,30 @@
-import { TransactionType, currencyFormat } from "./route";
+import { TransactionBodyType, currencyFormat } from "./route";
 
 export default function TransactionDataBody({
   data,
 }: {
-  data: TransactionType["body"];
+  data: TransactionBodyType[];
 }) {
-  const { category, item, asset, price } = data;
-  const itemPrice = currencyFormat.format(price);
+
+  console.log(data);
 
   return (
-    <div className="body">
-      <section>{category}</section>
+    <div>
+      {data.map((d,i) => {
+        const itemPrice = currencyFormat.format(d.price);
+        return(
+        <div key={i} className="body">
+      <section>{d.category}</section>
       <section>
-        <p>{item}</p>
-        <p>{asset}</p>
+        <p>{d.item}</p>
+        <p>{d.asset}</p>
       </section>
       <section>
-        <p style={price < 0 ? {color: "red", fontWeight:"bold"} : {color:"blue", fontWeight:"bold"}}>{itemPrice.replace("-", "")}</p>
+        <p style={d.price < 0 ? {color: "red", fontWeight:"bold"} : {color:"blue", fontWeight:"bold"}}>{itemPrice.replace("-", "")}</p>
       </section>
+        </div>
+      )})}
     </div>
   );
+
 }

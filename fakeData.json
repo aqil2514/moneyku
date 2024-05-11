@@ -1,1 +1,17 @@
-[{"header":"Wed May 01 2024 07:00:00 GMT+0700 (Western Indonesia Time)","body":{"asset":"1","category":"1","item":"1","price":-1}},{"header":"Thu May 02 2024 07:00:00 GMT+0700 (Western Indonesia Time)","body":{"asset":"1","category":"1","item":"1","price":-1}}]
+{
+    "header": "Wed May 01 2024 07:00:00 GMT+0700 (Western Indonesia Time)",
+    "body": [
+        {
+            "asset": "1",
+            "category": "1",
+            "item": "1",
+            "price": -1
+        },
+        {
+            "asset": "jiojio",
+            "category": "iojio",
+            "item": "ioj",
+            "price": -1908
+        }
+    ]
+}
