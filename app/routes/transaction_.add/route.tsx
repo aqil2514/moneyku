@@ -12,6 +12,9 @@ interface ErrorsTransaction {
   type: string;
   total: string;
   date: string;
+  category: string;
+  asset: string;
+  note: string;
 }
 
 interface ErrorIssue {
@@ -56,23 +59,24 @@ export async function action({ request }: ActionFunctionArgs) {
     const data = await res.json();
     const issues: ErrorIssue[] = data.error.issues;
 
-    console.log(issues)
-
     const errors: ErrorsTransaction = {
       date: issues.find((p) => p.path[0].includes("date"))?.message as string,
       total: issues.find((p) => p.path[0].includes("price"))?.message as string,
       type: issues.find((p) => p.path[0].includes("type"))?.message as string,
+      category: issues.find((p) => p.path[0].includes("category"))
+        ?.message as string,
+      asset: issues.find((p) => p.path[0].includes("assets"))
+        ?.message as string,
+      note: issues.find((p) => p.path[0].includes("note"))?.message as string,
     };
-
-    console.log(errors)
 
     return json({ errors });
   }
 
   const data = await res.json();
-  const issues = data.error.issues[0];
 
-  console.log(issues);
+  console.log(data)
+
   return json({ data });
 }
 
@@ -117,6 +121,9 @@ export function IncomeTransaction() {
             id="transaction-category"
           />
         </div>
+        <em style={{ color: "red" }}>
+          {errors?.category ? errors?.category : null}
+        </em>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
           <input
@@ -125,11 +132,15 @@ export function IncomeTransaction() {
             id="transaction-assets"
           />
         </div>
+        <em style={{ color: "red" }}>{errors?.asset ? errors?.asset : null}</em>
         <div className="form-text">
           <label htmlFor="transaction-note">Catatan</label>
           <input type="text" name="transaction-note" id="transaction-note" />
         </div>
-        <button className="form-submit">Tambah Pemasukan</button>
+        <em style={{ color: "red" }}>{errors?.note ? errors?.note : null}</em>
+        <div>
+          <button className="form-submit">Tambah Pemasukan</button>
+        </div>
       </Form>
     </div>
   );
@@ -137,9 +148,9 @@ export function IncomeTransaction() {
 
 export function OutcomeTransaction() {
   const actionData = useActionData<typeof action>();
-  let errors:ErrorsTransaction = {} as ErrorsTransaction;
+  let errors: ErrorsTransaction = {} as ErrorsTransaction;
 
-  if(actionData && "errors" in actionData){
+  if (actionData && "errors" in actionData) {
     errors = actionData.errors;
   }
   return (
@@ -170,6 +181,9 @@ export function OutcomeTransaction() {
             id="transaction-category"
           />
         </div>
+        <em style={{ color: "red" }}>
+          {errors?.category ? errors?.category : null}
+        </em>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
           <input
@@ -178,11 +192,15 @@ export function OutcomeTransaction() {
             id="transaction-assets"
           />
         </div>
+        <em style={{ color: "red" }}>{errors?.asset ? errors?.asset : null}</em>
         <div className="form-text">
           <label htmlFor="transaction-note">Catatan</label>
           <input type="text" name="transaction-note" id="transaction-note" />
         </div>
-        <button className="form-submit">Tambah Pengeluaran</button>
+        <em style={{ color: "red" }}>{errors?.note ? errors?.note : null}</em>
+        <div>
+          <button className="form-submit">Tambah Pengeluaran</button>
+        </div>
       </Form>
     </div>
   );
