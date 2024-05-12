@@ -5,7 +5,7 @@ import { LinksFunction } from "@remix-run/node";
 import Sidebar from "components/layout/Sidebar";
 import React from "react";
 
-export const link: LinksFunction = () => [{ rel: "stylesheet", href: style }];
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: style }];
 
 export const exceptionPathName = ["/login", "/register"];
 
