@@ -59,6 +59,7 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
 export const loader = async () => {
   try {
     const res = await fetch(`${serverEndpoint.cyclic}/transaction`);
+    
     const data = await res.json();
     
     return json({ data });
