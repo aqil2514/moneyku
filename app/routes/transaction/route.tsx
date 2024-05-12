@@ -29,8 +29,6 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-// TODO : FIX ERROR DI SINI
-
 export const loader = async () => {
   if (!fs.existsSync("fakeData.json") || fs.statSync("fakeData.json").size === 0) {
     const data: TransactionType[] = [];

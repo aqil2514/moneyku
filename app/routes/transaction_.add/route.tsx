@@ -1,7 +1,9 @@
 import { ActionFunctionArgs, MetaFunction, json, redirect } from "@remix-run/node";
-import { Form, useActionData, useSearchParams } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
 import * as fs from "fs";
 import { TransactionBodyType, TransactionType } from "../transaction/route";
+import { ClientOnly } from "remix-utils/client-only";
+import Transaction from "./Transaction";
 
 export const meta: MetaFunction = () => [{ title: "Tambah Transaksi | Money Management" }];
 
@@ -88,30 +90,15 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function AddTransaction() {
-  const [searchParams] = useSearchParams();
-  const type = searchParams.get("type");
 
   return (
-    <div className="main-page">
-      <h1>Tambah Transaksi</h1>
-      <Form action="/transaction/add" className="form-basic">
-        <h2>Tipe Transaksi</h2>
-        <div className="form-navigation">
-          <section>
-            <input type="submit" name="type" value={"Pengeluaran"} className={type === "Pengeluaran" ? "button-navigation-1 button-navigation-1-active" : "button-navigation-1"} id="outcome-data" />
-          </section>
-          <section>
-            <input type="submit" name="type" className={type === "Pemasukan" ? "button-navigation-1 button-navigation-1-active" : "button-navigation-1"} value={"Pemasukan"} id="income-data" />
-          </section>
-        </div>
-      </Form>
-      {type === "Pemasukan" && <IncomeTransaction />}
-      {type === "Pengeluaran" && <OutcomeTransaction />}
-    </div>
+    <ClientOnly>
+      {() => <Transaction />}
+    </ClientOnly>
   );
 }
 
-function IncomeTransaction() {
+export function IncomeTransaction() {
   const actionData = useActionData<typeof action>();
   const errors = actionData?.errors;
   return (
@@ -145,7 +132,8 @@ function IncomeTransaction() {
     </div>
   );
 }
-function OutcomeTransaction() {
+
+export function OutcomeTransaction() {
   const actionData = useActionData<typeof action>();
   const errors = actionData?.errors;
   return (

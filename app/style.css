@@ -106,7 +106,8 @@
 #sidebar-header-image {
   width: 32px;
   height: 32px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   position: absolute;
   right: 0;
   top: 0;
