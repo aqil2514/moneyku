@@ -1,9 +1,9 @@
 import { MetaFunction, json } from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
-import * as fs from "fs";
 import { useLoaderData } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
 import TransactionData from "./data";
+import serverEndpoint from "lib/server";
 
 export const meta: MetaFunction = () => [
   {
@@ -29,39 +29,51 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
+// export const loader = async () => {
+//   if (!fs.existsSync("data.json") || fs.statSync("fakeData.json").size === 0) {
+//     const data: TransactionType[] = [];
+//     return json({ data });
+//   }
+
+//   const initData = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType | undefined;
+
+//   let response: TransactionType[] = [];
+//   if (!initData) {
+//     response = [];
+//   } else {
+//     Array.isArray(initData) ? (response = initData) : response.push(initData);
+//   }
+
+//   const data = response.sort((a, b) => {
+//     const dateA = new Date(a.header);
+//     const dateB = new Date(b.header);
+
+//     const timeDiff = dateA.getTime() - dateB.getTime();
+//     const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+//     return dayDiff;
+//   });
+
+//   return json({ data });
+// };
+
 export const loader = async () => {
-  if (!fs.existsSync("fakeData.json") || fs.statSync("fakeData.json").size === 0) {
-    const data: TransactionType[] = [];
+  try {
+    const res = await fetch(`${serverEndpoint.cyclic}/transaction`);
+    const data = await res.json();
+    
     return json({ data });
+  } catch (error) {
+    console.error("Failed to fetch data:");
+    return json({ data: "Failed to fetch data" }, { status: 500 });
   }
-
-  const initData = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType | undefined;
-
-  let response: TransactionType[] = [];
-  if (!initData) {
-    response = [];
-  } else {
-    Array.isArray(initData) ? (response = initData) : response.push(initData);
-  }
-
-  const data = response.sort((a, b) => {
-    const dateA = new Date(a.header);
-    const dateB = new Date(b.header);
-
-    const timeDiff = dateA.getTime() - dateB.getTime();
-    const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
-    return dayDiff;
-  });
-
-  return json({ data });
 };
 
 export default function Transaction() {
-  const data = useLoaderData<typeof loader>();
-  const fakeData = data.data;
+  const res = useLoaderData<typeof loader>();
+  const data = res.data as TransactionType[];
   const noPrice = [0];
 
-  if (!fakeData || fakeData.length === 0)
+  if (!data || data.length === 0)
     return (
       <div className="main-page">
         <h1>Transaksi</h1>
@@ -76,7 +88,7 @@ export default function Transaction() {
       </div>
     );
 
-  const allBody = fakeData.map((d) => d.body);
+  const allBody = data.map((d) => d.body);
   const allPrices = allBody
     .map((d) => d.map((x) => x.price))
     .join(",")
@@ -90,7 +102,7 @@ export default function Transaction() {
       <TransactionNavbar price={allPrices} />
 
       <main>
-        <TransactionData data={fakeData} />
+        <TransactionData data={data} />
       </main>
 
       <TransactionMenu />
