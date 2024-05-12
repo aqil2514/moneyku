@@ -1,16 +1,9 @@
-import {
-  ActionFunctionArgs,
-  MetaFunction,
-  json,
-  redirect,
-} from "@remix-run/node";
+import { ActionFunctionArgs, MetaFunction, json, redirect } from "@remix-run/node";
 import { Form, useActionData, useSearchParams } from "@remix-run/react";
 import * as fs from "fs";
 import { TransactionBodyType, TransactionType } from "../transaction/route";
 
-export const meta: MetaFunction = () => [
-  { title: "Tambah Transaksi | Money Management" },
-];
+export const meta: MetaFunction = () => [{ title: "Tambah Transaksi | Money Management" }];
 
 interface ErrorsTransaction {
   type: string;
@@ -21,15 +14,10 @@ interface ErrorsTransaction {
 export async function action({ request }: ActionFunctionArgs) {
   let oldData: TransactionType[] = [];
 
-  if (
-    fs.existsSync("fakeData.json") &&
-    fs.statSync("fakeData.json").size !== 0
-  ) {
-    const jsonData = JSON.parse(
-      fs.readFileSync("fakeData.json", "utf8")
-    ) as TransactionType[];
+  if (fs.existsSync("fakeData.json") && fs.statSync("fakeData.json").size !== 0) {
+    const jsonData = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType | TransactionType[];
 
-    oldData = (jsonData);
+    Array.isArray(jsonData) ? (oldData = jsonData) : oldData.push(jsonData);
   }
 
   const formData = await request.formData();
@@ -39,8 +27,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const categoryTransaction = String(formData.get("transaction-category"));
   const assetsTransaction = String(formData.get("transaction-assets"));
   const noteTransaction = String(formData.get("transaction-note"));
-  const price =
-    typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
+  const price = typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
 
   const errors: ErrorsTransaction = {} as ErrorsTransaction;
 
@@ -64,9 +51,9 @@ export async function action({ request }: ActionFunctionArgs) {
     errors.total = "Total transaksi tidak boleh 0";
   }
 
-
   const sameDate = oldData.find((d) => {
-    return d.header === dateTransaction.toString()});
+    return d.header === dateTransaction.toString();
+  });
 
   if (Object.keys(errors).length > 0) {
     return json({ errors });
@@ -84,10 +71,13 @@ export async function action({ request }: ActionFunctionArgs) {
     body: [],
   };
 
-
   if (sameDate) {
     sameDate.body.push(dataBody);
-    fs.writeFileSync("fakeData.json", JSON.stringify(sameDate));
+    const index = oldData.findIndex((d) => d.header === String(dateTransaction));
+
+    oldData[index] = sameDate;
+
+    fs.writeFileSync("fakeData.json", JSON.stringify(oldData));
   } else {
     finalData.body.push(dataBody);
     oldData.push(finalData);
@@ -108,30 +98,10 @@ export default function AddTransaction() {
         <h2>Tipe Transaksi</h2>
         <div className="form-navigation">
           <section>
-            <input
-              type="submit"
-              name="type"
-              value={"Pengeluaran"}
-              className={
-                type === "Pengeluaran"
-                  ? "button-navigation-1 button-navigation-1-active"
-                  : "button-navigation-1"
-              }
-              id="outcome-data"
-            />
+            <input type="submit" name="type" value={"Pengeluaran"} className={type === "Pengeluaran" ? "button-navigation-1 button-navigation-1-active" : "button-navigation-1"} id="outcome-data" />
           </section>
           <section>
-            <input
-              type="submit"
-              name="type"
-              className={
-                type === "Pemasukan"
-                  ? "button-navigation-1 button-navigation-1-active"
-                  : "button-navigation-1"
-              }
-              value={"Pemasukan"}
-              id="income-data"
-            />
+            <input type="submit" name="type" className={type === "Pemasukan" ? "button-navigation-1 button-navigation-1-active" : "button-navigation-1"} value={"Pemasukan"} id="income-data" />
           </section>
         </div>
       </Form>
@@ -146,11 +116,7 @@ function IncomeTransaction() {
   const errors = actionData?.errors;
   return (
     <div className="main-page">
-      <Form
-        className="form-basic"
-        action="/transaction/add?type=Pemasukan"
-        method="post"
-      >
+      <Form className="form-basic" action="/transaction/add?type=Pemasukan" method="post">
         <input type="hidden" name="type-data" value={"Pemasukan"} />
         <div className="form-date">
           <label htmlFor="transaction-date">Tanggal Transaksi</label>
@@ -160,25 +126,15 @@ function IncomeTransaction() {
         <div className="form-text">
           <label htmlFor="transaction-total">Total</label>
           <input type="text" name="transaction-total" id="transaction-total" />
-          <em style={{ color: "red" }}>
-            {errors?.total ? errors.total : null}
-          </em>
+          <em style={{ color: "red" }}>{errors?.total ? errors.total : null}</em>
         </div>
         <div className="form-text">
           <label htmlFor="transaction-category">Kategori Pemasukan</label>
-          <input
-            type="text"
-            name="transaction-category"
-            id="transaction-category"
-          />
+          <input type="text" name="transaction-category" id="transaction-category" />
         </div>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
-          <input
-            type="text"
-            name="transaction-assets"
-            id="transaction-assets"
-          />
+          <input type="text" name="transaction-assets" id="transaction-assets" />
         </div>
         <div className="form-text">
           <label htmlFor="transaction-note">Catatan</label>
@@ -194,11 +150,7 @@ function OutcomeTransaction() {
   const errors = actionData?.errors;
   return (
     <div className="main-page">
-      <Form
-        className="form-basic"
-        action="/transaction/add?type=Pengeluaran"
-        method="post"
-      >
+      <Form className="form-basic" action="/transaction/add?type=Pengeluaran" method="post">
         <input type="hidden" name="type-data" value={"Pengeluaran"} />
         <div className="form-date">
           <label htmlFor="transaction-date">Tanggal Transaksi</label>
@@ -208,25 +160,15 @@ function OutcomeTransaction() {
         <div className="form-text">
           <label htmlFor="transaction-total">Total</label>
           <input type="text" name="transaction-total" id="transaction-total" />
-          <em style={{ color: "red" }}>
-            {errors?.total ? errors.total : null}
-          </em>
+          <em style={{ color: "red" }}>{errors?.total ? errors.total : null}</em>
         </div>
         <div className="form-text">
           <label htmlFor="transaction-category">Kategori Pengeluaran</label>
-          <input
-            type="text"
-            name="transaction-category"
-            id="transaction-category"
-          />
+          <input type="text" name="transaction-category" id="transaction-category" />
         </div>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
-          <input
-            type="text"
-            name="transaction-assets"
-            id="transaction-assets"
-          />
+          <input type="text" name="transaction-assets" id="transaction-assets" />
         </div>
         <div className="form-text">
           <label htmlFor="transaction-note">Catatan</label>

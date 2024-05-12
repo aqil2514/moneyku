@@ -3,9 +3,11 @@ import { TransactionBodyType, TransactionType, currencyFormat } from "./route";
 const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
 export default function TransactionDataHeader({ data, body }: { data: TransactionType["header"]; body: TransactionBodyType[] }) {
-
-  const allPrices = body.map(d => d.price);
-  const price = allPrices.reduce((acc, curr) => acc + curr, 0);
+  const allPrices = body.map((d) => d.price);
+  const plus = allPrices.filter((p) => p > 0);
+  const minus = allPrices.filter((p) => p < 0);
+  const incomePrice = plus.reduce((acc, curr) => acc + curr, 0);
+  const outcomePrice = minus.reduce((acc, curr) => acc + curr, 0);
 
   const newDate = new Date(data);
   const day = dayNames[newDate.getDay()];
@@ -13,9 +15,8 @@ export default function TransactionDataHeader({ data, body }: { data: Transactio
   const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
   const year = newDate.getFullYear();
 
-  const income = currencyFormat.format(price > 0 ? price : 0);
-  const outcome = currencyFormat.format(price < 0 ? price : 0);
-
+  const income = currencyFormat.format(incomePrice > 0 ? incomePrice : 0);
+  const outcome = currencyFormat.format(outcomePrice < 0 ? outcomePrice : 0);
 
   return (
     <header>
@@ -34,5 +35,4 @@ export default function TransactionDataHeader({ data, body }: { data: Transactio
       </div>
     </header>
   );
-
 }

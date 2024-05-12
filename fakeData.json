@@ -1,17 +1,18 @@
-{
-    "header": "Wed May 01 2024 07:00:00 GMT+0700 (Western Indonesia Time)",
+[
+  {
+    "header": "Fri Jan 05 2024 07:00:00 GMT+0700 (Waktu Indonesia Barat)",
     "body": [
-        {
-            "asset": "1",
-            "category": "1",
-            "item": "1",
-            "price": -1
-        },
-        {
-            "asset": "jiojio",
-            "category": "iojio",
-            "item": "ioj",
-            "price": -1908
-        }
+      { "asset": "Dompet Jajan", "category": "Jajanan", "item": "Mixue", "price": -50000 },
+      { "asset": "Dompet", "category": "Kas Kecil", "item": "Dikasih", "price": 100000 },
+      { "asset": "Dompet", "category": "Transportasi", "item": "Bensin", "price": -28000 }
     ]
-}
+  },
+  {
+    "header": "Mon Jan 06 2024 07:00:00 GMT+0700 (Waktu Indonesia Barat)",
+    "body": [
+      { "asset": "Dompet", "category": "Hadiah", "item": "Hadiah Ulang Tahun", "price": 500000 },
+      { "asset": "Dompet", "category": "Hadiah", "item": "Hadiah", "price": -80000 },
+      { "asset": "Dompet", "category": "Kuliner", "item": "Makan", "price": -100000 }
+    ]
+  }
+]

@@ -29,22 +29,22 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-// TODO : FIX ERROR DI SINI 
+// TODO : FIX ERROR DI SINI
 
 export const loader = async () => {
-  if (
-    !fs.existsSync("fakeData.json") ||
-    fs.statSync("fakeData.json").size === 0
-  ) {
+  if (!fs.existsSync("fakeData.json") || fs.statSync("fakeData.json").size === 0) {
     const data: TransactionType[] = [];
     return json({ data });
   }
 
-  const isThere = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as
-    | TransactionType[]
-    | undefined;
+  const initData = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType | undefined;
 
-  const response = isThere && Array.isArray(isThere) ? isThere : [];
+  let response: TransactionType[] = [];
+  if (!initData) {
+    response = [];
+  } else {
+    Array.isArray(initData) ? (response = initData) : response.push(initData);
+  }
 
   const data = response.sort((a, b) => {
     const dateA = new Date(a.header);
@@ -54,7 +54,6 @@ export const loader = async () => {
     const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
     return dayDiff;
   });
-
 
   return json({ data });
 };
@@ -72,23 +71,25 @@ export default function Transaction() {
         <TransactionNavbar price={noPrice} />
 
         <main>
-          <p style={{ textAlign: "center" }}>
-            Belum ada transaksi. Ayo tambahkan
-          </p>
+          <p style={{ textAlign: "center" }}>Belum ada transaksi. Ayo tambahkan</p>
         </main>
 
         <TransactionMenu />
       </div>
     );
 
-  const allBody = fakeData.map((d) => d.body)[0];
-  const allPrice = allBody.map((d) => d.price);
+  const allBody = fakeData.map((d) => d.body);
+  const allPrices = allBody
+    .map((d) => d.map((x) => x.price))
+    .join(",")
+    .split(",")
+    .map((d) => parseInt(d));
 
   return (
     <div className="main-page">
       <h1>Transaksi</h1>
 
-      <TransactionNavbar price={allPrice} />
+      <TransactionNavbar price={allPrices} />
 
       <main>
         <TransactionData data={fakeData} />

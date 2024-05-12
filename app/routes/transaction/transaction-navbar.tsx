@@ -2,10 +2,7 @@ import { currencyFormat } from "./route";
 
 export default function TransactionNavbar({ price }: { price: number[] }) {
   const sumIncome = price.reduce((acc, curr) => acc + (curr > 0 ? curr : 0), 0);
-  const sumOutcome = price.reduce(
-    (acc, curr) => acc + (curr < 0 ? Math.abs(curr) : 0),
-    0
-  );
+  const sumOutcome = price.reduce((acc, curr) => acc + (curr < 0 ? Math.abs(curr) : 0), 0);
   const total = sumIncome - sumOutcome;
 
   return (
