@@ -63,7 +63,7 @@ export const loader = async () => {
     
     return json({ data });
   } catch (error) {
-    console.error("Failed to fetch data:");
+    console.error("Failed to fetch data:", error);
     return json({ data: "Failed to fetch data" }, { status: 500 });
   }
 };
