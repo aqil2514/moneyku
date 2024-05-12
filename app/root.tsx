@@ -1,6 +1,6 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from "@remix-run/react";
 
-import style from "../public/styles/css/style.css";
+import style from "./style.css";
 import { LinksFunction } from "@remix-run/node";
 import Sidebar from "components/layout/Sidebar";
 import React from "react";
