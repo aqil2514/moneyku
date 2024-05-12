@@ -1,12 +1,5 @@
-import {
-  ActionFunctionArgs,
-  MetaFunction,
-  json,
-  redirect,
-} from "@remix-run/node";
+import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
-import * as fs from "fs";
-import { TransactionBodyType, TransactionType } from "../transaction/route";
 import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
 import serverEndpoint from "lib/server";
@@ -21,6 +14,17 @@ interface ErrorsTransaction {
   date: string;
 }
 
+interface ErrorIssue {
+  code: string;
+  expected: string;
+  minimum: number;
+  inclusive: boolean;
+  exact: false;
+  received: string;
+  path: string[];
+  message: string;
+}
+
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const typeTransaction = String(formData.get("type-data"));
@@ -32,10 +36,10 @@ export async function action({ request }: ActionFunctionArgs) {
   const price =
     typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
 
-  const res = await fetch(`${serverEndpoint.github}/transaction/add`, {
+  const res = await fetch(`${serverEndpoint.local}/transaction/add`, {
     method: "POST",
     headers: {
-      "Content-Type" : "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       typeTransaction,
@@ -48,11 +52,28 @@ export async function action({ request }: ActionFunctionArgs) {
     }),
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to send form data to server");
+  if (res.status === 422) {
+    const data = await res.json();
+    const issues: ErrorIssue[] = data.error.issues;
+
+    console.log(issues)
+
+    const errors: ErrorsTransaction = {
+      date: issues.find((p) => p.path[0].includes("date"))?.message as string,
+      total: issues.find((p) => p.path[0].includes("price"))?.message as string,
+      type: issues.find((p) => p.path[0].includes("type"))?.message as string,
+    };
+
+    console.log(errors)
+
+    return json({ errors });
   }
 
-  return null;
+  const data = await res.json();
+  const issues = data.error.issues[0];
+
+  console.log(issues);
+  return json({ data });
 }
 
 export default function AddTransaction() {
@@ -61,7 +82,13 @@ export default function AddTransaction() {
 
 export function IncomeTransaction() {
   const actionData = useActionData<typeof action>();
-  const errors = actionData?.errors;
+  let errors: ErrorsTransaction = {} as ErrorsTransaction;
+
+  if (actionData && "errors" in actionData) {
+    errors = actionData.errors;
+  }
+
+  console.log(errors);
   return (
     <div className="main-page">
       <Form
@@ -110,7 +137,11 @@ export function IncomeTransaction() {
 
 export function OutcomeTransaction() {
   const actionData = useActionData<typeof action>();
-  const errors = actionData?.errors;
+  let errors:ErrorsTransaction = {} as ErrorsTransaction;
+
+  if(actionData && "errors" in actionData){
+    errors = actionData.errors;
+  }
   return (
     <div className="main-page">
       <Form
