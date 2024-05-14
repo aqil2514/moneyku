@@ -368,6 +368,13 @@
   display: grid;
   grid-template-columns: 20% auto 20%;
   padding: 0 1rem 1rem;
+  position: relative;
+}
+.main-page main .data .body #body-delete-icon {
+  position: absolute;
+  color: red;
+  font-weight: bold;
+  margin: auto 0;
 }
 .main-page main .data .body section:nth-child(1) {
   text-align: left;
@@ -386,11 +393,27 @@
   position: fixed;
   bottom: 10px;
   right: 50px;
+  display: flex;
+  gap: 0.5rem;
+  background-color: rgba(6, 69, 38, 0.8117647059);
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+}
+.main-page #menu #delete-transaction {
+  background-color: #ff0000;
+}
+.main-page #menu #delete-transaction:hover {
+  background-color: #e44040;
+}
+.main-page #menu #add-transaction {
+  background-color: #1ae3cc;
 }
 .main-page #menu svg {
-  width: 60px;
-  height: 60px;
-  color: rgba(25, 79, 150, 0.9215686275);
+  width: 54px;
+  height: 54px;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 50%;
   transition: 0.3s;
   cursor: pointer;
 }

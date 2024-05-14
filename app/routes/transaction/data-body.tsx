@@ -1,12 +1,14 @@
 import { TransactionBodyType, currencyFormat } from "./route";
 
-export default function TransactionDataBody({ data }: { data: TransactionBodyType[] }) {
+export default function TransactionDataBody({ data, deleteMode }: { data: TransactionBodyType[], deleteMode: boolean }) {
   return (
     <div>
       {data.map((d, i) => {
         const itemPrice = currencyFormat.format(d.price);
+        // TODO : Akalin ini nanti. 
         return (
           <div key={i} className="body">
+            {deleteMode && <p id="body-delete-icon">X</p>}
             <section>{d.category}</section>
             <section>
               <p>{d.item}</p>

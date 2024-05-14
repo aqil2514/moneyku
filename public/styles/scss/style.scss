@@ -241,7 +241,7 @@
   }
 }
 
-.total-section{
+.total-section {
   p {
     margin: 0;
     &:nth-child(1) {
@@ -440,6 +440,14 @@
         display: grid;
         grid-template-columns: 20% auto 20%;
         padding: 0 1rem 1rem;
+        position: relative;
+        
+        #body-delete-icon{
+          position: absolute;
+          color: red;
+          font-weight: bold;
+          margin: auto 0;
+        }
 
         section {
           &:nth-child(1) {
@@ -467,11 +475,30 @@
     position: fixed;
     bottom: 10px;
     right: 50px;
+    display: flex;
+    gap: .5rem;
+    background-color: #064526cf;
+    border-radius: 1rem;
+    padding: .5rem 1rem;
+
+    #delete-transaction {
+      background-color: #ff0000;
+      
+      &:hover{
+        background-color: #e44040;
+      }
+    }
+
+    #add-transaction{
+      background-color: #1ae3cc;
+    }
 
     svg {
-      width: 60px;
-      height: 60px;
-      color: #194f96eb;
+      width: 54px;
+      height: 54px;
+      color: #fff;
+      padding: .5rem;
+      border-radius: 50%;
       transition: 0.3s;
       cursor: pointer;
 

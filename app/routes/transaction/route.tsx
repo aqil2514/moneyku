@@ -4,6 +4,8 @@ import { useLoaderData } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
 import TransactionData from "./data";
 import serverEndpoint from "lib/server";
+import { ClientOnly } from "remix-utils/client-only";
+import { useState } from "react";
 
 export const meta: MetaFunction = () => [
   {
@@ -29,39 +31,12 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-// export const loader = async () => {
-//   if (!fs.existsSync("data.json") || fs.statSync("fakeData.json").size === 0) {
-//     const data: TransactionType[] = [];
-//     return json({ data });
-//   }
-
-//   const initData = JSON.parse(fs.readFileSync("fakeData.json", "utf8")) as TransactionType | undefined;
-
-//   let response: TransactionType[] = [];
-//   if (!initData) {
-//     response = [];
-//   } else {
-//     Array.isArray(initData) ? (response = initData) : response.push(initData);
-//   }
-
-//   const data = response.sort((a, b) => {
-//     const dateA = new Date(a.header);
-//     const dateB = new Date(b.header);
-
-//     const timeDiff = dateA.getTime() - dateB.getTime();
-//     const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
-//     return dayDiff;
-//   });
-
-//   return json({ data });
-// };
-
 export const loader = async () => {
   try {
     const res = await fetch(`${serverEndpoint.cyclic}/transaction`);
-    
+
     const data = await res.json();
-    
+
     return json({ data });
   } catch (error) {
     console.error("Failed to fetch data:", error);
@@ -71,22 +46,29 @@ export const loader = async () => {
 
 export default function Transaction() {
   const res = useLoaderData<typeof loader>();
+  const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const data = res.data as TransactionType[];
   const noPrice = [0];
 
   if (!data || data.length === 0)
     return (
-      <div className="main-page">
-        <h1>Transaksi</h1>
+      <ClientOnly>
+        {() => (
+          <div className="main-page">
+            <h1>Transaksi</h1>
 
-        <TransactionNavbar price={noPrice} />
+            <TransactionNavbar price={noPrice} />
 
-        <main>
-          <p style={{ textAlign: "center" }}>Belum ada transaksi. Ayo tambahkan</p>
-        </main>
+            <main>
+              <p style={{ textAlign: "center" }}>
+                Belum ada transaksi. Ayo tambahkan
+              </p>
+            </main>
 
-        <TransactionMenu />
-      </div>
+            <TransactionMenu setDeleteMode={setDeleteMode} deleteMode={deleteMode} />
+          </div>
+        )}
+      </ClientOnly>
     );
 
   const allBody = data.map((d) => d.body);
@@ -97,17 +79,21 @@ export default function Transaction() {
     .map((d) => parseInt(d));
 
   return (
-    <div className="main-page">
-      <h1>Transaksi</h1>
+    <ClientOnly>
+      {() => (
+        <div className="main-page">
+          <h1>Transaksi</h1>
 
-      <TransactionNavbar price={allPrices} />
+          <TransactionNavbar price={allPrices} />
 
-      <main>
-        <TransactionData data={data} />
-      </main>
+          <main>
+            <TransactionData data={data} deleteMode={deleteMode} />
+          </main>
 
-      <TransactionMenu />
-    </div>
+          <TransactionMenu deleteMode={deleteMode} setDeleteMode={setDeleteMode} />
+        </div>
+      )}
+    </ClientOnly>
   );
 
   return <></>;

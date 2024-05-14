@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
+import { ActionFunctionArgs, MetaFunction, json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
@@ -27,6 +27,8 @@ interface ErrorIssue {
   path: string[];
   message: string;
 }
+
+// SOON : Tambahin UX Untuk memberitahu user tentang hasil dari penambahan transaksi
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -75,7 +77,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const data = await res.json();
 
-  console.log(data)
+  if(res.status === 200){
+    return redirect("/transaction");
+  }
 
   return json({ data });
 }
@@ -92,7 +96,6 @@ export function IncomeTransaction() {
     errors = actionData.errors;
   }
 
-  console.log(errors);
   return (
     <div className="main-page">
       <Form
