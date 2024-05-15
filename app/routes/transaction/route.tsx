@@ -33,7 +33,9 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
 
 export const loader = async () => {
   try {
-    const res = await fetch(`${serverEndpoint.cyclic}/transaction`);
+    const isLocal = process.env.NODE_ENV === "development";
+    const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.cyclic;
+    const res = await fetch(`${endpoint}/transaction`);
 
     const data = await res.json();
 

@@ -18,6 +18,36 @@
 // All Animation End
 
 // All Mixins Start
+
+@mixin button-style($-background, $-hover-color, $-text-color){
+  background-color: $-background;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 1rem;
+  color: $-text-color;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $-hover-color;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+  }
+
+  &-active {
+    background-color: $-hover-color;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-weight: bold;
+    cursor: default !important;
+    outline: 2px solid #fff;
+  }
+}
+
 @mixin container {
   display: flex;
   justify-content: center;
@@ -185,32 +215,11 @@
 }
 
 .button-navigation-1 {
-  background-color: #007bff;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 1rem;
-  color: #fff;
-  font-size: 16px;
-  font-family: sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  @include button-style(#007bff, #0056b3, #fff);
+}
 
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-  }
-
-  &-active {
-    background-color: #0056b3;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    color: #fff;
-    font-weight: bold;
-    cursor: default !important;
-    outline: 2px solid #fff;
-  }
+.button-close{
+@include button-style(#b01616, #eb2626, #fff);
 }
 
 .income-section {
@@ -238,6 +247,28 @@
       color: #e12b31;
       font-weight: bold;
     }
+  }
+}
+
+.popup{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: #0000009f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-delete{
+    width: 50%;
+    height: 50%;
+    background-color: white;
+    border-radius: 1rem;
+    border: 8px #85db79 double;
+    padding: 1rem;
   }
 }
 
@@ -440,14 +471,6 @@
         display: grid;
         grid-template-columns: 20% auto 20%;
         padding: 0 1rem 1rem;
-        position: relative;
-        
-        #body-delete-icon{
-          position: absolute;
-          color: red;
-          font-weight: bold;
-          margin: auto 0;
-        }
 
         section {
           &:nth-child(1) {
@@ -464,6 +487,46 @@
           }
         }
       }
+
+      .body-delete {
+        display: grid;
+        grid-template-columns: 3% 20% auto 20%;
+        padding: 0 1rem 1rem;
+        position: relative;
+
+        #body-delete-icon {
+          color: red;
+          font-weight: bold;
+          margin: auto;
+          cursor: pointer;
+          transition: 0.2s;
+          padding: 0.2rem;
+          border-radius: 50%;
+          position: relative;
+          top: -20%;
+
+          &:hover {
+            transform: scale(1.1);
+            background-color: red;
+            color: white;
+          }
+        }
+
+        section {
+          &:nth-child(2) {
+            text-align: left;
+          }
+
+          &:nth-child(3) {
+            text-align: center;
+            margin: auto 0;
+          }
+
+          &:nth-child(4) {
+            text-align: right;
+          }
+        }
+      }
     }
 
     &::-webkit-scrollbar {
@@ -476,20 +539,20 @@
     bottom: 10px;
     right: 50px;
     display: flex;
-    gap: .5rem;
+    gap: 0.5rem;
     background-color: #064526cf;
     border-radius: 1rem;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
 
     #delete-transaction {
       background-color: #ff0000;
-      
-      &:hover{
+
+      &:hover {
         background-color: #e44040;
       }
     }
 
-    #add-transaction{
+    #add-transaction {
       background-color: #1ae3cc;
     }
 
@@ -497,7 +560,7 @@
       width: 54px;
       height: 54px;
       color: #fff;
-      padding: .5rem;
+      padding: 0.5rem;
       border-radius: 50%;
       transition: 0.3s;
       cursor: pointer;

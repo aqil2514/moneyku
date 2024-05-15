@@ -156,6 +156,32 @@
   outline: 2px solid #fff;
 }
 
+.button-close {
+  background-color: #b01616;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 1rem;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.button-close:hover {
+  background-color: #eb2626;
+}
+.button-close:focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+.button-close-active {
+  background-color: #eb2626;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-weight: bold;
+  cursor: default !important;
+  outline: 2px solid #fff;
+}
+
 .income-section p {
   margin: 0;
 }
@@ -178,6 +204,27 @@
 .outcome-section p:nth-child(2) {
   color: #e12b31;
   font-weight: bold;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.6235294118);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-delete {
+  width: 50%;
+  height: 50%;
+  background-color: white;
+  border-radius: 1rem;
+  border: 8px #85db79 double;
+  padding: 1rem;
 }
 
 .total-section p {
@@ -368,13 +415,6 @@
   display: grid;
   grid-template-columns: 20% auto 20%;
   padding: 0 1rem 1rem;
-  position: relative;
-}
-.main-page main .data .body #body-delete-icon {
-  position: absolute;
-  color: red;
-  font-weight: bold;
-  margin: auto 0;
 }
 .main-page main .data .body section:nth-child(1) {
   text-align: left;
@@ -384,6 +424,38 @@
   margin: auto 0;
 }
 .main-page main .data .body section:nth-child(3) {
+  text-align: right;
+}
+.main-page main .data .body-delete {
+  display: grid;
+  grid-template-columns: 3% 20% auto 20%;
+  padding: 0 1rem 1rem;
+  position: relative;
+}
+.main-page main .data .body-delete #body-delete-icon {
+  color: red;
+  font-weight: bold;
+  margin: auto;
+  cursor: pointer;
+  transition: 0.2s;
+  padding: 0.2rem;
+  border-radius: 50%;
+  position: relative;
+  top: -20%;
+}
+.main-page main .data .body-delete #body-delete-icon:hover {
+  transform: scale(1.1);
+  background-color: red;
+  color: white;
+}
+.main-page main .data .body-delete section:nth-child(2) {
+  text-align: left;
+}
+.main-page main .data .body-delete section:nth-child(3) {
+  text-align: center;
+  margin: auto 0;
+}
+.main-page main .data .body-delete section:nth-child(4) {
   text-align: right;
 }
 .main-page main::-webkit-scrollbar {

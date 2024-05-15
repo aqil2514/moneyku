@@ -9,7 +9,7 @@ export default function TransactionData({ data, deleteMode }: { data: Transactio
       {data.map((d, i) => (
         <React.Fragment key={i++}>
           <TransactionDataHeader data={d.header} body={d.body} />
-          <TransactionDataBody data={d.body} deleteMode={deleteMode} />
+          <TransactionDataBody data={d.body} header={d.header} deleteMode={deleteMode} />
         </React.Fragment>
       ))}
     </div>
