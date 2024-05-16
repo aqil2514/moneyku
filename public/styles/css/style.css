@@ -130,6 +130,22 @@
   color: white;
 }
 
+.alert {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-style: dashed;
+  border-width: 2px;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.alert-warning {
+  border-color: orange;
+  background-color: #fff4e5;
+  color: #663c00;
+}
+
 .button-navigation-1 {
   background-color: #007bff;
   padding: 1rem 2rem;
@@ -182,6 +198,13 @@
   outline: 2px solid #fff;
 }
 
+.container-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
 .income-section p {
   margin: 0;
 }
@@ -220,11 +243,21 @@
 }
 .popup-delete {
   width: 50%;
-  height: 50%;
   background-color: white;
   border-radius: 1rem;
   border: 8px #85db79 double;
   padding: 1rem;
+}
+.popup-delete-header {
+  text-align: center;
+}
+.popup-delete-body {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #fdeded;
+  color: #5f2120;
+  border: 2px dashed red;
+  border-radius: 1rem;
 }
 
 .total-section p {

@@ -1,6 +1,6 @@
-import { MetaFunction, json } from "@remix-run/node";
+import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
-import { useLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
 import TransactionData from "./data";
 import serverEndpoint from "lib/server";
@@ -46,8 +46,34 @@ export const loader = async () => {
   }
 };
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const method = request.method;
+  const formData = await request.formData();
+  if (method === "DELETE") {
+    const header = formData.get("header");
+    const index = formData.get("index");
+
+    const res = await fetch(`${serverEndpoint.local}/transaction`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type" : "application/json",
+      },
+      body: JSON.stringify({
+        header,
+        index,
+      }),
+    });
+
+    const data = await res.json();
+
+    return json(data);
+  }
+};
+
 export default function Transaction() {
   const res = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  console.log(actionData)
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const data = res.data as TransactionType[];
   const noPrice = [0];
@@ -67,7 +93,10 @@ export default function Transaction() {
               </p>
             </main>
 
-            <TransactionMenu setDeleteMode={setDeleteMode} deleteMode={deleteMode} />
+            <TransactionMenu
+              setDeleteMode={setDeleteMode}
+              deleteMode={deleteMode}
+            />
           </div>
         )}
       </ClientOnly>
@@ -92,7 +121,10 @@ export default function Transaction() {
             <TransactionData data={data} deleteMode={deleteMode} />
           </main>
 
-          <TransactionMenu deleteMode={deleteMode} setDeleteMode={setDeleteMode} />
+          <TransactionMenu
+            deleteMode={deleteMode}
+            setDeleteMode={setDeleteMode}
+          />
         </div>
       )}
     </ClientOnly>

@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+// All Variables Start
+$-danger-background: #fdeded;
+$-danger-text: #5f2120;
+$-warning-background: #fff4e5;
+$-warning-text: #663c00;
+// All Variables End
+
 // All Animation Start
 
 @keyframes transaction-menu-open {
@@ -19,7 +26,7 @@
 
 // All Mixins Start
 
-@mixin button-style($-background, $-hover-color, $-text-color){
+@mixin button-style($-background, $-hover-color, $-text-color) {
   background-color: $-background;
   padding: 1rem 2rem;
   border: none;
@@ -214,12 +221,38 @@
   }
 }
 
+.alert {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-style: dashed;
+  border-width: 2px;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+
+  &-warning {
+    border-color: orange;
+    background-color: $-warning-background;
+    color: $-warning-text;
+  }
+}
+
 .button-navigation-1 {
   @include button-style(#007bff, #0056b3, #fff);
 }
 
-.button-close{
-@include button-style(#b01616, #eb2626, #fff);
+.button-close {
+  @include button-style(#b01616, #eb2626, #fff);
+}
+
+.container {
+  &-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
 }
 
 .income-section {
@@ -250,7 +283,7 @@
   }
 }
 
-.popup{
+.popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -262,13 +295,25 @@
   justify-content: center;
   align-items: center;
 
-  &-delete{
+  &-delete {
     width: 50%;
-    height: 50%;
     background-color: white;
     border-radius: 1rem;
     border: 8px #85db79 double;
     padding: 1rem;
+
+    &-header {
+      text-align: center;
+    }
+
+    &-body {
+      margin: 1rem 0;
+      padding: 1rem;
+      background-color: $-danger-background;
+      color: $-danger-text;
+      border: 2px dashed red;
+      border-radius: 1rem;
+    }
   }
 }
 

@@ -12,19 +12,23 @@ export default function TransactionDataBody({
   header: string;
 }) {
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
+  const [deleteIndex, setDeleteIndex] = useState<number>(0);
   const [headerData, setHeaderData] = useState<string>("");
   const deleteHandler = (e: React.MouseEvent<HTMLParagraphElement>) => {
     const target = e.target as HTMLParagraphElement;
     const header = target.getAttribute("data-header");
+    const index = Number(target.getAttribute("data-index"));
 
     if (header) {
       setHeaderData(header);
       setDeletePopup(true);
+      setDeleteIndex(index)
       return;
     }
 
     setDeletePopup(false);
     setHeaderData("");
+    setDeleteIndex(0);
   };
   return (
     <div>
@@ -38,6 +42,7 @@ export default function TransactionDataBody({
                   id="body-delete-icon"
                   onClick={deleteHandler}
                   aria-hidden
+                  data-index={i++}
                   data-header={header}
                 >
                   X
@@ -83,7 +88,7 @@ export default function TransactionDataBody({
           </div>
         );
       })}
-      {deletePopup && <DeletePopup header={headerData} setDeletePopup={setDeletePopup} />}
+      {deletePopup && <DeletePopup index={deleteIndex} header={headerData} setDeletePopup={setDeletePopup} />}
     </div>
   );
 }
