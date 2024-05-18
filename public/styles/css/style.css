@@ -146,6 +146,72 @@
   color: #663c00;
 }
 
+.body {
+  display: grid;
+  grid-template-columns: 20% auto 20%;
+  padding: 0 1rem 1rem;
+}
+.body-delete, .body-edit {
+  display: grid;
+  grid-template-columns: 3% 20% auto 20%;
+  padding: 0 1rem 1rem;
+  position: relative;
+}
+.body-delete section:nth-child(2), .body-edit section:nth-child(2) {
+  text-align: left;
+}
+.body-delete section:nth-child(3), .body-edit section:nth-child(3) {
+  text-align: center;
+  margin: auto 0;
+}
+.body-delete section:nth-child(4), .body-edit section:nth-child(4) {
+  text-align: right;
+}
+.body-delete-icon {
+  color: red;
+  font-weight: bold;
+  margin: auto;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 0.2rem;
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+  position: relative;
+  top: -20%;
+}
+.body-delete-icon:hover {
+  transform: scale(1.1);
+  background-color: red;
+  color: white;
+}
+.body-edit-icon {
+  color: #1500ff;
+  font-weight: bold;
+  margin: auto;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 0.2rem;
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+  position: relative;
+  top: -20%;
+}
+.body-edit-icon:hover {
+  transform: scale(1.1);
+  background-color: #0004ff;
+  color: white;
+}
+.body section:nth-child(1) {
+  text-align: left;
+}
+.body section:nth-child(2) {
+  text-align: center;
+  margin: auto 0;
+}
+.body section:nth-child(3) {
+  text-align: right;
+}
+
 .button-navigation-1 {
   background-color: #007bff;
   padding: 1rem 2rem;
@@ -444,53 +510,6 @@
   color: #bd2222;
   font-weight: bold;
 }
-.main-page main .data .body {
-  display: grid;
-  grid-template-columns: 20% auto 20%;
-  padding: 0 1rem 1rem;
-}
-.main-page main .data .body section:nth-child(1) {
-  text-align: left;
-}
-.main-page main .data .body section:nth-child(2) {
-  text-align: center;
-  margin: auto 0;
-}
-.main-page main .data .body section:nth-child(3) {
-  text-align: right;
-}
-.main-page main .data .body-delete {
-  display: grid;
-  grid-template-columns: 3% 20% auto 20%;
-  padding: 0 1rem 1rem;
-  position: relative;
-}
-.main-page main .data .body-delete #body-delete-icon {
-  color: red;
-  font-weight: bold;
-  margin: auto;
-  cursor: pointer;
-  transition: 0.2s;
-  padding: 0.2rem;
-  border-radius: 50%;
-  position: relative;
-  top: -20%;
-}
-.main-page main .data .body-delete #body-delete-icon:hover {
-  transform: scale(1.1);
-  background-color: red;
-  color: white;
-}
-.main-page main .data .body-delete section:nth-child(2) {
-  text-align: left;
-}
-.main-page main .data .body-delete section:nth-child(3) {
-  text-align: center;
-  margin: auto 0;
-}
-.main-page main .data .body-delete section:nth-child(4) {
-  text-align: right;
-}
 .main-page main::-webkit-scrollbar {
   display: none;
 }
@@ -513,12 +532,15 @@
 .main-page #menu #add-transaction {
   background-color: #1ae3cc;
 }
+.main-page #menu #edit-transaction {
+  background-color: #1a1ae3;
+}
 .main-page #menu svg {
   width: 54px;
   height: 54px;
   color: #fff;
   padding: 0.5rem;
-  border-radius: 50%;
+  border-radius: 1rem;
   transition: 0.3s;
   cursor: pointer;
 }

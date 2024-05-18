@@ -1,20 +1,25 @@
 import React, { useState } from "react";
-import { TransactionBodyType, currencyFormat } from "./route";
+import {
+  TransactionBodyType,
+  currencyFormat,
+  useTransactionData,
+} from "./route";
 import DeletePopup from "./delete-popup";
+import { MdEdit } from "react-icons/md";
 
 export default function TransactionDataBody({
   data,
-  deleteMode,
   header,
 }: {
   data: TransactionBodyType[];
-  deleteMode: boolean;
   header: string;
 }) {
+  const { deleteMode, editMode, data:body } = useTransactionData();
+  console.log(body);
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
   const [deleteIndex, setDeleteIndex] = useState<number>(0);
   const [headerData, setHeaderData] = useState<string>("");
-  const deleteHandler = (e: React.MouseEvent<HTMLParagraphElement>) => {
+  const deleteHandler = (e: React.MouseEvent<SVGElement | HTMLParagraphElement>) => {
     const target = e.target as HTMLParagraphElement;
     const header = target.getAttribute("data-header");
     const index = Number(target.getAttribute("data-index"));
@@ -22,7 +27,7 @@ export default function TransactionDataBody({
     if (header) {
       setHeaderData(header);
       setDeletePopup(true);
-      setDeleteIndex(index)
+      setDeleteIndex(index);
       return;
     }
 
@@ -39,7 +44,7 @@ export default function TransactionDataBody({
             <div key={i} className="body-delete">
               {deleteMode && (
                 <p
-                  id="body-delete-icon"
+                  className="body-delete-icon"
                   onClick={deleteHandler}
                   aria-hidden
                   data-index={i++}
@@ -66,6 +71,37 @@ export default function TransactionDataBody({
               </section>
             </div>
           );
+        else if (editMode) {
+          return (
+            <div key={i} className="body-edit">
+              {editMode && (
+                <MdEdit
+                  className="body-edit-icon"
+                  onClick={deleteHandler}
+                  aria-hidden
+                  data-index={i++}
+                  data-header={header}
+                />
+              )}
+              <section>{d.category}</section>
+              <section>
+                <p>{d.item}</p>
+                <p>{d.asset}</p>
+              </section>
+              <section>
+                <p
+                  style={
+                    d.price < 0
+                      ? { color: "red", fontWeight: "bold" }
+                      : { color: "blue", fontWeight: "bold" }
+                  }
+                >
+                  {itemPrice.replace("-", "")}
+                </p>
+              </section>
+            </div>
+          );
+        }
 
         return (
           <div key={i} className="body">
@@ -88,7 +124,13 @@ export default function TransactionDataBody({
           </div>
         );
       })}
-      {deletePopup && <DeletePopup index={deleteIndex} header={headerData} setDeletePopup={setDeletePopup} />}
+      {deletePopup && (
+        <DeletePopup
+          index={deleteIndex}
+          header={headerData}
+          setDeletePopup={setDeletePopup}
+        />
+      )}
     </div>
   );
 }
