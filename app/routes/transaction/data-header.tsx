@@ -1,11 +1,30 @@
-import { TransactionBodyType, TransactionType, currencyFormat, useTransactionData } from "./route";
+import {
+  TransactionBodyType,
+  TransactionType,
+  currencyFormat,
+  useTransactionData,
+} from "./route";
 
-const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+const dayNames = [
+  "Minggu",
+  "Senin",
+  "Selasa",
+  "Rabu",
+  "Kamis",
+  "Jumat",
+  "Sabtu",
+];
 
-export default function TransactionDataHeader({ id, body }: { id: TransactionType["id"]; body: TransactionBodyType[] }) {
-  const {data:allData} = useTransactionData();
+export default function TransactionDataHeader({
+  id,
+  body,
+}: {
+  id: TransactionType["id"];
+  body: TransactionBodyType[];
+}) {
+  const { data: allData, month:dateMonth } = useTransactionData();
   const data = allData.find((d) => d.id === id);
-  if(!data) throw new Error("Data tidal ada");
+  if (!data) throw new Error("Data tidal ada");
   const allPrices = body.map((d) => d.price);
   const plus = allPrices.filter((p) => p > 0);
   const minus = allPrices.filter((p) => p < 0);
@@ -20,6 +39,17 @@ export default function TransactionDataHeader({ id, body }: { id: TransactionTyp
 
   const income = currencyFormat.format(incomePrice > 0 ? incomePrice : 0);
   const outcome = currencyFormat.format(outcomePrice < 0 ? outcomePrice : 0);
+
+  const filteredData = allData.filter((d) => {
+    const dataMonth = d.header;
+    const dataFormat = Number(dataMonth.split(":")[0].split("-")[1]) - 1;
+
+    return dateMonth === dataFormat;
+  });
+
+  const filteredDataBody = filteredData.map((d) => d.body)[0];
+
+  if(!filteredDataBody || filteredDataBody.length === 0) return <></>
 
   return (
     <header>

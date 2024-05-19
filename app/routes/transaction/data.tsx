@@ -10,7 +10,7 @@ export default function TransactionData() {
       {data.map((d, i) => (
         <React.Fragment key={i++}>
           <TransactionDataHeader id={String(d.id)} body={d.body} />
-          <TransactionDataBody data={d.body} id={String(d.id)} />
+          <TransactionDataBody id={String(d.id)} />
         </React.Fragment>
       ))}
     </div>

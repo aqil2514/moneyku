@@ -328,6 +328,27 @@ $-warning-text: #663c00;
     justify-content: flex-start;
     gap: 1rem;
   }
+  &-filter{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 200px;
+    position: relative;
+    color: #0004ff;
+
+    &::after{
+      content: "";
+      display: block;
+      position: absolute;
+      margin-top: 1rem;
+      left: 0;
+      bottom: -10px;
+      width: 100%;
+      height: 3px;
+      background-color: #0004ff;
+    }
+  }
 }
 
 .income-section {

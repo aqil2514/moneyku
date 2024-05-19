@@ -1,28 +1,28 @@
 import React, { useState } from "react";
-import {
-  TransactionBodyType,
-  currencyFormat,
-  useTransactionData,
-} from "./route";
+import { currencyFormat, useTransactionData } from "./route";
 import DeletePopup from "./delete-popup";
 import { MdEdit } from "react-icons/md";
 import EditPopup from "./edit-data";
+import { months } from "./transaction-filter";
 
-// TODO : UID ADJUSMENT   
+// TODO : UID ADJUSMENT
 
-export default function TransactionDataBody({
-  data,
-  id,
-}: {
-  data: TransactionBodyType[];
-  id: string;
-}) {
-  const { deleteMode, editMode, data:allData } = useTransactionData();
+export default function TransactionDataBody({ id }: { id: string }) {
+  const { deleteMode, editMode, data: allData, month } = useTransactionData();
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
   const [deleteIndex, setDeleteIndex] = useState<number>(0);
   const [editPopup, setEditPopup] = useState<boolean>(false);
   const [editIndex, setEditIndex] = useState<number>(0);
   const [headerData, setHeaderData] = useState<string>("");
+
+  const filteredData = allData.filter((d) => {
+    const dataMonth = d.header;
+    const dataFormat = Number(dataMonth.split(":")[0].split("-")[1]) - 1;
+
+    return month === dataFormat;
+  });
+
+  const filteredDataBody = filteredData.map((d) => d.body)[0];
 
   const deleteHandler = (
     e: React.MouseEvent<SVGElement | HTMLParagraphElement>
@@ -64,88 +64,57 @@ export default function TransactionDataBody({
     setEditIndex(0);
   };
 
+  // BUG pada filter data. Fix nanti  
+
+  if (!filteredDataBody || filteredDataBody.length === 0) {
+    return <div>Tidak ada data transaksi di bulan {months[month]}</div>;
+  }
+
   return (
     <div>
-      {data.map((d, i) => {
+      {filteredDataBody.map((d, i) => {
         const itemPrice = currencyFormat.format(d.price);
-        if (deleteMode)
-          return (
-            <div key={i} className="body-delete">
-              {deleteMode && (
-                <p
-                  className="body-delete-icon"
-                  onClick={deleteHandler}
-                  aria-hidden
-                  data-index={i++}
-                  data-id={id}
-                >
-                  X
-                </p>
-              )}
-              <section>{d.category}</section>
-              <section>
-                <p>{d.item}</p>
-                <p>{d.asset}</p>
-              </section>
-              <section>
-                <p
-                  style={
-                    d.price < 0
-                      ? { color: "red", fontWeight: "bold" }
-                      : { color: "blue", fontWeight: "bold" }
-                  }
-                >
-                  {itemPrice.replace("-", "")}
-                </p>
-              </section>
-            </div>
-          );
-        else if (editMode) {
-          return (
-            <div key={i} className="body-edit">
-              {editMode && (
-                <MdEdit
-                  className="body-edit-icon"
-                  onClick={editHandler}
-                  aria-hidden
-                  data-index={i++}
-                  data-id={id}
-                />
-              )}
-              <section>{d.category}</section>
-              <section>
-                <p>{d.item}</p>
-                <p>{d.asset}</p>
-              </section>
-              <section>
-                <p
-                  style={
-                    d.price < 0
-                      ? { color: "red", fontWeight: "bold" }
-                      : { color: "blue", fontWeight: "bold" }
-                  }
-                >
-                  {itemPrice.replace("-", "")}
-                </p>
-              </section>
-            </div>
-          );
-        }
+        const isEditMode = editMode && !deleteMode;
+        const isDeleteMode = deleteMode && !editMode;
 
         return (
-          <div key={i} className="body">
-            <section>{d.category}</section>
+          <div
+            key={i}
+            className={`body${
+              isEditMode ? "-edit" : isDeleteMode ? "-delete" : ""
+            }`}
+          >
+            {isEditMode && (
+              <MdEdit
+                className="body-edit-icon"
+                onClick={editHandler}
+                aria-hidden
+                data-index={i++}
+                data-id={id}
+              />
+            )}
+            {isDeleteMode && (
+              <p
+                className="body-delete-icon"
+                onClick={deleteHandler}
+                aria-hidden
+                data-index={i++}
+                data-id={id}
+              >
+                X
+              </p>
+            )}
+            <section>{d.item}</section>
             <section>
-              <p>{d.item}</p>
+              <p>{d.category}</p>
               <p>{d.asset}</p>
             </section>
             <section>
               <p
-                style={
-                  d.price < 0
-                    ? { color: "red", fontWeight: "bold" }
-                    : { color: "blue", fontWeight: "bold" }
-                }
+                style={{
+                  color: d.price < 0 ? "red" : "blue",
+                  fontWeight: "bold",
+                }}
               >
                 {itemPrice.replace("-", "")}
               </p>

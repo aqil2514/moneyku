@@ -1,11 +1,12 @@
 import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
-import { useActionData, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
 import TransactionData from "./data";
 import serverEndpoint from "lib/server";
 import { ClientOnly } from "remix-utils/client-only";
 import React, { createContext, useContext, useState } from "react";
+import TransactionFilter from "./transaction-filter";
 
 export const meta: MetaFunction = () => [
   {
@@ -30,8 +31,12 @@ export interface TransactionType {
 interface TransactionContextType {
   editMode: boolean;
   deleteMode: boolean;
+  month: number;
+  year: number;
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
   setDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setMonth: React.Dispatch<React.SetStateAction<number>>;
+  setYear: React.Dispatch<React.SetStateAction<number>>;
   data: TransactionType[];
 }
 
@@ -85,11 +90,10 @@ const TransactionContext = createContext<TransactionContextType>(
 
 export default function Transaction() {
   const res = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
-  // Next handle ini untuk UX-nyaa
-  console.log(actionData);
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [month, setMonth] = useState<number>(0);
+  const [year, setYear] = useState<number>(0);
   const data = res.data as TransactionType[];
   const noPrice = [0];
 
@@ -98,7 +102,17 @@ export default function Transaction() {
       <ClientOnly>
         {() => (
           <TransactionContext.Provider
-            value={{ data, deleteMode, setDeleteMode, editMode, setEditMode }}
+            value={{
+              data,
+              editMode,
+              setEditMode,
+              deleteMode,
+              setDeleteMode,
+              month,
+              setMonth,
+              year,
+              setYear,
+            }}
           >
             <div className="main-page">
               <h1>Transaksi</h1>
@@ -129,15 +143,29 @@ export default function Transaction() {
     <ClientOnly>
       {() => (
         <TransactionContext.Provider
-          value={{ data, editMode, setEditMode, deleteMode, setDeleteMode }}
+          value={{
+            data,
+            editMode,
+            setEditMode,
+            deleteMode,
+            setDeleteMode,
+            month,
+            setMonth,
+            year,
+            setYear,
+          }}
         >
           <div className="main-page">
             <h1>Transaksi</h1>
 
             <TransactionNavbar price={allPrices} />
 
+            <header>
+              <TransactionFilter />
+            </header>
+
             <main>
-              <TransactionData/>
+              <TransactionData />
             </main>
 
             <TransactionMenu />
