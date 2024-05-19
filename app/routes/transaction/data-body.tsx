@@ -6,6 +6,7 @@ import {
 } from "./route";
 import DeletePopup from "./delete-popup";
 import { MdEdit } from "react-icons/md";
+import EditPopup from "./edit-data";
 
 export default function TransactionDataBody({
   data,
@@ -14,12 +15,16 @@ export default function TransactionDataBody({
   data: TransactionBodyType[];
   header: string;
 }) {
-  const { deleteMode, editMode, data:body } = useTransactionData();
-  console.log(body);
+  const { deleteMode, editMode } = useTransactionData();
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
   const [deleteIndex, setDeleteIndex] = useState<number>(0);
+  const [editPopup, setEditPopup] = useState<boolean>(false);
+  const [editIndex, setEditIndex] = useState<number>(0);
   const [headerData, setHeaderData] = useState<string>("");
-  const deleteHandler = (e: React.MouseEvent<SVGElement | HTMLParagraphElement>) => {
+
+  const deleteHandler = (
+    e: React.MouseEvent<SVGElement | HTMLParagraphElement>
+  ) => {
     const target = e.target as HTMLParagraphElement;
     const header = target.getAttribute("data-header");
     const index = Number(target.getAttribute("data-index"));
@@ -35,6 +40,26 @@ export default function TransactionDataBody({
     setHeaderData("");
     setDeleteIndex(0);
   };
+
+  const editHandler = (
+    e: React.MouseEvent<SVGElement | HTMLParagraphElement>
+  ) => {
+    const target = e.target as HTMLParagraphElement;
+    const header = target.getAttribute("data-header");
+    const index = Number(target.getAttribute("data-index"));
+
+    if (header) {
+      setHeaderData(header);
+      setEditPopup(true);
+      setEditIndex(index);
+      return;
+    }
+
+    setEditPopup(false);
+    setHeaderData("");
+    setEditIndex(0);
+  };
+
   return (
     <div>
       {data.map((d, i) => {
@@ -77,7 +102,7 @@ export default function TransactionDataBody({
               {editMode && (
                 <MdEdit
                   className="body-edit-icon"
-                  onClick={deleteHandler}
+                  onClick={editHandler}
                   aria-hidden
                   data-index={i++}
                   data-header={header}
@@ -129,6 +154,13 @@ export default function TransactionDataBody({
           index={deleteIndex}
           header={headerData}
           setDeletePopup={setDeletePopup}
+        />
+      )}
+      {editPopup && (
+        <EditPopup
+          index={editIndex}
+          header={headerData}
+          setEditPopup={setEditPopup}
         />
       )}
     </div>

@@ -370,7 +370,8 @@ $-warning-text: #663c00;
   justify-content: center;
   align-items: center;
 
-  &-delete {
+  &-delete,
+  &-edit {
     width: 50%;
     background-color: white;
     border-radius: 1rem;
@@ -380,7 +381,9 @@ $-warning-text: #663c00;
     &-header {
       text-align: center;
     }
+  }
 
+  &-delete {
     &-body {
       margin: 1rem 0;
       padding: 1rem;

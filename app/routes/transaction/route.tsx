@@ -14,6 +14,7 @@ export const meta: MetaFunction = () => [
 ];
 
 export interface TransactionBodyType {
+  uid: string;
   category: string;
   asset: string;
   item: string;

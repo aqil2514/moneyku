@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { TransactionBodyType, TransactionType } from "./route";
+import { TransactionBodyType, TransactionType, useTransactionData } from "./route";
 import { IoIosWarning } from "react-icons/io";
 import { Form } from "@remix-run/react";
 
@@ -31,6 +31,7 @@ export default function DeletePopup({
   setDeletePopup: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
 }) {
+  const {data} = useTransactionData();
   const [globalData, setGlobalData] = useState<TransactionType>();
   const [selectedData, setSelectedData] = useState<TransactionBodyType>();
   const dateOption: Intl.DateTimeFormatOptions = {
@@ -39,26 +40,20 @@ export default function DeletePopup({
     month: "long",
     year: "numeric",
   };
-  const getData = useCallback(
-    async (header: string) => {
-      const endpoint = "http://localhost:3000";
-      try {
-        const res = await fetch(`${endpoint}/transaction/detail/${header}`);
-        const data = await res.json();
-        setGlobalData(data.data[0]);
-        setSelectedData(data.data[0].body[index]);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    },
-    [index]
+
+  const getData = useCallback((header:string) => {
+    const sameGlobal = data.find((d) => d.header === header);
+    if(!sameGlobal) throw new Error("Terjadi kesalahan saat pengambilan data");
+    setGlobalData(sameGlobal);
+    setSelectedData(globalData?.body[index])
+  },
+    [index, data, globalData]
   );
 
   useEffect(() => {
-    if (!globalData) {
       getData(header);
-    }
   }, [header, globalData, selectedData, getData]);
+  
   return (
     <div className="popup">
       <div className="popup-delete">
@@ -92,6 +87,7 @@ export default function DeletePopup({
             >
               Batal
             </button>
+            {/* //Fix ini. Jangan makek Form  */}
             <Form method="DELETE" action="/transaction">
               <input type="hidden" name="header" value={header} />
               <input type="hidden" name="index" value={index} />
