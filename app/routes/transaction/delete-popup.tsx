@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { TransactionBodyType, TransactionType, useTransactionData } from "./route";
+import {
+  TransactionBodyType,
+  TransactionType,
+  useTransactionData,
+} from "./route";
 import { IoIosWarning } from "react-icons/io";
+import axios, { isAxiosError } from "axios";
 import { Form } from "@remix-run/react";
 
 const SelectedData = ({ data }: { data: TransactionBodyType }) => {
@@ -31,7 +36,7 @@ export default function DeletePopup({
   setDeletePopup: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
 }) {
-  const {data} = useTransactionData();
+  const { data } = useTransactionData();
   const [globalData, setGlobalData] = useState<TransactionType>();
   const [selectedData, setSelectedData] = useState<TransactionBodyType>();
   const dateOption: Intl.DateTimeFormatOptions = {
@@ -41,19 +46,36 @@ export default function DeletePopup({
     year: "numeric",
   };
 
-  const getData = useCallback((header:string) => {
-    const sameGlobal = data.find((d) => d.header === header);
-    if(!sameGlobal) throw new Error("Terjadi kesalahan saat pengambilan data");
-    setGlobalData(sameGlobal);
-    setSelectedData(globalData?.body[index])
-  },
+  const getData = useCallback(
+    (header: string) => {
+      const sameGlobal = data.find((d) => d.header === header);
+      if (!sameGlobal)
+        throw new Error("Terjadi kesalahan saat pengambilan data");
+      setGlobalData(sameGlobal);
+      setSelectedData(globalData?.body[index]);
+    },
     [index, data, globalData]
   );
 
   useEffect(() => {
-      getData(header);
+    getData(header);
   }, [header, globalData, selectedData, getData]);
-  
+
+  const deleteHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    try {
+      const res = await axios.delete(`/api/transaction`, { data: formData });
+
+      alert(res.data.message);
+      location.reload();
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <div className="popup">
       <div className="popup-delete">
@@ -87,15 +109,15 @@ export default function DeletePopup({
             >
               Batal
             </button>
-            {/* //Fix ini. Jangan makek Form  */}
-            <Form method="DELETE" action="/transaction">
-              <input type="hidden" name="header" value={header} />
-              <input type="hidden" name="index" value={index} />
-              <button
-                className="button-navigation-1"
-              >
-                Hapus
-              </button>
+            <Form method="DELETE" onSubmit={deleteHandler}>
+              <input type="hidden" name="header" id="header" value={header} />
+              <input
+                type="hidden"
+                name="transaction-uid"
+                id="transaction-uid"
+                value={selectedData?.uid}
+              />
+              <button className="button-navigation-1">Hapus</button>
             </Form>
           </div>
         </div>

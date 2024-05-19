@@ -53,6 +53,7 @@ export default function EditPopup({
 
       console.log(res)
       alert(res.data.message);
+      location.reload()
     } catch (error) {
       if(isAxiosError(error)){
         console.error(error);

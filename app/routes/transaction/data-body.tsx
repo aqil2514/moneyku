@@ -8,6 +8,8 @@ import DeletePopup from "./delete-popup";
 import { MdEdit } from "react-icons/md";
 import EditPopup from "./edit-data";
 
+// TODO : UID ADJUSMENT   
+
 export default function TransactionDataBody({
   data,
   header,

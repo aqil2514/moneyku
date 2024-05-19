@@ -22,6 +22,7 @@ export interface TransactionBodyType {
 }
 
 export interface TransactionType {
+  id?: string;
   header: string;
   body: TransactionBodyType[];
 }

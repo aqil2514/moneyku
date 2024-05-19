@@ -5,49 +5,55 @@ import { useTransactionData } from "./route";
 
 export default function TransactionMenu() {
   const navigation = useNavigate();
-  const { deleteMode, setDeleteMode, editMode, setEditMode } =
+  const { deleteMode, setDeleteMode, editMode, setEditMode, data } =
     useTransactionData();
+
+  const isThere = data.length > 0;
 
   return (
     <div id="menu">
-      {deleteMode ? (
-        <MdCancel
-          id="delete-transaction"
-          title="Batal hapus transaksi"
-          onClick={() => {
-            setDeleteMode(false);
-            setEditMode(false);
-          }}
-        />
-      ) : (
-        <FaTrashAlt
-          id="delete-transaction"
-          title="Hapus transaksi"
-          onClick={() => {
-            setDeleteMode(true);
-            setEditMode(false);
-          }}
-        />
-      )}
+      {isThere && (
+        <>
+          {deleteMode ? (
+            <MdCancel
+              id="delete-transaction"
+              title="Batal hapus transaksi"
+              onClick={() => {
+                setDeleteMode(false);
+                setEditMode(false);
+              }}
+            />
+          ) : (
+            <FaTrashAlt
+              id="delete-transaction"
+              title="Hapus transaksi"
+              onClick={() => {
+                setDeleteMode(true);
+                setEditMode(false);
+              }}
+            />
+          )}
 
-      {editMode ? (
-        <MdCancel
-          id="edit-transaction"
-          title="Batal edit transaksi"
-          onClick={() => {
-            setEditMode(false);
-            setDeleteMode(false);
-          }}
-        />
-      ) : (
-        <FaEdit
-          id="edit-transaction"
-          onClick={() => {
-            setEditMode(true);
-            setDeleteMode(false);
-          }}
-          title="Edit Transaksi"
-        />
+          {editMode ? (
+            <MdCancel
+              id="edit-transaction"
+              title="Batal edit transaksi"
+              onClick={() => {
+                setEditMode(false);
+                setDeleteMode(false);
+              }}
+            />
+          ) : (
+            <FaEdit
+              id="edit-transaction"
+              onClick={() => {
+                setEditMode(true);
+                setDeleteMode(false);
+              }}
+              title="Edit Transaksi"
+            />
+          )}
+        </>
       )}
 
       <FaPlusCircle

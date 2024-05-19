@@ -11,6 +11,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const res = await axios.put(`${serverEndpoint.local}/transaction`, data);
 
     return json({ message: res.data.message });
+  } else if (request.method === "DELETE") {
+    const uid = formData.get("transaction-uid");
+    const header = formData.get("main-uid");
+
+    const res = await axios.delete(`${serverEndpoint.local}/transaction`, {
+      data: { uid, header },
+    });
+    return json({ message: res.data.message });
   }
 };
 
