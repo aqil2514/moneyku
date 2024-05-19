@@ -12,12 +12,12 @@ import EditPopup from "./edit-data";
 
 export default function TransactionDataBody({
   data,
-  header,
+  id,
 }: {
   data: TransactionBodyType[];
-  header: string;
+  id: string;
 }) {
-  const { deleteMode, editMode } = useTransactionData();
+  const { deleteMode, editMode, data:allData } = useTransactionData();
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
   const [deleteIndex, setDeleteIndex] = useState<number>(0);
   const [editPopup, setEditPopup] = useState<boolean>(false);
@@ -28,8 +28,9 @@ export default function TransactionDataBody({
     e: React.MouseEvent<SVGElement | HTMLParagraphElement>
   ) => {
     const target = e.target as HTMLParagraphElement;
-    const header = target.getAttribute("data-header");
+    const id = target.getAttribute("data-id");
     const index = Number(target.getAttribute("data-index"));
+    const header = allData.find((d) => d.id === id)?.header;
 
     if (header) {
       setHeaderData(header);
@@ -47,8 +48,9 @@ export default function TransactionDataBody({
     e: React.MouseEvent<SVGElement | HTMLParagraphElement>
   ) => {
     const target = e.target as HTMLParagraphElement;
-    const header = target.getAttribute("data-header");
+    const id = target.getAttribute("data-id");
     const index = Number(target.getAttribute("data-index"));
+    const header = allData.find((d) => d.id === id)?.header;
 
     if (header) {
       setHeaderData(header);
@@ -75,7 +77,7 @@ export default function TransactionDataBody({
                   onClick={deleteHandler}
                   aria-hidden
                   data-index={i++}
-                  data-header={header}
+                  data-id={id}
                 >
                   X
                 </p>
@@ -107,7 +109,7 @@ export default function TransactionDataBody({
                   onClick={editHandler}
                   aria-hidden
                   data-index={i++}
-                  data-header={header}
+                  data-id={id}
                 />
               )}
               <section>{d.category}</section>

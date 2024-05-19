@@ -1,4 +1,5 @@
 export interface TransactionFormData {
+  idTransaction?: string;
   uidTransaction?: string;
   typeTransaction: "Pemasukan" | "Pengeluaran"; // Tipe transaksi harus salah satu dari kedua nilai ini
   totalTransaction: number | null; // Total transaksi, diasumsikan sebagai bilangan bulat

@@ -9,8 +9,8 @@ export default function TransactionData() {
     <div className="data">
       {data.map((d, i) => (
         <React.Fragment key={i++}>
-          <TransactionDataHeader data={String(d.id)} body={d.body} />
-          <TransactionDataBody data={d.body} header={String(d.id)} />
+          <TransactionDataHeader id={String(d.id)} body={d.body} />
+          <TransactionDataBody data={d.body} id={String(d.id)} />
         </React.Fragment>
       ))}
     </div>

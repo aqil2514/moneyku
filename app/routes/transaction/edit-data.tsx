@@ -21,6 +21,8 @@ export default function EditPopup({
   const [globalData, setGlobalData] = useState<TransactionType>();
   const [selectedData, setSelectedData] = useState<TransactionBodyType>();
 
+  console.log(header)
+
   const getData = useCallback(
     (header: string) => {
       const sameGlobal = data.find((d) => d.header === header);
@@ -70,6 +72,7 @@ export default function EditPopup({
 
         <div className="popup-edit-body">
           <form onSubmit={submitHandler}>
+            <input type="hidden" name="main-id" defaultValue={globalData?.id} />
             <input type="hidden" name="transaction-uid" defaultValue={selectedData?.uid} />
             <div className="form-date">
               <label htmlFor="transaction-date">Tanggal Transaksi</label>

@@ -110,7 +110,7 @@ export default function DeletePopup({
               Batal
             </button>
             <Form method="DELETE" onSubmit={deleteHandler}>
-              <input type="hidden" name="header" id="header" value={header} />
+              <input type="hidden" name="main-id" id="main-id" value={globalData?.id} />
               <input
                 type="hidden"
                 name="transaction-uid"

@@ -13,10 +13,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return json({ message: res.data.message });
   } else if (request.method === "DELETE") {
     const uid = formData.get("transaction-uid");
-    const header = formData.get("main-uid");
+    const id = formData.get("main-id");
 
     const res = await axios.delete(`${serverEndpoint.local}/transaction`, {
-      data: { uid, header },
+      data: { uid, id },
     });
     return json({ message: res.data.message });
   }
@@ -24,6 +24,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 function getFormData(formData: FormData) {
   const result: TransactionFormData = {
+    idTransaction: String(formData.get("main-id")),
     uidTransaction: String(formData.get("transaction-uid")),
     dateTransaction: new Date(String(formData.get("transaction-date"))),
     totalTransaction: Number(formData.get("transaction-total")),
