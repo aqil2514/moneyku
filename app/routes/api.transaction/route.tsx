@@ -8,14 +8,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const data = getFormData(formData);
 
   if (request.method === "PUT") {
-    const res = await axios.put(`${serverEndpoint.local}/transaction`, data);
+    const res = await axios.put(`${serverEndpoint.production}/transaction`, data);
 
     return json({ message: res.data.message });
   } else if (request.method === "DELETE") {
     const uid = formData.get("transaction-uid");
     const id = formData.get("main-id");
 
-    const res = await axios.delete(`${serverEndpoint.local}/transaction`, {
+    const res = await axios.delete(`${serverEndpoint.production}/transaction`, {
       data: { uid, id },
     });
     return json({ message: res.data.message });

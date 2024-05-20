@@ -48,7 +48,7 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
 export const loader = async () => {
   try {
     const isLocal = process.env.NODE_ENV === "development";
-    const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.cyclic;
+    const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
     const res = await fetch(`${endpoint}/transaction`);
 
     const data = await res.json();
@@ -67,7 +67,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const header = formData.get("header");
     const index = formData.get("index");
 
-    const res = await fetch(`${serverEndpoint.local}/transaction`, {
+    const res = await fetch(`${serverEndpoint.production}/transaction`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -92,9 +92,11 @@ export default function Transaction() {
   const res = useLoaderData<typeof loader>();
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [month, setMonth] = useState<number>(0);
-  const [year, setYear] = useState<number>(0);
+  const [month, setMonth] = useState<number>(new Date().getMonth());
+  const [year, setYear] = useState<number>(new Date().getFullYear());
   const data = res.data as TransactionType[];
+  const selectedData = data.filter((d) => new Date(d.header).getMonth() === month)
+
   const noPrice = [0];
 
   if (!data || data.length === 0)
@@ -132,7 +134,8 @@ export default function Transaction() {
       </ClientOnly>
     );
 
-  const allBody = data.map((d) => d.body);
+  const allBody = selectedData.map((d) => d.body);
+  
   const allPrices = allBody
     .map((d) => d.map((x) => x.price))
     .join(",")

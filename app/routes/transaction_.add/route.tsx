@@ -41,7 +41,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const price =
     typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
 
-  const res = await fetch(`${serverEndpoint.local}/transaction/add`, {
+  const res = await fetch(`${serverEndpoint.production}/transaction/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

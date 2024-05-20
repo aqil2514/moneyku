@@ -1,28 +1,28 @@
 import React, { useState } from "react";
-import { currencyFormat, useTransactionData } from "./route";
+import {
+  TransactionBodyType,
+  currencyFormat,
+  useTransactionData,
+} from "./route";
 import DeletePopup from "./delete-popup";
 import { MdEdit } from "react-icons/md";
 import EditPopup from "./edit-data";
-import { months } from "./transaction-filter";
 
 // TODO : UID ADJUSMENT
 
-export default function TransactionDataBody({ id }: { id: string }) {
-  const { deleteMode, editMode, data: allData, month } = useTransactionData();
+export default function TransactionDataBody({
+  body,
+  id,
+}: {
+  id: string;
+  body: TransactionBodyType[];
+}) {
+  const { deleteMode, editMode, data:allData } = useTransactionData();
   const [deletePopup, setDeletePopup] = useState<boolean>(false);
   const [deleteIndex, setDeleteIndex] = useState<number>(0);
   const [editPopup, setEditPopup] = useState<boolean>(false);
   const [editIndex, setEditIndex] = useState<number>(0);
   const [headerData, setHeaderData] = useState<string>("");
-
-  const filteredData = allData.filter((d) => {
-    const dataMonth = d.header;
-    const dataFormat = Number(dataMonth.split(":")[0].split("-")[1]) - 1;
-
-    return month === dataFormat;
-  });
-
-  const filteredDataBody = filteredData.map((d) => d.body)[0];
 
   const deleteHandler = (
     e: React.MouseEvent<SVGElement | HTMLParagraphElement>
@@ -64,15 +64,9 @@ export default function TransactionDataBody({ id }: { id: string }) {
     setEditIndex(0);
   };
 
-  // BUG pada filter data. Fix nanti  
-
-  if (!filteredDataBody || filteredDataBody.length === 0) {
-    return <div>Tidak ada data transaksi di bulan {months[month]}</div>;
-  }
-
   return (
     <div>
-      {filteredDataBody.map((d, i) => {
+      {body.map((d, i) => {
         const itemPrice = currencyFormat.format(d.price);
         const isEditMode = editMode && !deleteMode;
         const isDeleteMode = deleteMode && !editMode;
