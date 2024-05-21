@@ -125,6 +125,13 @@
   }
   #transaction {
     width: 100%;
+    height: 100%;
+    background-color: #d5dff1;
+    padding: 0.5rem;
+  }
+  #transaction h1 {
+    text-align: center;
+    border: 4px double black;
   }
   #transaction-data {
     display: flex;
@@ -134,7 +141,7 @@
     overflow-y: scroll;
     background-color: white;
     border-radius: 1rem;
-    padding: 1rem;
+    padding: 0.5rem;
   }
   #transaction-data-body {
     font-size: 10px;
@@ -176,9 +183,9 @@
   #transaction-data-header .date {
     display: flex;
     justify-content: flex-start;
-    padding: 0 1rem;
+    padding: 0;
     gap: 0.2rem;
-    font-size: 12px;
+    font-size: 8px;
   }
   #transaction-data-header .date p:nth-child(1) {
     font-weight: bold;
@@ -194,16 +201,16 @@
     margin: auto 0;
   }
   #transaction-data-header .income {
-    padding: 0 1rem;
-    font-size: 12px;
+    padding: 0;
+    font-size: 10px;
   }
   #transaction-data-header .income p {
     color: #2222bd;
     font-weight: bold;
   }
   #transaction-data-header .outcome {
-    padding: 0 1rem;
-    font-size: 12px;
+    padding: 0;
+    font-size: 10px;
   }
   #transaction-data-header .outcome p {
     color: #bd2222;
@@ -299,6 +306,16 @@
   }
 }
 @media screen and (min-width: 950px) {
+  #transaction {
+    width: 100%;
+    height: 100%;
+    background-color: #d5dff1;
+    padding: 1rem;
+  }
+  #transaction h1 {
+    text-align: center;
+    border: 4px double black;
+  }
   #transaction-data {
     display: flex;
     flex-direction: column;
@@ -815,15 +832,6 @@
   outline: none;
   background-color: #f9f9f9;
   color: #333;
-}
-
-.main-page {
-  padding: 1rem;
-  background-color: #d5dff1;
-}
-.main-page h1 {
-  text-align: center;
-  border: 4px double black;
 }
 
 /*# sourceMappingURL=style.css.map */
