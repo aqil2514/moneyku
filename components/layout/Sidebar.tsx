@@ -3,7 +3,7 @@ import { AiOutlineTransaction } from "react-icons/ai";
 import { CiLight } from "react-icons/ci";
 import { FaLanguage } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { MdOutlineMoney } from "react-icons/md";
+import { MdFeaturedPlayList, MdOutlineMoney } from "react-icons/md";
 import { SiPlangrid } from "react-icons/si";
 import { TbMoneybag } from "react-icons/tb";
 import { TfiStatsUp } from "react-icons/tfi";
@@ -106,50 +106,58 @@ function PCSidebar() {
   );
 }
 
-function MobileSidebar(){
-  return(
+function MobileSidebar() {
+  return (
     <div id="mobile-sidebar">
       <NavLink
-          to={"/transaction"}
-          replace
-          className={({ isActive }) =>
-            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
-          }
-        >
-          <AiOutlineTransaction />
-          <p>Transaksi</p>
-        </NavLink>
+        to={"/transaction"}
+        replace
+        className={({ isActive }) =>
+          isActive
+            ? "mobile-sidebar-container mobile-sidebar-active"
+            : "mobile-sidebar-container mobile-sidebar-nonactive"
+        }
+      >
+        <AiOutlineTransaction />
+        <p>Transaksi</p>
+      </NavLink>
       <NavLink
-          to={"/statistic"}
-          replace
-          className={({ isActive }) =>
-            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
-          }
-        >
-          <TfiStatsUp />
-          <p>Statisik</p>
-        </NavLink>
-        <NavLink
-          to={"/assets"}
-          replace
-          className={({ isActive }) =>
-            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
-          }
-        >
-          <MdOutlineMoney />
-          <p>Aset</p>
-        </NavLink>
-        <NavLink
-          to={"/planning"}
-          replace
-          className={({ isActive }) =>
-            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
-          }
-        >
-          <SiPlangrid />
-          <p>Rencana</p>
-        </NavLink>
-        <NavLink
+        to={"/statistic"}
+        replace
+        className={({ isActive }) =>
+          isActive
+            ? "mobile-sidebar-container mobile-sidebar-active"
+            : "mobile-sidebar-container mobile-sidebar-nonactive"
+        }
+      >
+        <TfiStatsUp />
+        <p>Statisik</p>
+      </NavLink>
+      <NavLink
+        to={"/assets"}
+        replace
+        className={({ isActive }) =>
+          isActive
+            ? "mobile-sidebar-container mobile-sidebar-active"
+            : "mobile-sidebar-container mobile-sidebar-nonactive"
+        }
+      >
+        <MdOutlineMoney />
+        <p>Aset</p>
+      </NavLink>
+      <div
+        className="mobile-sidebar-container mobile-sidebar-nonactive"
+        onClick={() => alert("Belum berfungsi")}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") return alert("belum berfungsi");
+        }}
+        role="button"
+        tabIndex={0}
+      >
+        <MdFeaturedPlayList />
+        <p>Fitur Lain</p>
+      </div>
+      {/* <NavLink
           to={"budgeting"}
           replace
           className={({ isActive }) =>
@@ -158,7 +166,7 @@ function MobileSidebar(){
         >
           <TbMoneybag />
           <p>Budgeting</p>
-        </NavLink>
+        </NavLink> */}
     </div>
-  )
+  );
 }
