@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "dev": "remix vite:dev",
+    "dev": "concurrently \"npm run sass\" \"remix vite:dev\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
+    "sass": "sass --watch public/styles/scss/:public/styles/css",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -37,6 +38,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.38",
     "postcss-cli": "^11.0.0",
+    "sass": "^1.77.2",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"

@@ -1,0 +1,98 @@
+// All Mixins Start
+
+@mixin button-style($-background, $-hover-color, $-text-color) {
+    background-color: $-background;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 1rem;
+    color: $-text-color;
+    font-size: 16px;
+    font-family: sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: $-hover-color;
+    }
+  
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+  
+    &-active {
+      background-color: $-hover-color;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      color: #fff;
+      font-weight: bold;
+      cursor: default !important;
+      outline: 2px solid #fff;
+    }
+  }
+  
+  @mixin container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: #b3b2b27f;
+  }
+  
+  @mixin form($-width: 100%) {
+    width: $-width;
+    height: 100%;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  @mixin form-input($-width: 100%) {
+    width: $-width;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  @mixin sidebar {
+    color: black;
+    background-color: #0723487f;
+  }
+  
+  @mixin sidebar-pseudo-data-header {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #1c1e1d;
+  }
+  
+  @mixin svgIcons($-icon-color, $-hover-color) {
+    color: $-icon-color;
+    font-weight: bold;
+    margin: auto;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 0.2rem;
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    position: relative;
+    top: -20%;
+  
+    &:hover {
+      transform: scale(1.1);
+      background-color: $-hover-color;
+      color: white;
+    }
+  }
+  
+  // All Mixins END

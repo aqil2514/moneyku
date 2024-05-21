@@ -50,8 +50,8 @@ export const loader = async () => {
     const isLocal = process.env.NODE_ENV === "development";
     const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
     // const endpoint = serverEndpoint.production;
-    console.log(endpoint)
     const res = await fetch(`${endpoint}/transaction`);
+    console.log(res)
 
     const data = await res.json();
 
