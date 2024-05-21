@@ -11,7 +11,7 @@ export default function TransactionMenu() {
   const isThere = data.length > 0;
 
   return (
-    <div id="menu">
+    <div id="transaction-menu">
       {isThere && (
         <>
           {deleteMode ? (

@@ -16,6 +16,15 @@ export default function Sidebar() {
   if (exceptionPathName.includes(pathName)) return <></>;
 
   return (
+    <>
+      <PCSidebar />
+      <MobileSidebar />
+    </>
+  );
+}
+
+function PCSidebar() {
+  return (
     <div id="sidebar">
       <div id="sidebar-header">
         <h1 id="sidebar-header-title">Money Management</h1>
@@ -67,9 +76,13 @@ export default function Sidebar() {
           <SiPlangrid />
           <p>Rencana</p>
         </NavLink>
-        <NavLink to={"budgeting"} replace className={({ isActive }) =>
+        <NavLink
+          to={"budgeting"}
+          replace
+          className={({ isActive }) =>
             isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
-          }>
+          }
+        >
           <TbMoneybag />
           <p>Budgeting</p>
         </NavLink>
@@ -91,4 +104,61 @@ export default function Sidebar() {
       </div>
     </div>
   );
+}
+
+function MobileSidebar(){
+  return(
+    <div id="mobile-sidebar">
+      <NavLink
+          to={"/transaction"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
+          }
+        >
+          <AiOutlineTransaction />
+          <p>Transaksi</p>
+        </NavLink>
+      <NavLink
+          to={"/statistic"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
+          }
+        >
+          <TfiStatsUp />
+          <p>Statisik</p>
+        </NavLink>
+        <NavLink
+          to={"/assets"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
+          }
+        >
+          <MdOutlineMoney />
+          <p>Aset</p>
+        </NavLink>
+        <NavLink
+          to={"/planning"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
+          }
+        >
+          <SiPlangrid />
+          <p>Rencana</p>
+        </NavLink>
+        <NavLink
+          to={"budgeting"}
+          replace
+          className={({ isActive }) =>
+            isActive ? "mobile-sidebar-container mobile-sidebar-active" : "mobile-sidebar-container mobile-sidebar-nonactive"
+          }
+        >
+          <TbMoneybag />
+          <p>Budgeting</p>
+        </NavLink>
+    </div>
+  )
 }

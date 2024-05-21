@@ -53,7 +53,6 @@ export default function EditPopup({
     try {
       const res = await axios.putForm("/api/transaction", formData);
 
-      console.log(res)
       alert(res.data.message);
       location.reload()
     } catch (error) {

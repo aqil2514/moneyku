@@ -51,7 +51,6 @@ export const loader = async () => {
     const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
     // const endpoint = serverEndpoint.production;
     const res = await fetch(`${endpoint}/transaction`);
-    console.log(res)
 
     const data = await res.json();
 
@@ -118,7 +117,7 @@ export default function Transaction() {
               setYear,
             }}
           >
-            <div className="main-page">
+            <div id="transaction" className="main-page">
               <h1>Transaksi</h1>
 
               <TransactionNavbar price={noPrice} />
@@ -160,7 +159,7 @@ export default function Transaction() {
             setYear,
           }}
         >
-          <div className="main-page">
+          <div id="transaction" className="main-page">
             <h1>Transaksi</h1>
 
             <TransactionNavbar price={allPrices} />

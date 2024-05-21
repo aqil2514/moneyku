@@ -1,6 +1,8 @@
-@use "mixins" as *;
-@import "variables";
+@use "./utils/mixins" as *;
 @import "login-form";
+@import "./mobile-responsive/transaction";
+@import "./core/index";
+@import "./utils/index";
 
 * {
   padding: 0;
@@ -32,53 +34,6 @@
 // All Animate class End
 
 
-
-#sidebar {
-  min-height: 100vh;
-  background-color: #114b977f;
-  padding: 0.5rem;
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-
-  &-header {
-    display: grid;
-    grid-template-columns: 80% auto;
-    position: relative;
-
-    &-image {
-      width: 32px;
-      height: 32px;
-      object-fit: cover;
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-
-    &-title {
-      color: white;
-      font-size: 1.2rem;
-      margin: auto 0;
-      text-decoration: underline;
-      cursor: default;
-    }
-  }
-
-  &-menu {
-    border-top: 4px double white;
-    border-bottom: 4px double white;
-    h2 {
-      color: white;
-      cursor: default;
-    }
-  }
-
-  &-footer {
-    h2 {
-      color: white;
-    }
-  }
-}
 
 .alert {
   padding: 1rem;
@@ -457,47 +412,6 @@
     }
   }
 
-  #menu {
-    position: fixed;
-    bottom: 10px;
-    right: 50px;
-    display: flex;
-    gap: 0.5rem;
-    background-color: #064526cf;
-    border-radius: 1rem;
-    padding: 0.5rem 1rem;
-
-    #delete-transaction {
-      background-color: #ff0000;
-
-      &:hover {
-        background-color: #e44040;
-      }
-    }
-
-    #add-transaction {
-      background-color: #1ae3cc;
-    }
-
-    #edit-transaction {
-      background-color: #1a1ae3;
-    }
-
-    svg {
-      width: 54px;
-      height: 54px;
-      color: #fff;
-      padding: 0.5rem;
-      border-radius: 1rem;
-      transition: 0.3s;
-      cursor: pointer;
-
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
-  }
-
   #navbar {
     display: flex;
     justify-content: space-evenly;
@@ -515,23 +429,6 @@
     }
   }
 }
-
-// Mobile Responsive Design Start
-@media only screen and (max-width: 600px) {
-  #grid-layout {
-    width: 80% !important;
-    display: block !important;
-
-    .form {
-      width: 100% !important;
-    }
-
-    #grid-image {
-      display: none;
-    }
-  }
-}
-// Mobile Responsive Design End
 
 // Tablet Responsive Design Start
 @media only screen and (min-width: 601px) and (max-width: 1024px) {

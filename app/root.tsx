@@ -9,14 +9,6 @@ export const links: LinksFunction = () => [{ rel: "stylesheet", href: style }];
 
 export const exceptionPathName = ["/login", "/register"];
 
-const activeStyle: React.CSSProperties = {
-  display: "grid",
-  gridTemplateColumns: "20% auto",
-};
-
-const nonActiveStyle: React.CSSProperties = {
-  display: "block",
-};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -32,7 +24,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div style={isExceptionPath ? nonActiveStyle : activeStyle}>
+        <div className={isExceptionPath ? "sidebar-off" : "sidebar-on"}>
           <Sidebar />
           {children}
         </div>

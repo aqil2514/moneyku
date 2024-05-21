@@ -1,0 +1,25 @@
+@use "../utils/mixins" as *;
+@import "layout";
+
+// Mobile Responsive Design Start
+@media only screen and (max-width: 600px) {
+    #grid-layout {
+      width: 80% !important;
+      display: block !important;
+  
+      .form {
+        width: 100% !important;
+      }
+  
+      #grid-image {
+        display: none;
+      }
+    }
+
+    #transaction{
+      &-menu{
+        @include transaction-menu(80px, 10px);
+      }
+    }
+  }
+  // Mobile Responsive Design End

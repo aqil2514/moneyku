@@ -1,0 +1,9 @@
+@use "../utils/mixins" as *;
+
+@media screen and (min-width: 950px) {
+    #transaction {
+        &-menu {
+            @include transaction-menu(10px, 50px);
+        }
+    }
+}

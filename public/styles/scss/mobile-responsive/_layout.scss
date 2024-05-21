@@ -1,0 +1,53 @@
+@media only screen and (max-width: 600px) {
+    .sidebar {
+        &-on {
+            display: flex !important;
+            flex-direction: column-reverse;
+        }
+    }
+
+    .mobile-sidebar {
+        &-active {
+            background-color: #6a99d6;
+            cursor: default;
+        }
+
+        &-nonactive {
+            cursor: pointer;
+            transition: 0.2s;
+            &:hover {
+                background-color: #6a99d6;
+            }
+        }
+
+        &-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 0 0.4rem;
+            border-radius: 1rem 1rem 0 0;
+            text-decoration: none;
+        }
+    }
+    // &:hover{
+    //     background-color: #6a99d6;
+    // }
+
+    #sidebar {
+        display: none !important;
+    }
+
+    #mobile-sidebar {
+        display: flex !important;
+        justify-content: space-between;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 70px;
+        z-index: 999;
+        padding: 0.5rem 0.5rem 0;
+        background-color: #114b97;
+    }
+}
