@@ -3,6 +3,7 @@
 @import "./mobile-responsive/transaction";
 @import "./core/index";
 @import "./utils/index";
+@import "./components/index";
 
 * {
   padding: 0;
@@ -142,43 +143,6 @@
       width: 100%;
       height: 3px;
       background-color: #0004ff;
-    }
-  }
-}
-
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 999;
-  background-color: #0000009f;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &-delete,
-  &-edit {
-    width: 50%;
-    background-color: white;
-    border-radius: 1rem;
-    border: 8px #85db79 double;
-    padding: 1rem;
-
-    &-header {
-      text-align: center;
-    }
-  }
-
-  &-delete {
-    &-body {
-      margin: 1rem 0;
-      padding: 1rem;
-      background-color: $-danger-background;
-      color: $-danger-text;
-      border: 2px dashed red;
-      border-radius: 1rem;
     }
   }
 }

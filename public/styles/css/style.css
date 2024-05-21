@@ -532,6 +532,70 @@
   font-weight: bold;
 }
 
+@media screen and (min-width: 950px) {
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.6235294118);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .popup-delete, .popup-edit {
+    width: 50%;
+    background-color: white;
+    border-radius: 1rem;
+    border: 8px #85db79 double;
+    padding: 1rem;
+  }
+  .popup-delete-header, .popup-edit-header {
+    text-align: center;
+  }
+  .popup-delete-body {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #fdeded;
+    color: #5f2120;
+    border: 2px dashed red;
+    border-radius: 1rem;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.6235294118);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .popup-delete, .popup-edit {
+    width: 95%;
+    background-color: white;
+    border-radius: 1rem;
+    border: 8px #85db79 double;
+    padding: 0.5rem;
+  }
+  .popup-delete-header, .popup-edit-header {
+    text-align: center;
+  }
+  .popup-delete-body {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #fdeded;
+    color: #5f2120;
+    border: 2px dashed red;
+    border-radius: 1rem;
+  }
+}
 * {
   padding: 0;
   margin: 0;
@@ -709,37 +773,6 @@
   width: 100%;
   height: 3px;
   background-color: #0004ff;
-}
-
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 999;
-  background-color: rgba(0, 0, 0, 0.6235294118);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.popup-delete, .popup-edit {
-  width: 50%;
-  background-color: white;
-  border-radius: 1rem;
-  border: 8px #85db79 double;
-  padding: 1rem;
-}
-.popup-delete-header, .popup-edit-header {
-  text-align: center;
-}
-.popup-delete-body {
-  margin: 1rem 0;
-  padding: 1rem;
-  background-color: #fdeded;
-  color: #5f2120;
-  border: 2px dashed red;
-  border-radius: 1rem;
 }
 
 .sidebar-list {

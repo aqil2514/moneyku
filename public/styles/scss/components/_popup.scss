@@ -1,0 +1,69 @@
+@import "../utils/variables";
+
+@mixin popup-container() {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background-color: #0000009f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin popup-subcontainer($-sub-width, $-sub-padding) {
+    width: $-sub-width;
+    background-color: white;
+    border-radius: 1rem;
+    border: 8px #85db79 double;
+    padding: $-sub-padding;
+
+    &-header {
+        text-align: center;
+    }
+}
+
+@mixin popup-delete() {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: $-danger-background;
+    color: $-danger-text;
+    border: 2px dashed red;
+    border-radius: 1rem;
+}
+
+@media screen and (min-width: 950px) {
+    .popup {
+        @include popup-container();
+
+        &-delete,
+        &-edit {
+            @include popup-subcontainer(50%, 1rem);
+        }
+
+        &-delete {
+            &-body {
+                @include popup-delete();
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .popup {
+        @include popup-container();
+
+        &-delete,
+        &-edit {
+            @include popup-subcontainer(95%, 0.5rem);
+        }
+
+        &-delete {
+            &-body {
+                @include popup-delete();
+            }
+        }
+    }
+}
