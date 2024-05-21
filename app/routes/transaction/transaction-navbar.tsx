@@ -14,7 +14,7 @@ export default function TransactionNavbar({
 
 
   return (
-    <header id="navbar">
+    <header id="transaction-navbar">
       <section className="income-section">
         <p>Pemasukan</p>
         <p>{currencyFormat.format(sumIncome)}</p>

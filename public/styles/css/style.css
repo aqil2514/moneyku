@@ -75,7 +75,6 @@
 @media only screen and (max-width: 600px) {
   .sidebar-on {
     display: flex !important;
-    flex-direction: column-reverse;
   }
   .mobile-sidebar-active {
     background-color: #6a99d6;
@@ -124,6 +123,95 @@
   #grid-layout #grid-image {
     display: none;
   }
+  #transaction {
+    width: 100%;
+  }
+  #transaction-data {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 380px;
+    overflow-y: scroll;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  #transaction-data-body {
+    font-size: 10px;
+  }
+  #transaction-data-body .body {
+    display: grid;
+    grid-template-columns: 20% auto 20%;
+    padding: 0 1rem 1rem;
+  }
+  #transaction-data-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  #transaction-data-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  #transaction-data-header::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #1c1e1d;
+    top: -5px;
+  }
+  #transaction-data-header::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #1c1e1d;
+    bottom: -5px;
+  }
+  #transaction-data-header .date {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 1rem;
+    gap: 0.2rem;
+    font-size: 12px;
+  }
+  #transaction-data-header .date p:nth-child(1) {
+    font-weight: bold;
+    margin: auto 0;
+  }
+  #transaction-data-header .date p:nth-child(2) {
+    background-color: #1c1e1d;
+    color: white;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+  }
+  #transaction-data-header .date p:nth-child(3) {
+    margin: auto 0;
+  }
+  #transaction-data-header .income {
+    padding: 0 1rem;
+    font-size: 12px;
+  }
+  #transaction-data-header .income p {
+    color: #2222bd;
+    font-weight: bold;
+  }
+  #transaction-data-header .outcome {
+    padding: 0 1rem;
+    font-size: 12px;
+  }
+  #transaction-data-header .outcome p {
+    color: #bd2222;
+    font-weight: bold;
+  }
+  #transaction-data::-webkit-scrollbar {
+    display: none;
+  }
   #transaction-menu {
     position: fixed;
     bottom: 80px;
@@ -158,8 +246,134 @@
   #transaction-menu svg:hover {
     transform: scale(1.2);
   }
+  #transaction-navbar {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0.5rem 1rem;
+    gap: 0.2rem;
+    background-color: #4a420e;
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 0.7rem;
+    position: relative;
+  }
+  #transaction-navbar section {
+    width: 100%;
+    text-align: center;
+  }
+  #transaction-navbar .income-section p {
+    margin: 0;
+    font-size: 12px;
+  }
+  #transaction-navbar .income-section p:nth-child(1) {
+    color: white;
+    font-weight: bold;
+  }
+  #transaction-navbar .income-section p:nth-child(2) {
+    color: #85db79;
+    font-weight: bold;
+  }
+  #transaction-navbar .outcome-section p {
+    margin: 0;
+    font-size: 12px;
+  }
+  #transaction-navbar .outcome-section p:nth-child(1) {
+    color: white;
+    font-weight: bold;
+  }
+  #transaction-navbar .outcome-section p:nth-child(2) {
+    color: #e12b31;
+    font-weight: bold;
+  }
+  #transaction-navbar .total-section p {
+    margin: 0;
+    font-size: 12px;
+  }
+  #transaction-navbar .total-section p:nth-child(1) {
+    color: white;
+    font-weight: bold;
+  }
+  #transaction-navbar .total-section p:nth-child(2) {
+    color: #1ae3cc;
+    font-weight: bold;
+  }
 }
 @media screen and (min-width: 950px) {
+  #transaction-data {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 380px;
+    overflow-y: scroll;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+  #transaction-data-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  #transaction-data-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  #transaction-data-header::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #1c1e1d;
+    top: -5px;
+  }
+  #transaction-data-header::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #1c1e1d;
+    bottom: -5px;
+  }
+  #transaction-data-header .date {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 1rem;
+    gap: 0.2rem;
+  }
+  #transaction-data-header .date p:nth-child(1) {
+    font-weight: bold;
+    margin: auto 0;
+  }
+  #transaction-data-header .date p:nth-child(2) {
+    background-color: #1c1e1d;
+    color: white;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+  }
+  #transaction-data-header .date p:nth-child(3) {
+    margin: auto 0;
+  }
+  #transaction-data-header .income {
+    padding: 0 1rem;
+  }
+  #transaction-data-header .income p {
+    color: #2222bd;
+    font-weight: bold;
+  }
+  #transaction-data-header .outcome {
+    padding: 0 1rem;
+  }
+  #transaction-data-header .outcome p {
+    color: #bd2222;
+    font-weight: bold;
+  }
+  #transaction-data::-webkit-scrollbar {
+    display: none;
+  }
   #transaction-menu {
     position: fixed;
     bottom: 10px;
@@ -193,6 +407,21 @@
   }
   #transaction-menu svg:hover {
     transform: scale(1.2);
+  }
+  #transaction-navbar {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0.5rem 1rem;
+    gap: 0.2rem;
+    background-color: #4a420e;
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 0.7rem;
+    position: relative;
+  }
+  #transaction-navbar section {
+    width: 100%;
+    text-align: center;
   }
 }
 #sidebar {
@@ -245,6 +474,45 @@
 }
 .sidebar-off {
   display: none;
+}
+
+.income-section p {
+  margin: 0;
+  font-size: 16px;
+}
+.income-section p:nth-child(1) {
+  color: white;
+  font-weight: bold;
+}
+.income-section p:nth-child(2) {
+  color: #85db79;
+  font-weight: bold;
+}
+
+.outcome-section p {
+  margin: 0;
+  font-size: 16px;
+}
+.outcome-section p:nth-child(1) {
+  color: white;
+  font-weight: bold;
+}
+.outcome-section p:nth-child(2) {
+  color: #e12b31;
+  font-weight: bold;
+}
+
+.total-section p {
+  margin: 0;
+  font-size: 16px;
+}
+.total-section p:nth-child(1) {
+  color: white;
+  font-weight: bold;
+}
+.total-section p:nth-child(2) {
+  color: #1ae3cc;
+  font-weight: bold;
 }
 
 * {
@@ -426,30 +694,6 @@
   background-color: #0004ff;
 }
 
-.income-section p {
-  margin: 0;
-}
-.income-section p:nth-child(1) {
-  color: white;
-  font-weight: bold;
-}
-.income-section p:nth-child(2) {
-  color: #85db79;
-  font-weight: bold;
-}
-
-.outcome-section p {
-  margin: 0;
-}
-.outcome-section p:nth-child(1) {
-  color: white;
-  font-weight: bold;
-}
-.outcome-section p:nth-child(2) {
-  color: #e12b31;
-  font-weight: bold;
-}
-
 .popup {
   position: fixed;
   top: 0;
@@ -479,18 +723,6 @@
   color: #5f2120;
   border: 2px dashed red;
   border-radius: 1rem;
-}
-
-.total-section p {
-  margin: 0;
-}
-.total-section p:nth-child(1) {
-  color: white;
-  font-weight: bold;
-}
-.total-section p:nth-child(2) {
-  color: #1ae3cc;
-  font-weight: bold;
 }
 
 .sidebar-list {
@@ -592,96 +824,6 @@
 .main-page h1 {
   text-align: center;
   border: 4px double black;
-}
-.main-page main {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-height: 380px;
-  overflow-y: scroll;
-  background-color: white;
-  border-radius: 1rem;
-  padding: 1rem;
-}
-.main-page main .data {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.main-page main .data header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-.main-page main .data header::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background-color: #1c1e1d;
-  top: -5px;
-}
-.main-page main .data header::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background-color: #1c1e1d;
-  bottom: -5px;
-}
-.main-page main .data header .date {
-  display: flex;
-  justify-content: flex-start;
-  padding: 0 1rem;
-  gap: 0.2rem;
-}
-.main-page main .data header .date p:nth-child(1) {
-  font-weight: bold;
-  margin: auto 0;
-}
-.main-page main .data header .date p:nth-child(2) {
-  background-color: #1c1e1d;
-  color: white;
-  padding: 0.2rem;
-  border-radius: 0.2rem;
-}
-.main-page main .data header .date p:nth-child(3) {
-  margin: auto 0;
-}
-.main-page main .data header .income {
-  padding: 0 1rem;
-}
-.main-page main .data header .income p {
-  color: #2222bd;
-  font-weight: bold;
-}
-.main-page main .data header .outcome {
-  padding: 0 1rem;
-}
-.main-page main .data header .outcome p {
-  color: #bd2222;
-  font-weight: bold;
-}
-.main-page main::-webkit-scrollbar {
-  display: none;
-}
-.main-page #navbar {
-  display: flex;
-  justify-content: space-evenly;
-  padding: 0.5rem 1rem;
-  gap: 0.2rem;
-  background-color: #4a420e;
-  width: 100%;
-  margin: 1rem 0;
-  border-radius: 0.7rem;
-  position: relative;
-}
-.main-page #navbar section {
-  width: 100%;
-  text-align: center;
 }
 
 /*# sourceMappingURL=style.css.map */

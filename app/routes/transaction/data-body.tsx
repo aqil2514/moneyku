@@ -65,7 +65,7 @@ export default function TransactionDataBody({
   };
 
   return (
-    <div>
+    <div id="transaction-data-body">
       {body.map((d, i) => {
         const itemPrice = currencyFormat.format(d.price);
         const isEditMode = editMode && !deleteMode;

@@ -168,7 +168,7 @@ export default function Transaction() {
               <TransactionFilter />
             </header>
 
-            <main>
+            <main id="transaction-data">
               <TransactionData />
             </main>
 

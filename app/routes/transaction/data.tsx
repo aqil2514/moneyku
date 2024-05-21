@@ -43,7 +43,7 @@ export default function TransactionData() {
   }
 
   return (
-    <div className="data" ref={dataRef}>
+    <div id="transaction-data-container" ref={dataRef}>
       {filteredData.map((d, i) => (
         <React.Fragment key={i++}>
           <TransactionDataHeader id={String(d.id)} body={d.body} />
