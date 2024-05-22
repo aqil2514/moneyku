@@ -113,6 +113,10 @@
   @include button-style(#007bff, #0056b3, #fff);
 }
 
+.button-success {
+  @include button-style(#25ad0a, #85ce66, #fff);
+}
+
 .button-close {
   @include button-style(#b01616, #eb2626, #fff);
 }

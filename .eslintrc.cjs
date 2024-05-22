@@ -7,6 +7,9 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
+  rules: {
+    "jsx-a11y/label-has-associated-control": "off",
+  },
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",

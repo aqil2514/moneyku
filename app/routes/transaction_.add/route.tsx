@@ -1,12 +1,27 @@
-import { ActionFunctionArgs, MetaFunction, json, redirect } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
 import serverEndpoint from "lib/server";
+import { authenticator } from "~/service/auth.server";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Money Management" },
 ];
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+
+  return json({ succes: true });
+};
 
 interface ErrorsTransaction {
   type: string;
@@ -77,7 +92,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const data = await res.json();
 
-  if(res.status === 200){
+  if (res.status === 200) {
     return redirect("/transaction");
   }
 

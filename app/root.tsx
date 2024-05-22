@@ -7,7 +7,7 @@ import React from "react";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: style }];
 
-export const exceptionPathName = ["/login", "/register"];
+export const exceptionPathName = ["/login", "/signup"];
 
 
 export function Layout({ children }: { children: React.ReactNode }) {

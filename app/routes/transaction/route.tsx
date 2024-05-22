@@ -1,4 +1,9 @@
-import { ActionFunctionArgs, MetaFunction, json } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+  json,
+} from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
 import { useLoaderData } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
@@ -7,6 +12,7 @@ import serverEndpoint from "lib/server";
 import { ClientOnly } from "remix-utils/client-only";
 import React, { createContext, useContext, useState } from "react";
 import TransactionFilter from "./transaction-filter";
+import { authenticator } from "~/service/auth.server";
 
 export const meta: MetaFunction = () => [
   {
@@ -45,7 +51,10 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
   try {
     const isLocal = process.env.NODE_ENV === "development";
     const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
@@ -96,7 +105,9 @@ export default function Transaction() {
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const data = res.data as TransactionType[];
-  const selectedData = data.filter((d) => new Date(d.header).getMonth() === month)
+  const selectedData = data.filter(
+    (d) => new Date(d.header).getMonth() === month
+  );
 
   const noPrice = [0];
 
@@ -136,7 +147,7 @@ export default function Transaction() {
     );
 
   const allBody = selectedData.map((d) => d.body);
-  
+
   const allPrices = allBody
     .map((d) => d.map((x) => x.price))
     .join(",")

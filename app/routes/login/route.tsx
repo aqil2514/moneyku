@@ -1,4 +1,5 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 import { authenticator } from "~/service/auth.server";
 
 export const meta: MetaFunction = () => [
@@ -35,8 +36,9 @@ export default function LoginForm() {
             <label htmlFor="password">Password:</label>
             <input type="password" name="password" id="password" />
           </div>
+          <Link to={"/signup"}>Belum punya akun?</Link>
 
-          <button>login</button>
+          <button className="button-success">Login</button>
 
           <div>
             <p>Atau login dengan Google</p>
