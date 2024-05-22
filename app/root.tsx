@@ -24,7 +24,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div className={isExceptionPath ? "sidebar-off" : "sidebar-on"}>
+        <div className={isExceptionPath ? "" : "sidebar-on"}>
           <Sidebar />
           {children}
         </div>
