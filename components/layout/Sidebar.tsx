@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "@remix-run/react";
+import { NavLink, useLocation, useNavigate } from "@remix-run/react";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { CiLight } from "react-icons/ci";
 import { FaLanguage } from "react-icons/fa";
@@ -24,6 +24,7 @@ export default function Sidebar() {
 }
 
 function PCSidebar() {
+  const navigate = useNavigate();
   return (
     <div id="sidebar">
       <div id="sidebar-header">
@@ -97,7 +98,7 @@ function PCSidebar() {
           <FaLanguage />
           <p>Bahasa</p>
         </section>
-        <section className="sidebar-list">
+        <section className="sidebar-list" tabIndex={0} role="button" aria-hidden onClick={() => navigate("/logout")}>
           <FiLogOut />
           <p>Logout</p>
         </section>

@@ -1,6 +1,6 @@
 import { createCookieSessionStorage } from "@remix-run/node";
 
-const sessionStore = createCookieSessionStorage({
+export const sessionStore = createCookieSessionStorage({
   cookie: {
     name: "__session",
     secrets: ["super-secret-secret"],
@@ -12,4 +12,4 @@ const sessionStore = createCookieSessionStorage({
   },
 });
 
-export default sessionStore;
+export const { getSession, commitSession, destroySession } = sessionStore;

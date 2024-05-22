@@ -1,17 +1,21 @@
-import { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
-import sessionStore from "~/service/session.server";
+import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { authenticator } from "~/service/auth.server";
 
 export const meta: MetaFunction = () => [
   { title: "Login | Money Management " },
 ];
 
-export async function action({request}:ActionFunctionArgs){
-  const setHeader = request.headers.get("Cookie");
-  const cookie = await sessionStore.getSession(setHeader);
+export async function action({ request }: ActionFunctionArgs) {
+  return await authenticator.authenticate("form", request, {
+    successRedirect: "/transaction",
+    failureRedirect: "/login",
+  });
+}
 
-  console.log(cookie)
-
-  return null;
+export async function loader({request}:LoaderFunctionArgs){
+  return await authenticator.isAuthenticated(request, {
+    successRedirect:"/transaction"
+  })
 }
 
 export default function LoginForm() {
@@ -23,8 +27,8 @@ export default function LoginForm() {
           <h1>Login</h1>
 
           <div>
-            <label htmlFor="username">Username:</label>
-            <input type="text" name="username" id="username" />
+            <label htmlFor="email">Email:</label>
+            <input type="text" name="email" id="email" />
           </div>
 
           <div>
