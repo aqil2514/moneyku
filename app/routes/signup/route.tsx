@@ -1,144 +1,115 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-// file: app/routes/register.js
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { Form } from "@remix-run/react";
+import axios from "axios";
+import serverEndpoint from "lib/server";
+import { AccountRegister } from "~/@types/account";
+import { authenticator } from "~/service/auth.server";
 
-import { useState } from "react";
+export async function loader({request}:LoaderFunctionArgs) {
+  await authenticator.isAuthenticated(request, {
+    "successRedirect": "/transaction"
+  })
+  return null;
+}
 
-// Penyesuaian di sini
-function Register() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    securityQuestion: "",
-    securityAnswer: "",
-    currencyPreference: "",
-    languagePreference: "",
-    userPurpose: "",
-  });
+export async function action({request}:ActionFunctionArgs){
+  const formData = await request.formData();
+  const data:AccountRegister = {
+    "username": String(formData.get("username")),
+    "email": String(formData.get("email")),
+    "password": String(formData.get("password")),
+    "confirmPassword": String(formData.get("confirmPassword")),
+    "securityQuiz": String(formData.get("securityQuestion")),
+    "securityAnswer": String(formData.get("securityAnswer")),
+    "currency": formData.get("currencyPreference") as AccountRegister["currency"],
+    "language": formData.get("languagePreference") as AccountRegister["language"] ,
+    "purposeUsage": formData.get("purposeUsage") as AccountRegister["purposeUsage"],
+  }
 
-  //@ts-expect-error Fix nanti
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const res = await axios.post(`${serverEndpoint.local}/account/register`, data);
 
-  //@ts-expect-error Fix nanti
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Lakukan validasi form di sini sebelum mengirim data
-    console.log(formData); // Tampilkan data yang akan dikirim ke server
-    // Kirim data ke server
-  };
+  console.log(res)
+  return null;
+}
 
+export default function Register() {
   return (
-    <div>
+    <div id="signup-page">
       <h2>Form Pendaftaran</h2>
-      <form onSubmit={handleSubmit}>
+      <Form method="POST" action="/signup">
         <div>
-          <label>Nama Pengguna:</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
+          <label>
+            Nama Pengguna:
+            <input type="text" name="username" required />
+          </label>
         </div>
         <div>
-          <label>Alamat Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <label>
+            Alamat Email:
+            <input type="email" name="email" required />
+          </label>
         </div>
         <div>
-          <label>Kata Sandi:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <label>
+            Kata Sandi:
+            <input type="password" name="password" required />
+          </label>
         </div>
         <div>
-          <label>Konfirmasi Kata Sandi:</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
+          <label>
+            Konfirmasi Kata Sandi:
+            <input type="password" name="confirmPassword" required />
+          </label>
         </div>
         <div>
-          <label>Pertanyaan Keamanan:</label>
-          <input
-            type="text"
-            name="securityQuestion"
-            value={formData.securityQuestion}
-            onChange={handleChange}
-          />
+          <label>
+            Pertanyaan Keamanan:
+            <input type="text" name="securityQuestion" />
+          </label>
         </div>
         <div>
-          <label>Jawaban Pertanyaan Keamanan:</label>
-          <input
-            type="text"
-            name="securityAnswer"
-            value={formData.securityAnswer}
-            onChange={handleChange}
-          />
+          <label>
+            Jawaban Pertanyaan Keamanan:
+            <input type="text" name="securityAnswer" />
+          </label>
         </div>
         <div>
-          <label>Preferensi Mata Uang:</label>
-          <select
-            name="currencyPreference"
-            value={formData.currencyPreference}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Pilih Mata Uang</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="IDR">IDR</option>
-            {/* Tambahkan mata uang lainnya sesuai kebutuhan */}
-          </select>
+          <label>
+            Preferensi Mata Uang:
+            <select name="currencyPreference" required>
+              <option value="">Pilih Mata Uang</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="IDR">IDR</option>
+              {/* Tambahkan mata uang lainnya sesuai kebutuhan */}
+            </select>
+          </label>
         </div>
         <div>
-          <label>Preferensi Bahasa:</label>
-          <select
-            name="languagePreference"
-            value={formData.languagePreference}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Pilih Bahasa</option>
-            <option value="en">English</option>
-            <option value="id">Bahasa Indonesia</option>
-            {/* Tambahkan bahasa lainnya sesuai kebutuhan */}
-          </select>
+          <label>
+            Preferensi Bahasa:
+            <select name="languagePreference" required>
+              <option value="">Pilih Bahasa</option>
+              <option value="EN">English</option>
+              <option value="ID">Bahasa Indonesia</option>
+              {/* Tambahkan bahasa lainnya sesuai kebutuhan */}
+            </select>
+          </label>
         </div>
         <div>
-          <label>Tujuan Penggunaan:</label>
-          <select
-            name="userPurpose"
-            value={formData.userPurpose}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Pilih Tujuan</option>
-            <option value="individual">Individu</option>
-            <option value="group">Kelompok</option>
-          </select>
+          <label>
+            Tujuan Penggunaan:
+            <select name="purposeUsage" required>
+              <option value="">Pilih Tujuan</option>
+              <option value="Individu">Individu</option>
+              <option value="Organization">Kelompok</option>
+            </select>
+          </label>
         </div>
-        <button type="submit">Daftar</button>
-      </form>
+        <div>
+        <button type="submit" className="button-navigation-1">Daftar</button>
+        </div>
+      </Form>
     </div>
   );
 }
-
-export default Register;
