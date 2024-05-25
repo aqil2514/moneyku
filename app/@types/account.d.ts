@@ -1,22 +1,24 @@
-export interface Account{
+export interface Account {
   username: string;
   email: string;
   password: string;
 }
 
-export interface AccountConfig{
+export type AccountUser = Omit<AccountDB, "password">;
+
+export interface AccountConfig {
   currency: CurrencyType;
   language: LanguageType;
   purposeUsage: PurposeUsageType;
 }
 
-export interface AccountPrivacy{
+export interface AccountPrivacy {
   securityQuiz: string;
   securityAnswer: string;
 }
 
-export interface AccountDB extends Account{
-  id: readonly string;
+export interface AccountDB extends Account {
+  uid?: string;
   config: AccountConfig;
   privacy: AccountPrivacy;
 }
@@ -31,14 +33,14 @@ export interface AccountRegister extends Account {
 }
 
 export interface AccountResponse{
-  success: boolean;
-  error: boolean;
-  message: string | null;
-  path: string;
-}
+    success: boolean;
+    error: boolean;
+    message: string | null;
+    path: string;
+  }
 
 export type CurrencyType = "IDR" | "USD" | "EUR";
 
 export type LanguageType = "ID" | "EN";
 
-export type PurposeUsageType = "Individu" | "Organization"
+export type PurposeUsageType = "Individu" | "Organization";

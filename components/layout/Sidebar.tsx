@@ -7,9 +7,10 @@ import { MdFeaturedPlayList, MdOutlineMoney } from "react-icons/md";
 import { SiPlangrid } from "react-icons/si";
 import { TbMoneybag } from "react-icons/tb";
 import { TfiStatsUp } from "react-icons/tfi";
+import { AccountDB } from "~/@types/account";
 import { exceptionPathName } from "~/root";
 
-export default function Sidebar() {
+export default function Sidebar({ user }: { user: AccountDB | null }) {
   const location = useLocation();
   const pathName = location.pathname;
 
@@ -17,13 +18,13 @@ export default function Sidebar() {
 
   return (
     <>
-      <PCSidebar />
-      <MobileSidebar />
+      <PCSidebar user={user} />
+      <MobileSidebar user={user} />
     </>
   );
 }
 
-function PCSidebar() {
+function PCSidebar({ user }: {user: AccountDB | null}) {
   const navigate = useNavigate();
   return (
     <div id="sidebar">
@@ -35,6 +36,7 @@ function PCSidebar() {
           alt="icon-money"
         />
       </div>
+      <div id="account">{user?.username}</div>
       <div id="sidebar-menu">
         <h2>Menu</h2>
         <NavLink
@@ -98,7 +100,13 @@ function PCSidebar() {
           <FaLanguage />
           <p>Bahasa</p>
         </section>
-        <section className="sidebar-list" tabIndex={0} role="button" aria-hidden onClick={() => navigate("/logout")}>
+        <section
+          className="sidebar-list"
+          tabIndex={0}
+          role="button"
+          aria-hidden
+          onClick={() => navigate("/logout")}
+        >
           <FiLogOut />
           <p>Logout</p>
         </section>
@@ -107,7 +115,8 @@ function PCSidebar() {
   );
 }
 
-function MobileSidebar() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function MobileSidebar({ user }: {user: AccountDB | null}) {
   return (
     <div id="mobile-sidebar">
       <NavLink

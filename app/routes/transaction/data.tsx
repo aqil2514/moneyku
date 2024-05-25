@@ -21,7 +21,6 @@ export default function TransactionData() {
 
   useEffect(() => {
     const keyDownHandler = (e: KeyboardEvent) => {
-      console.log(e);
       if (e.key === "ArrowRight") {
         setMonth((prevMonth) => (prevMonth === 11 ? 0 : prevMonth + 1));
         return;

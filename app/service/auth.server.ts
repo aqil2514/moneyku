@@ -1,6 +1,9 @@
 import { Authenticator } from "remix-auth";
 import { sessionStore } from "./session.server";
 import { FormStrategy } from "remix-auth-form";
+import axios, { isAxiosError } from "axios";
+import serverEndpoint from "lib/server";
+import { AccountUser } from "~/@types/account";
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -8,29 +11,29 @@ if (!sessionSecret) {
   throw new Error("Session Secret dibutuhkan");
 }
 
-interface User {
-  id: number;
-  email: string;
-  username: string;
-}
+type User = AccountUser;
 
 async function login(email: string, password: string) {
-  // Logika autentikasi akan ditempatkan di sini
-  // Contoh sederhana:
-  if (email === "user@example.com" && password === "password") {
-    return {
-      id: 1,
-      username: "user",
-      email: email,
-      // Anda dapat menambahkan informasi pengguna lainnya sesuai kebutuhan
-    };
-  } else {
-    // Jika autentikasi gagal, kembalikan null atau lemparkan error
-    throw new Error("Invalid email or password");
+  const isLocal = process.env.NODE_ENV === "development";
+  const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
+
+  try {
+    const res = await axios.post(`${endpoint}/account/login`, {
+      email,
+      password,
+    });
+
+    const data: User = res.data.user;
+
+    return data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return false;
+    }
   }
 }
 
-const authenticator = new Authenticator<User>(sessionStore);
+const authenticator = new Authenticator<User | undefined | false>(sessionStore);
 
 const formStrategy = new FormStrategy(async ({ form }) => {
   const email = form.get("email") as string;

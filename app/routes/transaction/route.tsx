@@ -13,6 +13,8 @@ import { ClientOnly } from "remix-utils/client-only";
 import React, { createContext, useContext, useState } from "react";
 import TransactionFilter from "./transaction-filter";
 import { authenticator } from "~/service/auth.server";
+import { getSession } from "~/service/session.server";
+import { AccountDB } from "~/@types/account";
 
 export const meta: MetaFunction = () => [
   {
@@ -55,18 +57,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
+
+  const session = await getSession(request.headers.get("cookie"));
+
   try {
     const isLocal = process.env.NODE_ENV === "development";
     const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
-    // const endpoint = serverEndpoint.production;
+
     const res = await fetch(`${endpoint}/transaction`);
 
     const data = await res.json();
+    const user:AccountDB = session.get(authenticator.sessionKey);
 
-    return json({ data });
+    return json({ data, user });
   } catch (error) {
     console.error("Failed to fetch data:", error);
-    return json({ data: "Failed to fetch data" }, { status: 500 });
+    return json({ data: "Failed to fetch data", user: null }, { status: 500 });
   }
 };
 
@@ -100,6 +106,7 @@ const TransactionContext = createContext<TransactionContextType>(
 
 export default function Transaction() {
   const res = useLoaderData<typeof loader>();
+
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [month, setMonth] = useState<number>(new Date().getMonth());

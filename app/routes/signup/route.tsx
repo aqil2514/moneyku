@@ -1,4 +1,9 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  json,
+  redirect,
+} from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import axios, { isAxiosError } from "axios";
 import serverEndpoint from "lib/server";
@@ -12,7 +17,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return null;
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) { 
   const formData = await request.formData();
   const data: AccountRegister = {
     username: String(formData.get("username")),
@@ -36,14 +41,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const { sucess } = res.data;
 
-    if (sucess)
-      const 
-      return json({message: "Pendaftaran akun berhasil"})
+    if (sucess) return redirect("/login");
   } catch (error) {
     if (isAxiosError(error)) {
       if (error.response?.status === 422) {
-        const validationError: AccountResponse[] =
-          error.response?.data.message.issues;
+        const validationError: AccountResponse[] = error.response?.data.result;
         return json({ validationError });
       }
     }

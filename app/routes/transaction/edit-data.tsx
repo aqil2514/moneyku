@@ -21,8 +21,6 @@ export default function EditPopup({
   const [globalData, setGlobalData] = useState<TransactionType>();
   const [selectedData, setSelectedData] = useState<TransactionBodyType>();
 
-  console.log(header)
-
   const getData = useCallback(
     (header: string) => {
       const sameGlobal = data.find((d) => d.header === header);

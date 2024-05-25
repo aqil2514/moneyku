@@ -1,22 +1,34 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+  redirect,
+} from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { authenticator } from "~/service/auth.server";
+import { commitSession, getSession } from "~/service/session.server";
 
 export const meta: MetaFunction = () => [
   { title: "Login | Money Management " },
 ];
 
 export async function action({ request }: ActionFunctionArgs) {
-  return await authenticator.authenticate("form", request, {
-    successRedirect: "/transaction",
+  const auth = await authenticator.authenticate("form", request, {
     failureRedirect: "/login",
   });
+
+  const session = await getSession(request.headers.get("cookie"));
+  session.set(authenticator.sessionKey, auth);
+
+  const headers = new Headers({ "Set-Cookie": await commitSession(session) });
+
+  return redirect("/transaction", { headers });
 }
 
-export async function loader({request}:LoaderFunctionArgs){
+export async function loader({ request }: LoaderFunctionArgs) {
   return await authenticator.isAuthenticated(request, {
-    successRedirect:"/transaction"
-  })
+    successRedirect: "/transaction",
+  });
 }
 
 export default function LoginForm() {
