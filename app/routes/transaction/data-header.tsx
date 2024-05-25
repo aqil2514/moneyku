@@ -24,7 +24,7 @@ export default function TransactionDataHeader({
 }) {
   const { data: allData, month:dateMonth } = useTransactionData();
   const data = allData.find((d) => d.id === id);
-  if (!data) throw new Error("Data tidal ada");
+  if (!data) throw new Error("Data tidak ada");
   const allPrices = body.map((d) => d.price);
   const plus = allPrices.filter((p) => p > 0);
   const minus = allPrices.filter((p) => p < 0);

@@ -59,15 +59,26 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 
   const session = await getSession(request.headers.get("cookie"));
+  const user: AccountDB = session.get(authenticator.sessionKey);
 
   try {
     const isLocal = process.env.NODE_ENV === "development";
     const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
 
-    const res = await fetch(`${endpoint}/transaction`);
+    const res = await fetch(`${endpoint}/transaction`, {
+      headers: { "User-ID": String(user.uid) },
+    });
 
-    const data = await res.json();
-    const user:AccountDB = session.get(authenticator.sessionKey);
+    const resData = await res.json();
+
+    if (!resData.success) {
+      return json({ data: [], user });
+    }
+
+    let data: TransactionType | TransactionType[] = [];
+
+    if (Array.isArray(resData.data)) data = resData.data;
+    else data.push(resData.data);
 
     return json({ data, user });
   } catch (error) {
@@ -106,12 +117,14 @@ const TransactionContext = createContext<TransactionContextType>(
 
 export default function Transaction() {
   const res = useLoaderData<typeof loader>();
+  console.log(res);
 
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const data = res.data as TransactionType[];
+  console.log(data);
   const selectedData = data.filter(
     (d) => new Date(d.header).getMonth() === month
   );

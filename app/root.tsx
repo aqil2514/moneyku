@@ -28,7 +28,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isExceptionPath = exceptionPathName.includes(pathName);
   const {user} = useLoaderData<typeof loader>()
 
-
   return (
     <html lang="en">
       <head>

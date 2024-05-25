@@ -10,6 +10,8 @@ import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
 import serverEndpoint from "lib/server";
 import { authenticator } from "~/service/auth.server";
+import { getSession } from "~/service/session.server";
+import { AccountDB } from "~/@types/account";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Money Management" },
@@ -46,6 +48,9 @@ interface ErrorIssue {
 // SOON : Tambahin UX Untuk memberitahu user tentang hasil dari penambahan transaksi
 
 export async function action({ request }: ActionFunctionArgs) {
+  const session = await getSession(request.headers.get("cookie"));
+  const user:AccountDB = session.get(authenticator.sessionKey);
+
   const formData = await request.formData();
   const typeTransaction = String(formData.get("type-data"));
   const totalTransaction = Number(formData.get("transaction-total"));
@@ -56,7 +61,10 @@ export async function action({ request }: ActionFunctionArgs) {
   const price =
     typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
 
-  const res = await fetch(`${serverEndpoint.production}/transaction/add`, {
+    const isLocal = process.env.NODE_ENV === "development";
+    const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production; 
+
+  const res = await fetch(`${endpoint}/transaction/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -69,6 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
       assetsTransaction,
       noteTransaction,
       price,
+      userId: user.uid
     }),
   });
 
