@@ -15,9 +15,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (request.method === "PUT") {
     const res = await axios.put(`${endpoint}/transaction`, data, {
-      headers:{
-        "User-ID" : String(user.uid)
-      }
+      headers: {
+        "User-ID": String(user.uid),
+      },
     });
 
     return json({ message: res.data.message });
@@ -27,9 +27,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     const res = await axios.delete(`${endpoint}/transaction`, {
       data: { uid, id },
-      headers:{
-        "User-ID" : String(user.uid)
-      }
+      headers: {
+        "User-ID": String(user.uid),
+      },
     });
     return json({ message: res.data.message });
   }
@@ -44,10 +44,9 @@ function getFormData(formData: FormData) {
     categoryTransaction: String(formData.get("transaction-category")),
     assetsTransaction: String(formData.get("transaction-assets")),
     noteTransaction: String(formData.get("transaction-note")),
-    typeTransaction:
-      Number(formData.get("transaction-total")) < 0
-        ? "Pengeluaran"
-        : "Pemasukan",
+    typeTransaction: String(
+      formData.get("transaction-type")
+    ) as TransactionFormData["typeTransaction"],
   };
   return result;
 }

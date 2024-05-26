@@ -52,12 +52,11 @@ export default function EditPopup({
       const res = await axios.putForm("/api/transaction", formData);
 
       // TODO: Tambahin buat edit tipe transaksi, seperti pemasukan dan pengeluaran
-      // TODO: Tambahin before after edit
 
       alert(res.data.message);
-      location.reload()
+      location.reload();
     } catch (error) {
-      if(isAxiosError(error)){
+      if (isAxiosError(error)) {
         console.error(error);
       }
     }
@@ -73,7 +72,11 @@ export default function EditPopup({
         <div className="popup-edit-body">
           <form onSubmit={submitHandler}>
             <input type="hidden" name="main-id" defaultValue={globalData?.id} />
-            <input type="hidden" name="transaction-uid" defaultValue={selectedData?.uid} />
+            <input
+              type="hidden"
+              name="transaction-uid"
+              defaultValue={selectedData?.uid}
+            />
             <div className="form-date">
               <label htmlFor="transaction-date">Tanggal Transaksi</label>
               <input
@@ -83,6 +86,41 @@ export default function EditPopup({
                 defaultValue={formattedDate(header)}
               />
             </div>
+            
+            {/* Fix bagian Sini Nanti UINYA */}
+            <div className="form-navigation">
+              <input type="radio" name="transaction-type" id="income-type" value={"Pemasukan"} />
+              <label htmlFor="income-type">Pemasukan</label>
+              <input type="radio" name="transaction-type" id="outcome-type" value={"Pengeluaran"} />
+              <label htmlFor="outcome-type">Pengeluaran</label>
+              {/* <section>
+                <button
+                  className={
+                    type === "Pengeluaran"
+                      ? "button-navigation-1 button-navigation-1-active"
+                      : "button-navigation-1"
+                  }
+                  onClick={() => setType("Pengeluaran")}
+                  id="outcome-data"
+                >
+                  Pengeluaran
+                </button>
+              </section>
+              <section>
+                <button
+                  className={
+                    type === "Pemasukan"
+                      ? "button-navigation-1 button-navigation-1-active"
+                      : "button-navigation-1"
+                  }
+                  onClick={() => setType("Pemasukan")}
+                  id="income-data"
+                >
+                  Pemasukan{" "}
+                </button>
+              </section> */}
+            </div>
+
             <div className="form-text">
               <label htmlFor="transaction-total">Total</label>
               <input
