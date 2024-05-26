@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, json } from "@remix-run/node";
 import axios from "axios";
-import serverEndpoint, { endpoint } from "lib/server";
+import { endpoint } from "lib/server";
 import { AccountDB } from "~/@types/account";
 import { TransactionFormData } from "~/@types/transaction";
 import { authenticator } from "~/service/auth.server";
@@ -14,7 +14,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const user: AccountDB = session.get(authenticator.sessionKey);
 
   if (request.method === "PUT") {
-    const res = await axios.put(`${serverEndpoint.production}/transaction`, data);
+    const res = await axios.put(`${endpoint}/transaction`, data, {
+      headers:{
+        "User-ID" : String(user.uid)
+      }
+    });
 
     return json({ message: res.data.message });
   } else if (request.method === "DELETE") {

@@ -51,6 +51,9 @@ export default function EditPopup({
     try {
       const res = await axios.putForm("/api/transaction", formData);
 
+      // TODO: Tambahin buat edit tipe transaksi, seperti pemasukan dan pengeluaran
+      // TODO: Tambahin before after edit
+
       alert(res.data.message);
       location.reload()
     } catch (error) {
