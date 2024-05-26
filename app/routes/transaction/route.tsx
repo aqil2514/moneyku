@@ -1,5 +1,4 @@
 import {
-  ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
   json,
@@ -8,7 +7,7 @@ import TransactionMenu from "./transaction-menu";
 import { useLoaderData } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
 import TransactionData from "./data";
-import serverEndpoint from "lib/server";
+import { endpoint } from "lib/server";
 import { ClientOnly } from "remix-utils/client-only";
 import React, { createContext, useContext, useState } from "react";
 import TransactionFilter from "./transaction-filter";
@@ -62,9 +61,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user: AccountDB = session.get(authenticator.sessionKey);
 
   try {
-    const isLocal = process.env.NODE_ENV === "development";
-    const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
-
     const res = await fetch(`${endpoint}/transaction`, {
       headers: { "User-ID": String(user.uid) },
     });
@@ -75,39 +71,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       return json({ data: [], user });
     }
 
-    let data: TransactionType | TransactionType[] = [];
-
-    if (Array.isArray(resData.data)) data = resData.data;
-    else data.push(resData.data);
+    const data: TransactionType[] = resData.data;
 
     return json({ data, user });
   } catch (error) {
     console.error("Failed to fetch data:", error);
-    return json({ data: "Failed to fetch data", user: null }, { status: 500 });
-  }
-};
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const method = request.method;
-  const formData = await request.formData();
-  if (method === "DELETE") {
-    const header = formData.get("header");
-    const index = formData.get("index");
-
-    const res = await fetch(`${serverEndpoint.production}/transaction`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        header,
-        index,
-      }),
-    });
-
-    const data = await res.json();
-
-    return json(data);
+    return json({ data: [], user }, { status: 500 });
   }
 };
 
@@ -117,14 +86,12 @@ const TransactionContext = createContext<TransactionContextType>(
 
 export default function Transaction() {
   const res = useLoaderData<typeof loader>();
-  console.log(res);
 
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const data = res.data as TransactionType[];
-  console.log(data);
   const selectedData = data.filter(
     (d) => new Date(d.header).getMonth() === month
   );
