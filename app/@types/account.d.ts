@@ -32,12 +32,12 @@ export interface AccountRegister extends Account {
   purposeUsage: PurposeUsageType;
 }
 
-export interface AccountResponse{
-    success: boolean;
-    error: boolean;
-    message: string | null;
-    path: string;
-  }
+export interface AccountResponse {
+  success: boolean;
+  message: string | null;
+  notifMessage?: string;
+  path: string;
+}
 
 export type CurrencyType = "IDR" | "USD" | "EUR";
 

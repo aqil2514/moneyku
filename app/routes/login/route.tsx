@@ -2,9 +2,9 @@ import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
-  redirect,
 } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { redirectWithError, redirectWithSuccess } from "remix-toast";
 import { authenticator } from "~/service/auth.server";
 import { commitSession, getSession } from "~/service/session.server";
 
@@ -13,16 +13,18 @@ export const meta: MetaFunction = () => [
 ];
 
 export async function action({ request }: ActionFunctionArgs) {
-  const auth = await authenticator.authenticate("form", request, {
-    failureRedirect: "/login",
-  });
+  const auth = await authenticator.authenticate("form", request);
+
+  if(!auth){
+    return redirectWithError("/login", "Login gagal")
+  }
 
   const session = await getSession(request.headers.get("cookie"));
   session.set(authenticator.sessionKey, auth);
 
   const headers = new Headers({ "Set-Cookie": await commitSession(session) });
 
-  return redirect("/transaction", { headers });
+  return redirectWithSuccess("/transaction", `Selamat datang ${auth.username}`, {headers})
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {

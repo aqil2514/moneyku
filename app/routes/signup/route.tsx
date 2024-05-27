@@ -1,12 +1,11 @@
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
-  json,
-  redirect,
 } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import axios, { isAxiosError } from "axios";
 import serverEndpoint from "lib/server";
+import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import { AccountRegister, AccountResponse } from "~/@types/account";
 import { authenticator } from "~/service/auth.server";
 
@@ -41,12 +40,12 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const { sucess } = res.data;
 
-    if (sucess) return redirect("/login");
+    if (sucess) return redirectWithSuccess("/login", "Akun berhasil dibuat. Silahkan login!");
   } catch (error) {
     if (isAxiosError(error)) {
       if (error.response?.status === 422) {
         const validationError: AccountResponse[] = error.response?.data.result;
-        return json({ validationError });
+        return jsonWithError({validationError}, validationError[0].notifMessage as string);
       }
     }
   }
