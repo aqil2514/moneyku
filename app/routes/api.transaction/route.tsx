@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, json } from "@remix-run/node";
+import { ActionFunctionArgs } from "@remix-run/node";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
@@ -35,13 +35,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const uid = formData.get("transaction-uid");
     const id = formData.get("main-id");
 
-    const res = await axios.delete(`${endpoint}/transaction`, {
-      data: { uid, id },
-      headers: {
-        "User-ID": String(user.uid),
-      },
-    });
-    return json({ message: res.data.message });
+    try {
+      const res = await axios.delete(`${endpoint}/transaction`, {
+        data: { uid, id },
+        headers: {
+          "User-ID": String(user.uid),
+        },
+      });
+
+      return jsonWithSuccess({data: res.data}, res.data.message);
+    } catch (error) {
+      if(isAxiosError(error)){
+        console.error(error);
+      }
+    }
   }
 };
 

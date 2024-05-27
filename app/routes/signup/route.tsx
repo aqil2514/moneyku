@@ -1,6 +1,7 @@
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
+  MetaFunction,
 } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import axios, { isAxiosError } from "axios";
@@ -8,6 +9,10 @@ import serverEndpoint from "lib/server";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import { AccountRegister, AccountResponse } from "~/@types/account";
 import { authenticator } from "~/service/auth.server";
+
+export const meta: MetaFunction = () => [
+  { title: "Signup | Money Management " },
+];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, {

@@ -5,8 +5,8 @@ type TypeTransaction = "Pemasukan" | "Pengeluaran" | "Transfer" | null;
 export default function Transaction() {
   const [type, setType] = useState<TypeTransaction>(null);
   return (
-    <div className="main-page">
-      <h1>Tambah Transaksi</h1>
+    <div id="transaction-add" className="main-page">
+      <h1 id="transaction-add-title">Tambah Transaksi</h1>
       <h2>Tipe Transaksi</h2>
       <div className="form-navigation">
         <section>

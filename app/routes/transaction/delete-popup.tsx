@@ -67,7 +67,7 @@ export default function DeletePopup({
     try {
       const res = await axios.delete(`/api/transaction`, { data: formData });
 
-      alert(res.data.message);
+      console.info(res);
       location.reload();
     } catch (error) {
       if (isAxiosError(error)) {

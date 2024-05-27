@@ -131,7 +131,7 @@ export default function EditPopup({
               />
             </div>
             <div className="form-text">
-              <label htmlFor="transaction-category">Kategori Pemasukan</label>
+              <label htmlFor="transaction-category">Kategori {priceChecked}</label>
               <input
                 type="text"
                 name="transaction-category"

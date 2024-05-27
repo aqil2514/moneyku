@@ -12,17 +12,17 @@ import serverEndpoint from "lib/server";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
 import { AccountDB } from "~/@types/account";
+import { useState } from "react";
+import { currencyFormat } from "../transaction/route";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Money Management" },
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticator.isAuthenticated(request, {
+  return await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-
-  return json({ succes: true });
 };
 
 interface ErrorsTransaction {
@@ -49,7 +49,7 @@ interface ErrorIssue {
 
 export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get("cookie"));
-  const user:AccountDB = session.get(authenticator.sessionKey);
+  const user: AccountDB = session.get(authenticator.sessionKey);
 
   const formData = await request.formData();
   const typeTransaction = String(formData.get("type-data"));
@@ -61,8 +61,8 @@ export async function action({ request }: ActionFunctionArgs) {
   const price =
     typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
 
-    const isLocal = process.env.NODE_ENV === "development";
-    const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production; 
+  const isLocal = process.env.NODE_ENV === "development";
+  const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
 
   const res = await fetch(`${endpoint}/transaction/add`, {
     method: "POST",
@@ -77,7 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
       assetsTransaction,
       noteTransaction,
       price,
-      userId: user.uid
+      userId: user.uid,
     }),
   });
 
@@ -108,11 +108,13 @@ export async function action({ request }: ActionFunctionArgs) {
   return json({ data });
 }
 
+// TODO: FIx UI
 export default function AddTransaction() {
   return <ClientOnly>{() => <Transaction />}</ClientOnly>;
 }
 
 export function IncomeTransaction() {
+  const [nominal, setNominal] = useState<string>("");
   const actionData = useActionData<typeof action>();
   let errors: ErrorsTransaction = {} as ErrorsTransaction;
 
@@ -134,8 +136,20 @@ export function IncomeTransaction() {
         </div>
         <em style={{ color: "red" }}>{errors?.date ? errors.date : null}</em>
         <div className="form-text">
-          <label htmlFor="transaction-total">Total</label>
-          <input type="text" name="transaction-total" id="transaction-total" />
+          <label htmlFor="transaction-total">Nominal</label>
+          <input
+            type="number"
+            value={nominal}
+            onChange={(e) => {
+              setNominal(e.target.value);
+            }}
+            name="transaction-total"
+            id="transaction-total"
+          />
+          <p>
+            <strong>Jumlah dalam Rupiah : </strong>
+            {currencyFormat.format(Number(nominal))}
+          </p>
           <em style={{ color: "red" }}>
             {errors?.total ? errors.total : null}
           </em>
@@ -174,6 +188,8 @@ export function IncomeTransaction() {
 }
 
 export function OutcomeTransaction() {
+  const [nominal, setNominal] = useState<string>("");
+
   const actionData = useActionData<typeof action>();
   let errors: ErrorsTransaction = {} as ErrorsTransaction;
 
@@ -194,8 +210,20 @@ export function OutcomeTransaction() {
         </div>
         <em style={{ color: "red" }}>{errors?.date ? errors.date : null}</em>
         <div className="form-text">
-          <label htmlFor="transaction-total">Total</label>
-          <input type="text" name="transaction-total" id="transaction-total" />
+          <label htmlFor="transaction-total">Nominal</label>
+          <input
+            type="number"
+            value={nominal}
+            onChange={(e) => {
+              setNominal(e.target.value);
+            }}
+            name="transaction-total"
+            id="transaction-total"
+          />
+          <p>
+            <strong>Jumlah dalam Rupiah : </strong>
+            {currencyFormat.format(Number(nominal))}
+          </p>
           <em style={{ color: "red" }}>
             {errors?.total ? errors.total : null}
           </em>
