@@ -5,6 +5,7 @@ import {
   useTransactionData,
 } from "./route";
 import axios, { isAxiosError } from "axios";
+import { useRevalidator } from "@remix-run/react";
 
 interface EditPopupProps {
   index: number;
@@ -20,6 +21,10 @@ export default function EditPopup({
   const { data } = useTransactionData();
   const [globalData, setGlobalData] = useState<TransactionType>();
   const [selectedData, setSelectedData] = useState<TransactionBodyType>();
+  const [priceChecked, setPriceChecked] = useState<
+    "Pemasukan" | "Pengeluaran" | string
+  >("");
+  const revalidator = useRevalidator();
 
   const getData = useCallback(
     (header: string) => {
@@ -28,8 +33,13 @@ export default function EditPopup({
         throw new Error("Terjadi kesalahan saat pengambilan data");
       setGlobalData(sameGlobal);
       setSelectedData(globalData?.body[index]);
+      if (selectedData) {
+        const category = selectedData.price > 0 ? "Pemasukan" : "Pengeluaran";
+
+        setPriceChecked(category);
+      }
     },
-    [index, data, globalData]
+    [index, data, globalData, selectedData]
   );
 
   const formattedDate = (header: string) => {
@@ -53,11 +63,14 @@ export default function EditPopup({
 
       // TODO: Tambahin buat edit tipe transaksi, seperti pemasukan dan pengeluaran
 
-      alert(res.data.message);
-      location.reload();
+      console.info(res.data);
+
+      revalidator.revalidate();
+      setEditPopup(false);
     } catch (error) {
       if (isAxiosError(error)) {
         console.error(error);
+        setEditPopup(true);
       }
     }
   };
@@ -86,39 +99,26 @@ export default function EditPopup({
                 defaultValue={formattedDate(header)}
               />
             </div>
-            
-            {/* Fix bagian Sini Nanti UINYA */}
+
             <div className="form-navigation">
-              <input type="radio" name="transaction-type" id="income-type" value={"Pemasukan"} />
+              <input
+                type="radio"
+                name="transaction-type"
+                id="income-type"
+                value={"Pemasukan"}
+                onChange={() => setPriceChecked("Pemasukan")}
+                checked={priceChecked === "Pemasukan"}
+              />
               <label htmlFor="income-type">Pemasukan</label>
-              <input type="radio" name="transaction-type" id="outcome-type" value={"Pengeluaran"} />
+              <input
+                type="radio"
+                name="transaction-type"
+                id="outcome-type"
+                value={"Pengeluaran"}
+                onChange={() => setPriceChecked("Pengeluaran")}
+                checked={priceChecked === "Pengeluaran"}
+              />
               <label htmlFor="outcome-type">Pengeluaran</label>
-              {/* <section>
-                <button
-                  className={
-                    type === "Pengeluaran"
-                      ? "button-navigation-1 button-navigation-1-active"
-                      : "button-navigation-1"
-                  }
-                  onClick={() => setType("Pengeluaran")}
-                  id="outcome-data"
-                >
-                  Pengeluaran
-                </button>
-              </section>
-              <section>
-                <button
-                  className={
-                    type === "Pemasukan"
-                      ? "button-navigation-1 button-navigation-1-active"
-                      : "button-navigation-1"
-                  }
-                  onClick={() => setType("Pemasukan")}
-                  id="income-data"
-                >
-                  Pemasukan{" "}
-                </button>
-              </section> */}
             </div>
 
             <div className="form-text">
@@ -127,7 +127,7 @@ export default function EditPopup({
                 type="text"
                 name="transaction-total"
                 id="transaction-total"
-                defaultValue={selectedData?.price}
+                defaultValue={selectedData && String(selectedData.price).replace("-", "")}
               />
             </div>
             <div className="form-text">

@@ -1,10 +1,13 @@
 import { ActionFunctionArgs, json } from "@remix-run/node";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
+import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { AccountDB } from "~/@types/account";
 import { TransactionFormData } from "~/@types/transaction";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
+
+// TODO: Eror handling di sini belum diatur
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -14,13 +17,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const user: AccountDB = session.get(authenticator.sessionKey);
 
   if (request.method === "PUT") {
-    const res = await axios.put(`${endpoint}/transaction`, data, {
-      headers: {
-        "User-ID": String(user.uid),
-      },
-    });
-
-    return json({ message: res.data.message });
+    try {
+      const res = await axios.put(`${endpoint}/transaction`, data, {
+        headers: {
+          "User-ID": String(user.uid),
+        },
+      });
+  
+      return jsonWithSuccess( {data: res.data}, res.data.message);
+      
+    } catch (error) {
+      if(isAxiosError(error)){
+        return jsonWithError(error, "error woi")
+      }
+    }
   } else if (request.method === "DELETE") {
     const uid = formData.get("transaction-uid");
     const id = formData.get("main-id");
