@@ -8,3 +8,12 @@ export interface TransactionFormData {
   assetsTransaction: string | null; // Aset transaksi, diambil dari formulir
   noteTransaction: string | null; // Catatan transaksi, diambil dari formulir
 }
+
+export interface TransactionErrors{
+  typeTransaction?: string;
+  totalTransaction?: string;
+  dateTransaction?: string;
+  categoryTransaction?: string;
+  assetsTransaction?: string;
+  noteTransaction?: string;
+}

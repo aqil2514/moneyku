@@ -19,9 +19,14 @@
     border-radius: 1rem;
     border: 8px #85db79 double;
     padding: $-sub-padding;
+    overflow-y: scroll;
+    max-height: 500px;
 
     &-header {
         text-align: center;
+    }
+    &::-webkit-scrollbar{
+        display: none;
     }
 }
 

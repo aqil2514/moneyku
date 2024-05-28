@@ -3,7 +3,6 @@ import {
   LoaderFunctionArgs,
   MetaFunction,
   json,
-  redirect,
 } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
@@ -14,6 +13,9 @@ import { getSession } from "~/service/session.server";
 import { AccountDB } from "~/@types/account";
 import { useState } from "react";
 import { currencyFormat } from "../transaction/route";
+import { ErrorValidationResponse } from "~/@types/general";
+import { TransactionErrors } from "~/@types/transaction";
+import { jsonWithError, redirectWithSuccess } from "remix-toast";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Money Management" },
@@ -24,26 +26,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     failureRedirect: "/login",
   });
 };
-
-interface ErrorsTransaction {
-  type: string;
-  total: string;
-  date: string;
-  category: string;
-  asset: string;
-  note: string;
-}
-
-interface ErrorIssue {
-  code: string;
-  expected: string;
-  minimum: number;
-  inclusive: boolean;
-  exact: false;
-  received: string;
-  path: string[];
-  message: string;
-}
 
 // SOON : Tambahin UX Untuk memberitahu user tentang hasil dari penambahan transaksi
 
@@ -83,32 +65,21 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (res.status === 422) {
     const data = await res.json();
-    const issues: ErrorIssue[] = data.error.issues;
+    const errors = data.errors;
+    console.log(errors);
 
-    const errors: ErrorsTransaction = {
-      date: issues.find((p) => p.path[0].includes("date"))?.message as string,
-      total: issues.find((p) => p.path[0].includes("price"))?.message as string,
-      type: issues.find((p) => p.path[0].includes("type"))?.message as string,
-      category: issues.find((p) => p.path[0].includes("category"))
-        ?.message as string,
-      asset: issues.find((p) => p.path[0].includes("assets"))
-        ?.message as string,
-      note: issues.find((p) => p.path[0].includes("note"))?.message as string,
-    };
-
-    return json({ errors });
+    return jsonWithError({ data: null, errors }, errors[0].notifMessage);
   }
 
   const data = await res.json();
 
   if (res.status === 200) {
-    return redirect("/transaction");
+    return redirectWithSuccess("/transaction", "Transaksi berhasil ditambah");
   }
 
-  return json({ data });
+  return json({ data, errors: null });
 }
 
-// TODO: FIx UI
 export default function AddTransaction() {
   return <ClientOnly>{() => <Transaction />}</ClientOnly>;
 }
@@ -116,11 +87,14 @@ export default function AddTransaction() {
 export function IncomeTransaction() {
   const [nominal, setNominal] = useState<string>("");
   const actionData = useActionData<typeof action>();
-  let errors: ErrorsTransaction = {} as ErrorsTransaction;
-
-  if (actionData && "errors" in actionData) {
-    errors = actionData.errors;
-  }
+  const errors = getErrors(actionData?.errors);
+  const {
+    dateTransaction,
+    noteTransaction,
+    categoryTransaction,
+    assetsTransaction,
+    totalTransaction,
+  } = errors;
 
   return (
     <div className="main-page">
@@ -134,7 +108,7 @@ export function IncomeTransaction() {
           <label htmlFor="transaction-date">Tanggal Transaksi</label>
           <input type="date" name="transaction-date" id="transaction-date" />
         </div>
-        <em style={{ color: "red" }}>{errors?.date ? errors.date : null}</em>
+        <em style={{ color: "red" }}>{dateTransaction}</em>
         <div className="form-text">
           <label htmlFor="transaction-total">Nominal</label>
           <input
@@ -150,9 +124,7 @@ export function IncomeTransaction() {
             <strong>Jumlah dalam Rupiah : </strong>
             {currencyFormat.format(Number(nominal))}
           </p>
-          <em style={{ color: "red" }}>
-            {errors?.total ? errors.total : null}
-          </em>
+          <em style={{ color: "red" }}>{totalTransaction}</em>
         </div>
         <div className="form-text">
           <label htmlFor="transaction-category">Kategori Pemasukan</label>
@@ -162,9 +134,7 @@ export function IncomeTransaction() {
             id="transaction-category"
           />
         </div>
-        <em style={{ color: "red" }}>
-          {errors?.category ? errors?.category : null}
-        </em>
+        <em style={{ color: "red" }}>{categoryTransaction}</em>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
           <input
@@ -173,12 +143,12 @@ export function IncomeTransaction() {
             id="transaction-assets"
           />
         </div>
-        <em style={{ color: "red" }}>{errors?.asset ? errors?.asset : null}</em>
+        <em style={{ color: "red" }}>{assetsTransaction}</em>
         <div className="form-text">
           <label htmlFor="transaction-note">Catatan</label>
           <input type="text" name="transaction-note" id="transaction-note" />
         </div>
-        <em style={{ color: "red" }}>{errors?.note ? errors?.note : null}</em>
+        <em style={{ color: "red" }}>{noteTransaction}</em>
         <div>
           <button className="form-submit">Tambah Pemasukan</button>
         </div>
@@ -191,11 +161,14 @@ export function OutcomeTransaction() {
   const [nominal, setNominal] = useState<string>("");
 
   const actionData = useActionData<typeof action>();
-  let errors: ErrorsTransaction = {} as ErrorsTransaction;
-
-  if (actionData && "errors" in actionData) {
-    errors = actionData.errors;
-  }
+  const errors = getErrors(actionData?.errors);
+  const {
+    dateTransaction,
+    noteTransaction,
+    categoryTransaction,
+    assetsTransaction,
+    totalTransaction,
+  } = errors;
   return (
     <div className="main-page">
       <Form
@@ -208,7 +181,7 @@ export function OutcomeTransaction() {
           <label htmlFor="transaction-date">Tanggal Transaksi</label>
           <input type="date" name="transaction-date" id="transaction-date" />
         </div>
-        <em style={{ color: "red" }}>{errors?.date ? errors.date : null}</em>
+        <em style={{ color: "red" }}>{dateTransaction}</em>
         <div className="form-text">
           <label htmlFor="transaction-total">Nominal</label>
           <input
@@ -225,7 +198,7 @@ export function OutcomeTransaction() {
             {currencyFormat.format(Number(nominal))}
           </p>
           <em style={{ color: "red" }}>
-            {errors?.total ? errors.total : null}
+            {totalTransaction}
           </em>
         </div>
         <div className="form-text">
@@ -237,7 +210,7 @@ export function OutcomeTransaction() {
           />
         </div>
         <em style={{ color: "red" }}>
-          {errors?.category ? errors?.category : null}
+          {categoryTransaction}
         </em>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
@@ -247,16 +220,50 @@ export function OutcomeTransaction() {
             id="transaction-assets"
           />
         </div>
-        <em style={{ color: "red" }}>{errors?.asset ? errors?.asset : null}</em>
+        <em style={{ color: "red" }}>{assetsTransaction}</em>
         <div className="form-text">
           <label htmlFor="transaction-note">Catatan</label>
           <input type="text" name="transaction-note" id="transaction-note" />
         </div>
-        <em style={{ color: "red" }}>{errors?.note ? errors?.note : null}</em>
+        <em style={{ color: "red" }}>{noteTransaction}</em>
         <div>
           <button className="form-submit">Tambah Pengeluaran</button>
         </div>
       </Form>
     </div>
   );
+}
+
+function getErrors(errors: ErrorValidationResponse[]) {
+  if (!errors) {
+    const error: TransactionErrors = {
+      dateTransaction: "",
+      typeTransaction: "",
+      totalTransaction: "",
+      categoryTransaction: "",
+      assetsTransaction: "",
+      noteTransaction: "",
+    };
+    return error;
+  }
+
+  const totalError = errors.find((e) => e.path === "totalTransaction");
+  const typeError = errors.find((e) => e.path === "typeTransaction");
+  const dateError = errors.find((e) => e.path === "dateTransaction");
+  const categoryError = errors.find((e) => e.path === "categoryTransaction");
+  const assetsError = errors.find((e) => e.path === "assetsTransaction");
+  const noteError = errors.find((e) => e.path === "noteTransaction");
+
+  const error: TransactionErrors = {
+    dateTransaction: dateError && dateError.message ? dateError.message : "",
+    typeTransaction: typeError && typeError.message ? typeError.message : "",
+    totalTransaction:
+      totalError && totalError.message ? totalError.message : "",
+    categoryTransaction:
+      categoryError && categoryError.message ? categoryError.message : "",
+    assetsTransaction:
+      assetsError && assetsError.message ? assetsError.message : "",
+    noteTransaction: noteError && noteError.message ? noteError.message : "",
+  };
+  return error;
 }

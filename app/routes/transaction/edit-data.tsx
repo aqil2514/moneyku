@@ -4,8 +4,10 @@ import {
   TransactionType,
   useTransactionData,
 } from "./route";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 import { useRevalidator } from "@remix-run/react";
+import { ErrorValidationResponse } from "~/@types/general";
+import { TransactionErrors } from "~/@types/transaction";
 
 interface EditPopupProps {
   index: number;
@@ -24,7 +26,17 @@ export default function EditPopup({
   const [priceChecked, setPriceChecked] = useState<
     "Pemasukan" | "Pengeluaran" | string
   >("");
+  const [errors, setErrors] = useState<ErrorValidationResponse[]>([]);
   const revalidator = useRevalidator();
+  const error = getErrors(errors);
+  const {
+    dateTransaction,
+    noteTransaction,
+    typeTransaction,
+    categoryTransaction,
+    assetsTransaction,
+    totalTransaction,
+  } = error;
 
   const getData = useCallback(
     (header: string) => {
@@ -58,20 +70,15 @@ export default function EditPopup({
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
 
-    try {
-      const res = await axios.putForm("/api/transaction", formData);
+    const res = await axios.putForm("/api/transaction", formData);
+    const data = res.data.response;
 
-      // TODO: Tambahin buat edit tipe transaksi, seperti pemasukan dan pengeluaran
-
-      console.info(res.data);
-
+    if (!data.success) {
+      revalidator.revalidate();
+      setErrors(data.data);
+    } else {
       revalidator.revalidate();
       setEditPopup(false);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        console.error(error);
-        setEditPopup(true);
-      }
     }
   };
 
@@ -98,6 +105,7 @@ export default function EditPopup({
                 id="transaction-date"
                 defaultValue={formattedDate(header)}
               />
+              <em style={{ color: "red" }}>{dateTransaction}</em>
             </div>
 
             <div className="form-navigation">
@@ -119,6 +127,7 @@ export default function EditPopup({
                 checked={priceChecked === "Pengeluaran"}
               />
               <label htmlFor="outcome-type">Pengeluaran</label>
+              <em style={{ color: "red" }}>{typeTransaction}</em>
             </div>
 
             <div className="form-text">
@@ -127,17 +136,23 @@ export default function EditPopup({
                 type="text"
                 name="transaction-total"
                 id="transaction-total"
-                defaultValue={selectedData && String(selectedData.price).replace("-", "")}
+                defaultValue={
+                  selectedData && String(selectedData.price).replace("-", "")
+                }
               />
+              <em style={{ color: "red" }}>{totalTransaction}</em>
             </div>
             <div className="form-text">
-              <label htmlFor="transaction-category">Kategori {priceChecked}</label>
+              <label htmlFor="transaction-category">
+                Kategori {priceChecked}
+              </label>
               <input
                 type="text"
                 name="transaction-category"
                 id="transaction-category"
                 defaultValue={selectedData?.category}
               />
+              <em style={{ color: "red" }}>{categoryTransaction}</em>
             </div>
             <div className="form-text">
               <label htmlFor="transaction-assets">Aset</label>
@@ -147,6 +162,7 @@ export default function EditPopup({
                 id="transaction-assets"
                 defaultValue={selectedData?.asset}
               />
+              <em style={{ color: "red" }}>{assetsTransaction}</em>
             </div>
             <div className="form-text">
               <label htmlFor="transaction-note">Catatan</label>
@@ -156,6 +172,7 @@ export default function EditPopup({
                 id="transaction-note"
                 defaultValue={selectedData?.item}
               />
+              <em style={{ color: "red" }}>{noteTransaction}</em>
             </div>
             <div style={{ margin: "1rem 0" }}>
               <button className="form-submit">Edit Data</button>
@@ -176,4 +193,26 @@ export default function EditPopup({
       </div>
     </div>
   );
+}
+
+function getErrors(errors: ErrorValidationResponse[]) {
+  const totalError = errors.find((e) => e.path === "totalTransaction");
+  const typeError = errors.find((e) => e.path === "typeTransaction");
+  const dateError = errors.find((e) => e.path === "dateTransaction");
+  const categoryError = errors.find((e) => e.path === "categoryTransaction");
+  const assetsError = errors.find((e) => e.path === "assetsTransaction");
+  const noteError = errors.find((e) => e.path === "noteTransaction");
+
+  const error: TransactionErrors = {
+    dateTransaction: dateError && dateError.message ? dateError.message : "",
+    typeTransaction: typeError && typeError.message ? typeError.message : "",
+    totalTransaction:
+      totalError && totalError.message ? totalError.message : "",
+    categoryTransaction:
+      categoryError && categoryError.message ? categoryError.message : "",
+    assetsTransaction:
+      assetsError && assetsError.message ? assetsError.message : "",
+    noteTransaction: noteError && noteError.message ? noteError.message : "",
+  };
+  return error;
 }

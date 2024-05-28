@@ -589,9 +589,14 @@
     border-radius: 1rem;
     border: 8px #85db79 double;
     padding: 1rem;
+    overflow-y: scroll;
+    max-height: 500px;
   }
   .popup-delete-header, .popup-edit-header {
     text-align: center;
+  }
+  .popup-delete::-webkit-scrollbar, .popup-edit::-webkit-scrollbar {
+    display: none;
   }
   .popup-delete-body {
     margin: 1rem 0;
@@ -621,9 +626,14 @@
     border-radius: 1rem;
     border: 8px #85db79 double;
     padding: 0.5rem;
+    overflow-y: scroll;
+    max-height: 500px;
   }
   .popup-delete-header, .popup-edit-header {
     text-align: center;
+  }
+  .popup-delete::-webkit-scrollbar, .popup-edit::-webkit-scrollbar {
+    display: none;
   }
   .popup-delete-body {
     margin: 1rem 0;

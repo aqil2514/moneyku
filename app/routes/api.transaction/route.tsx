@@ -23,12 +23,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           "User-ID": String(user.uid),
         },
       });
-  
-      return jsonWithSuccess( {data: res.data}, res.data.message);
-      
+
+      const response = {
+        success: true,
+        data: res.data,
+      };
+
+      return jsonWithSuccess({ response }, res.data.message);
     } catch (error) {
-      if(isAxiosError(error)){
-        return jsonWithError(error, "error woi")
+      if (isAxiosError(error)) {
+        const errorValidation = error.response?.data.errors;
+        const response = {
+          success: false,
+          data: errorValidation,
+        };
+
+        return jsonWithError({ response }, response.data[0].notifMessage);
       }
     }
   } else if (request.method === "DELETE") {
@@ -43,9 +53,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         },
       });
 
-      return jsonWithSuccess({data: res.data}, res.data.message);
+      return jsonWithSuccess({ data: res.data }, res.data.message);
     } catch (error) {
-      if(isAxiosError(error)){
+      if (isAxiosError(error)) {
         console.error(error);
       }
     }
