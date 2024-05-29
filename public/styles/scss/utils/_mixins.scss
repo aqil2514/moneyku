@@ -38,10 +38,7 @@
   background-color: #b3b2b27f;
 }
 
-@mixin transaction-menu($-bottom, $-right) {
-  position: fixed;
-  bottom: $-bottom;
-  right: $-right;
+@mixin transaction-menu() {
   display: flex;
   gap: 0.5rem;
   background-color: #064526cf;

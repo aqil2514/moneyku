@@ -118,7 +118,7 @@
     }
 
     &-menu {
-      @include transaction-menu(80px, 10px);
+      @include transaction-menu();
     }
 
     &-navbar {

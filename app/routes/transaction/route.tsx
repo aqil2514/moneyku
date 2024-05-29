@@ -38,10 +38,12 @@ export interface TransactionType {
 interface TransactionContextType {
   editMode: boolean;
   deleteMode: boolean;
+  menuActive: boolean;
   month: number;
   year: number;
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
   setDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setMenuActive: React.Dispatch<React.SetStateAction<boolean>>;
   setMonth: React.Dispatch<React.SetStateAction<number>>;
   setYear: React.Dispatch<React.SetStateAction<number>>;
   data: TransactionType[];
@@ -89,6 +91,7 @@ export default function Transaction() {
 
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [menuActive, setMenuActive] = useState<boolean>(false);
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const data = res.data as TransactionType[];
@@ -113,6 +116,8 @@ export default function Transaction() {
               setMonth,
               year,
               setYear,
+              menuActive,
+              setMenuActive
             }}
           >
             <div id="transaction" className="main-page">
@@ -155,6 +160,8 @@ export default function Transaction() {
             setMonth,
             year,
             setYear,
+            menuActive,
+            setMenuActive
           }}
         >
           <div id="transaction" className="main-page">
