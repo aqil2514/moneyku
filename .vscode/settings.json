@@ -1,0 +1,18 @@
+{
+  "editor.suggest.showWords": true,
+  "editor.wordBasedSuggestions": "off",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "*.tsx": "typescriptreact"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["classnames.json"],
+      "url": "./classnames.json"
+    }
+  ],
+  "editor.suggest.showSnippets": false
+}

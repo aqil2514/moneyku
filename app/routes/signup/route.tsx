@@ -11,7 +11,7 @@ import { AccountRegister, AccountResponse } from "~/@types/account";
 import { authenticator } from "~/service/auth.server";
 
 export const meta: MetaFunction = () => [
-  { title: "Signup | Money Management " },
+  { title: "Signup | Moneyku" },
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {

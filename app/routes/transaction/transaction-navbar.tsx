@@ -16,16 +16,16 @@ export default function TransactionNavbar({
   return (
     <header id="transaction-navbar">
       <section className="income-section">
-        <p>Pemasukan</p>
-        <p>{currencyFormat.format(sumIncome)}</p>
+        <p className="font-ubuntu-medium">Pemasukan</p>
+        <p className="font-poppins-medium">{currencyFormat.format(sumIncome)}</p>
       </section>
       <section className="outcome-section">
-        <p>Pengeluaran</p>
-        <p>{currencyFormat.format(sumOutcome)}</p>
+        <p className="font-ubuntu-medium">Pengeluaran</p>
+        <p className="font-poppins-medium">{currencyFormat.format(sumOutcome)}</p>
       </section>
       <section className="total-section">
-        <p>Saldo</p>
-        <p>{currencyFormat.format(total)}</p>
+        <p className="font-ubuntu-medium">Saldo</p>
+        <p className="font-poppins-medium">{currencyFormat.format(total)}</p>
       </section>
     </header>
   );

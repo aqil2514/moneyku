@@ -52,7 +52,7 @@ export default function TransactionDataHeader({
   if(!filteredDataBody || filteredDataBody.length === 0) return <></>
 
   return (
-    <header id="transaction-data-header">
+    <header id="transaction-data-header" className="font-ubuntu-medium">
       <div className="date">
         <p>{date}</p>
         <p>{day}</p>

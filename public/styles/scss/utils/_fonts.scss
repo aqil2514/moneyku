@@ -1,0 +1,191 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+$ubuntu-font-family: "Ubuntu", sans-serif;
+$poppins-font-family: "Poppins", sans-serif;
+$merriweather-font-family: "Merriweather", serif;
+$playfair-display-font-family: "Playfair Display", serif;
+
+// Local Mixin
+
+@mixin make-poppins-font($weight, $style: normal) {
+    font-family: $poppins-font-family;
+    font-weight: $weight;
+    font-style: $style;
+}
+
+@mixin merriweather-font($weight, $style: normal) {
+    font-family: "Merriweather", serif;
+    font-weight: $weight;
+    font-style: $style;
+}
+
+@mixin playfair-display-font($weight, $style: normal) {
+    font-family: $playfair-display-font-family;
+    font-weight: $weight;
+    font-style: $style;
+}
+
+@mixin make-ubuntu-font($weight, $style: normal) {
+    font-family: $ubuntu-font-family;
+    font-weight: $weight;
+    font-style: $style;
+}
+
+.font-merriweather {
+    &-light {
+        @include merriweather-font(300);
+        &-italic {
+            @include merriweather-font(300, italic);
+        }
+    }
+
+    &-medium {
+        @include merriweather-font(400);
+        &-italic {
+            @include merriweather-font(400, italic);
+        }
+    }
+
+    &-bold {
+        @include merriweather-font(700);
+        &-italic {
+            @include merriweather-font(700, italic);
+        }
+    }
+
+    &-black {
+        @include merriweather-font(900);
+        &-italic {
+            @include merriweather-font(900, italic);
+        }
+    }
+}
+
+.font-playfair {
+    &-light {
+        @include playfair-display-font(100);
+        &-italic {
+            @include playfair-display-font(100, italic);
+        }
+    }
+
+    &-medium {
+        @include playfair-display-font(400);
+        &-italic {
+            @include playfair-display-font(400, italic);
+        }
+    }
+
+    &-bold {
+        @include playfair-display-font(700);
+        &-italic {
+            @include playfair-display-font(700, italic);
+        }
+    }
+
+    &-black {
+        @include playfair-display-font(900);
+        &-italic {
+            @include playfair-display-font(900, italic);
+        }
+    }
+}
+
+.font-poppins {
+    &-light {
+        @include make-poppins-font(100);
+        &-italic {
+            @include make-poppins-font(100, italic);
+        }
+    }
+
+    &-extralight {
+        @include make-poppins-font(200);
+        &-italic {
+            @include make-poppins-font(200, italic);
+        }
+    }
+
+    &-light {
+        @include make-poppins-font(300);
+        &-italic {
+            @include make-poppins-font(300, italic);
+        }
+    }
+
+    &-medium {
+        @include make-poppins-font(400);
+        &-italic {
+            @include make-poppins-font(400, italic);
+        }
+    }
+
+    &-medium {
+        @include make-poppins-font(500);
+        &-italic {
+            @include make-poppins-font(500, italic);
+        }
+    }
+
+    &-semibold {
+        @include make-poppins-font(600);
+        &-italic {
+            @include make-poppins-font(600, italic);
+        }
+    }
+
+    &-bold {
+        @include make-poppins-font(700);
+        &-italic {
+            @include make-poppins-font(700, italic);
+        }
+    }
+
+    &-extrabold {
+        @include make-poppins-font(800);
+        &-italic {
+            @include make-poppins-font(800, italic);
+        }
+    }
+
+    &-black {
+        @include make-poppins-font(900);
+        &-italic {
+            @include make-poppins-font(900, italic);
+        }
+    }
+}
+
+.font-ubuntu {
+    &-light {
+        @include make-ubuntu-font(300);
+
+        &-italic {
+            @include make-ubuntu-font(300, italic);
+        }
+    }
+
+    &-medium {
+        @include make-ubuntu-font(400);
+
+        &-italic {
+            @include make-ubuntu-font(400, italic);
+        }
+    }
+
+    &-medium {
+        @include make-ubuntu-font(500);
+
+        &-italic {
+            @include make-ubuntu-font(500, italic);
+        }
+    }
+
+    &-bold {
+        @include make-ubuntu-font(700);
+
+        &-italic {
+            @include make-ubuntu-font(700, italic);
+        }
+    }
+}

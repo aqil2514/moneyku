@@ -9,7 +9,7 @@ import { authenticator } from "~/service/auth.server";
 import { commitSession, getSession } from "~/service/session.server";
 
 export const meta: MetaFunction = () => [
-  { title: "Login | Money Management " },
+  { title: "Login | Moneyku " },
 ];
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -36,27 +36,27 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function LoginForm() {
   return (
     <div id="login-form">
-      <h1 id="main-title">Money Management</h1>
+      <h1 id="main-title" className="font-merriweather-bold">Moneyku</h1>
       <div id="grid-layout">
         <form action="/login" method="POST" className="form">
-          <h1>Login</h1>
+          <h1 className="font-merriweather-bold">Login</h1>
 
           <div>
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email" className="font-poppins-medium">Email:</label>
             <input type="text" name="email" id="email" />
           </div>
 
           <div>
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="password" className="font-poppins-medium">Password:</label>
             <input type="password" name="password" id="password" />
           </div>
-          <Link to={"/signup"}>Belum punya akun?</Link>
+          <Link to={"/signup"} className="font-ubuntu-medium">Belum punya akun?</Link>
 
           <button className="button-success">Login</button>
 
           <div>
-            <p>Atau login dengan Google</p>
-            <button id="google-login" type="button">
+            <p className="font-poppins-medium">Atau login dengan Google</p>
+            <button id="google-login" type="button" className="font-poppins-medium">
               <img src="/images/icon-google.png" alt="Google Sign In" />
               Masuk dengan Google
             </button>

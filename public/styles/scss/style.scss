@@ -1,5 +1,4 @@
 @use "./utils/mixins" as *;
-@import "login-form";
 @import "./mobile-responsive/transaction";
 @import "./core/index";
 @import "./utils/index";
@@ -155,6 +154,7 @@
   display: flex;
   gap: 0.2rem;
   margin: 0.2rem 0;
+  align-items: center;
   cursor: pointer;
   color: white;
   text-decoration: none;

@@ -103,11 +103,9 @@
         font-size: $-font-size;
         &:nth-child(1) {
             color: $-top-text-color;
-            font-weight: bold;
         }
         &:nth-child(2) {
             color: $-bottom-text-color;
-            font-weight: bold;
         }
     }
 }

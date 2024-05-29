@@ -1,3 +1,16 @@
+#account{
+  text-align: center;
+  border: 4px double white;
+  border-radius: 1rem;
+  color: white;
+  cursor: pointer;
+  transition-duration: 200ms;
+
+  &:hover{
+    color: black;
+    border-color: black;
+  }
+}
 #sidebar {
     min-height: 100vh;
     background-color: #114b977f;

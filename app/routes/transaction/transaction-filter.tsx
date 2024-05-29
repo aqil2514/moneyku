@@ -27,7 +27,7 @@ export default function TransactionFilter() {
     }
   };
   return (
-    <div className="container-filter" style={{ margin: "1rem" }}>
+    <div className="container-filter font-poppins-medium" style={{ margin: "1rem" }}>
       <button onClick={() => clickHandler("prev")}>
         <FaArrowAltCircleLeft />
       </button>

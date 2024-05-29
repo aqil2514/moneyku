@@ -17,7 +17,7 @@ import { AccountDB } from "~/@types/account";
 
 export const meta: MetaFunction = () => [
   {
-    title: "Transaksi | Money Management",
+    title: "Transaksi | Moneyku",
   },
 ];
 
@@ -158,7 +158,7 @@ export default function Transaction() {
           }}
         >
           <div id="transaction" className="main-page">
-            <h1>Transaksi</h1>
+            <h1 className="font-playfair-bold">Transaksi</h1>
 
             <TransactionNavbar price={allPrices} />
 

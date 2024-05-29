@@ -1,7 +1,7 @@
 import { MetaFunction } from "@remix-run/node"
 
 export const meta:MetaFunction = () => [{
-    "title": "Asset | Money Management"
+    "title": "Asset | Moneyku"
 }]
 
 export default function Transaction(){

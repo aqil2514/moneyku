@@ -29,14 +29,14 @@ function PCSidebar({ user }: {user: AccountDB | null}) {
   return (
     <div id="sidebar">
       <div id="sidebar-header">
-        <h1 id="sidebar-header-title">Money Management</h1>
-        <img
+        <h1 id="sidebar-header-title" className="font-playfair-bold">Moneyku</h1>
+        {/* <img
           id="sidebar-header-image"
           src="/images/icon-money.png"
           alt="icon-money"
-        />
+        /> */}
       </div>
-      <div id="account">{user?.username}</div>
+      <div id="account" className="font-poppins-bold">{user?.username}</div>
       <div id="sidebar-menu">
         <h2>Menu</h2>
         <NavLink
@@ -47,7 +47,7 @@ function PCSidebar({ user }: {user: AccountDB | null}) {
           }
         >
           <AiOutlineTransaction />
-          <p>Transaksi</p>
+          <p className="font-poppins-medium">Transaksi</p>
         </NavLink>
         <NavLink
           to={"/statistic"}
@@ -57,7 +57,7 @@ function PCSidebar({ user }: {user: AccountDB | null}) {
           }
         >
           <TfiStatsUp />
-          <p>Statistik</p>
+          <p className="font-poppins-medium">Statistik</p>
         </NavLink>
         <NavLink
           to={"/assets"}
@@ -67,7 +67,7 @@ function PCSidebar({ user }: {user: AccountDB | null}) {
           }
         >
           <MdOutlineMoney />
-          <p>Aset</p>
+          <p className="font-poppins-medium">Aset</p>
         </NavLink>
         <NavLink
           to={"/planning"}
@@ -77,7 +77,7 @@ function PCSidebar({ user }: {user: AccountDB | null}) {
           }
         >
           <SiPlangrid />
-          <p>Rencana</p>
+          <p className="font-poppins-medium">Rencana</p>
         </NavLink>
         <NavLink
           to={"budgeting"}
@@ -87,18 +87,18 @@ function PCSidebar({ user }: {user: AccountDB | null}) {
           }
         >
           <TbMoneybag />
-          <p>Budgeting</p>
+          <p className="font-poppins-medium">Budgeting</p>
         </NavLink>
       </div>
       <div id="sidebar-footer">
         <h2>Setting</h2>
         <section className="sidebar-list">
           <CiLight />
-          <p>Light Mode</p>
+          <p className="font-poppins-medium">Light Mode</p>
         </section>
         <section className="sidebar-list">
           <FaLanguage />
-          <p>Bahasa</p>
+          <p className="font-poppins-medium">Bahasa</p>
         </section>
         <section
           className="sidebar-list"
@@ -108,7 +108,7 @@ function PCSidebar({ user }: {user: AccountDB | null}) {
           onClick={() => navigate("/logout")}
         >
           <FiLogOut />
-          <p>Logout</p>
+          <p className="font-poppins-medium">Logout</p>
         </section>
       </div>
     </div>

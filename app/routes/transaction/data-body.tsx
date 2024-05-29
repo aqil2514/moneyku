@@ -78,7 +78,7 @@ export default function TransactionDataBody({
           >
             {isEditMode && (
               <MdEdit
-                className="body-edit-icon"
+                className="body-edit-icon font-poppins-medium"
                 onClick={editHandler}
                 aria-hidden
                 data-index={i++}
@@ -87,7 +87,7 @@ export default function TransactionDataBody({
             )}
             {isDeleteMode && (
               <p
-                className="body-delete-icon"
+                className="body-delete-icon font-poppins-medium"
                 onClick={deleteHandler}
                 aria-hidden
                 data-index={i++}
@@ -96,17 +96,17 @@ export default function TransactionDataBody({
                 X
               </p>
             )}
-            <section>{d.item}</section>
-            <section>
+            <section className="font-poppins-medium">{d.item}</section>
+            <section className="font-poppins-medium">
               <p>{d.category}</p>
               <p>{d.asset}</p>
             </section>
-            <section>
+            <section className="font-poppins-medium">
               <p
                 style={{
                   color: d.price < 0 ? "red" : "blue",
-                  fontWeight: "bold",
                 }}
+                className="font-poppins-medium"
               >
                 {itemPrice.replace("-", "")}
               </p>

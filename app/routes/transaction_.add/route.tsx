@@ -16,9 +16,9 @@ import { currencyFormat } from "../transaction/route";
 import { ErrorValidationResponse } from "~/@types/general";
 import { TransactionErrors } from "~/@types/transaction";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
-
+  
 export const meta: MetaFunction = () => [
-  { title: "Tambah Transaksi | Money Management" },
+  { title: "Tambah Transaksi | Moneyku" },
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -66,7 +66,6 @@ export async function action({ request }: ActionFunctionArgs) {
   if (res.status === 422) {
     const data = await res.json();
     const errors = data.errors;
-    console.log(errors);
 
     return jsonWithError({ data: null, errors }, errors[0].notifMessage);
   }
