@@ -52,7 +52,7 @@ export default function LoginForm() {
           </div>
           <Link to={"/signup"} className="font-ubuntu-medium">Belum punya akun?</Link>
 
-          <button className="button-success">Login</button>
+          <button className="button-success" id="login-button">Login</button>
 
           <div>
             <p className="font-poppins-medium">Atau login dengan Google</p>
