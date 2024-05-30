@@ -29,7 +29,8 @@ export default function TransactionMenu() {
         menuActive &&
         e.target !== transactionMenu &&
         e.target !== transactionMenuTrigger &&
-        !transactionMenu?.contains(e.target as Node) &&
+        !transactionMenu?.contains(e
+        .target as Node) &&
         !transactionMenuTrigger?.contains(e.target as Node)
       ) {
         setMenuActive(false);
