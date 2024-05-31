@@ -38,7 +38,7 @@
   background-color: #b3b2b27f;
 }
 
-@mixin transaction-menu() {
+@mixin transaction-menu($-svg-width: 54px,$-svg-height:54px ) {
   display: flex;
   gap: 0.5rem;
   background-color: #064526cf;
@@ -62,8 +62,8 @@
   }
 
   svg {
-    width: 54px;
-    height: 54px;
+    width: $-svg-width;
+    height: $-svg-height;
     color: #fff;
     padding: 0.5rem;
     border-radius: 1rem;

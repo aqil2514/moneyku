@@ -118,7 +118,7 @@
     }
 
     &-menu {
-      @include transaction-menu();
+      @include transaction-menu(40px, 40px);
     }
 
     &-navbar {
@@ -134,6 +134,50 @@
 
       .total-section {
         @include font-column-1(white, #1ae3cc, 12px);
+      }
+    }
+
+    .transaction-trigger {
+      position: fixed;
+      bottom: 15%;
+      right: -20px;
+      background-color: #064526cf;
+      color: white;
+      border: none;
+      border-radius: 1rem 0 0 1rem;
+      padding: 1rem;
+      font-size: 1rem;
+      transition: 200ms;
+      cursor: pointer;
+      animation: transaction-trigger-enter 1000ms 1 linear;
+
+      &-hide {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      &:hover {
+        right: 0;
+      }
+    }
+
+    .transaction-menu {
+      position: fixed;
+      bottom: 15%;
+      right: -100%;
+      transition: 300ms;
+
+      &-active {
+        right: 20px;
+      }
+    }
+
+    @keyframes transaction-trigger-enter {
+      from {
+        right: -100%;
+      }
+      to {
+        right: -20px;
       }
     }
   }
