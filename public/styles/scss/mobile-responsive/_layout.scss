@@ -38,6 +38,29 @@
         display: none !important;
     }
 
+    #mobile-header {
+        position: fixed;
+        top: 0;
+        background-color: #114b97;
+        width: 100%;
+        z-index: 100;
+        color: white;
+        padding: 0.5rem 1rem;
+        justify-content: space-between;
+        display: flex;
+
+        &-title {
+            font-size: 1rem;
+        }
+
+        &-logout{
+            display: flex;
+            align-items: center;
+            gap: .2rem;
+            cursor: pointer;
+        }
+    }
+
     #mobile-sidebar {
         display: flex !important;
         justify-content: space-between;

@@ -103,7 +103,7 @@ export default function TransactionMenu() {
         <FaPlusCircle
           id="add-transaction"
           title="Tambah transaksi"
-          onClick={() => navigation("/transaction/add", { replace: true })}
+          onClick={() => navigation("/transaction/add")}
         />
       </div>
       <button
