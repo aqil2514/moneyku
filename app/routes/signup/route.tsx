@@ -9,10 +9,9 @@ import serverEndpoint from "lib/server";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import { AccountRegister, AccountResponse } from "~/@types/account";
 import { authenticator } from "~/service/auth.server";
+import { securityQuestionsData } from "./data";
 
-export const meta: MetaFunction = () => [
-  { title: "Signup | Moneyku" },
-];
+export const meta: MetaFunction = () => [{ title: "Signup | Moneyku" }];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, {
@@ -21,7 +20,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return null;
 }
 
-export async function action({ request }: ActionFunctionArgs) { 
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const data: AccountRegister = {
     username: String(formData.get("username")),
@@ -45,20 +44,25 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const { sucess } = res.data;
 
-    if (sucess) return redirectWithSuccess("/login", "Akun berhasil dibuat. Silahkan login!");
+    if (sucess)
+      return redirectWithSuccess(
+        "/login",
+        "Akun berhasil dibuat. Silahkan login!"
+      );
   } catch (error) {
     if (isAxiosError(error)) {
       if (error.response?.status === 422) {
         const validationError: AccountResponse[] = error.response?.data.result;
-        return jsonWithError({validationError}, validationError[0].notifMessage as string);
+        return jsonWithError(
+          { validationError },
+          validationError[0].notifMessage as string
+        );
       }
     }
   }
 
   return null;
 }
-
-// Fix typescript
 
 export default function Register() {
   const error = useActionData<typeof action>();
@@ -108,7 +112,14 @@ export default function Register() {
         <div>
           <label>
             Pertanyaan Keamanan:
-            <input type="text" name="securityQuestion" />
+            <select name="securityQuestion">
+              <option value="no-question">Pertanyaan kemanan</option>
+              {securityQuestionsData.sort().map((d, i) => (
+                <option key={`security-question-${i++}`} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
         <div>

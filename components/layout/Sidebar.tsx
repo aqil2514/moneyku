@@ -125,10 +125,12 @@ function MobileSidebar({ user }: { user: AccountDB | null }) {
 
   return (
     <>
-    <div id="mobile-header">
-      <h1 id="mobile-header-title" className="font-playfair-bold">Moneyku | {user?.username}</h1>
-      <section
-      id="mobile-header-logout"
+      <div id="mobile-header">
+        <h1 id="mobile-header-title" className="font-playfair-bold">
+          Moneyku | {user?.username}
+        </h1>
+        <section
+          id="mobile-header-logout"
           tabIndex={0}
           role="button"
           aria-hidden
@@ -137,7 +139,7 @@ function MobileSidebar({ user }: { user: AccountDB | null }) {
           <FiLogOut />
           <p className="font-poppins-medium">Logout</p>
         </section>
-    </div>
+      </div>
       <div id="mobile-sidebar">
         <NavLink
           to={"/transaction"}

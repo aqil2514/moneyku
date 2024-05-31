@@ -354,6 +354,33 @@
     text-decoration: underline;
   }
 }
+@media only screen and (max-width: 600px) {
+  #signup-page {
+    width: 100%;
+    height: 100vh;
+    background-color: #d5dff1;
+    padding: 2rem 0 3rem;
+    overflow-y: scroll;
+  }
+  #signup-page h2 {
+    text-align: center;
+  }
+  #signup-page form {
+    width: 90%;
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+    margin: auto;
+    background-color: white;
+  }
+  #signup-page form div {
+    margin: 0.5rem;
+  }
+  #signup-page form div input, #signup-page form div select {
+    padding: 1rem;
+    display: block;
+    width: 100%;
+  }
+}
 .income-section p {
   margin: 0;
   font-size: 16px;
@@ -889,32 +916,33 @@
   display: none;
 }
 
-#signup-page {
-  width: 100%;
-  height: 100vh;
-  background-color: #d5dff1;
-  padding: 2rem 0 3rem;
-  overflow-y: scroll;
+@media screen and (min-width: 950px) {
+  #signup-page {
+    width: 100%;
+    height: 100vh;
+    background-color: #d5dff1;
+    padding: 2rem 0 3rem;
+    overflow-y: scroll;
+  }
+  #signup-page h2 {
+    text-align: center;
+  }
+  #signup-page form {
+    width: 50%;
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+    margin: auto;
+    background-color: white;
+  }
+  #signup-page form div {
+    margin: 0.5rem;
+  }
+  #signup-page form div input, #signup-page form div select {
+    padding: 1rem;
+    display: block;
+    width: 100%;
+  }
 }
-#signup-page h2 {
-  text-align: center;
-}
-#signup-page form {
-  width: 50%;
-  padding: 2rem 1rem;
-  border-radius: 1rem;
-  margin: auto;
-  background-color: white;
-}
-#signup-page form div {
-  margin: 0.5rem;
-}
-#signup-page form div input, #signup-page form div select {
-  padding: 1rem;
-  display: block;
-  width: 100%;
-}
-
 @media screen and (min-width: 950px) {
   #transaction-add {
     background-color: #d5dff1;
