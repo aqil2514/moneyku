@@ -4,30 +4,43 @@ import {
   MetaFunction,
   json,
 } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
-import serverEndpoint from "lib/server";
+import serverEndpoint, { endpoint } from "lib/server";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
-import { AccountDB } from "~/@types/account";
+import { AccountDB, AccountUser } from "~/@types/account";
 import { useState } from "react";
 import { currencyFormat } from "../transaction/route";
 import { ErrorValidationResponse } from "~/@types/general";
 import { TransactionErrors } from "~/@types/transaction";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
-  
+import axios from "axios";
+import { AssetsData } from "~/@types/assets";
+
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },
 ];
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return await authenticator.isAuthenticated(request, {
+export async function loader({ request }: LoaderFunctionArgs) {
+  await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-};
 
-// SOON : Tambahin UX Untuk memberitahu user tentang hasil dari penambahan transaksi
+  const session = await getSession(request.headers.get("cookie"));
+  const user: AccountUser = session.get(authenticator.sessionKey);
+
+  const res = await axios.get(`${endpoint}/assets/getAssets`, {
+    params: {
+      uid: user.uid as string,
+    },
+  });
+
+  const assetData: AssetsData[] = res.data.assetData;
+
+  return json({ assetData });
+}
 
 export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get("cookie"));
@@ -80,10 +93,21 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function AddTransaction() {
-  return <ClientOnly>{() => <Transaction />}</ClientOnly>;
+  const { assetData } = useLoaderData<typeof loader>();
+  return <ClientOnly>{() => <Transaction assetData={assetData} />}</ClientOnly>;
 }
 
-export function IncomeTransaction() {
+const AssetLists = ({ assetData }: { assetData: AssetsData[] }) => {
+  return(
+    <datalist id="asset-list">
+      {assetData.map((d) => (
+      <option value={d.name} key={d.name} />
+      ))}
+    </datalist>
+  )
+}
+
+export function IncomeTransaction({ assetData }: { assetData: AssetsData[] }) {
   const [nominal, setNominal] = useState<string>("");
   const actionData = useActionData<typeof action>();
   const errors = getErrors(actionData?.errors);
@@ -140,6 +164,7 @@ export function IncomeTransaction() {
             type="text"
             name="transaction-assets"
             id="transaction-assets"
+            list="asset-list"
           />
         </div>
         <em style={{ color: "red" }}>{assetsTransaction}</em>
@@ -152,11 +177,12 @@ export function IncomeTransaction() {
           <button className="form-submit">Tambah Pemasukan</button>
         </div>
       </Form>
+      <AssetLists assetData={assetData} />
     </div>
   );
 }
 
-export function OutcomeTransaction() {
+export function OutcomeTransaction({ assetData }: { assetData: AssetsData[] }) {
   const [nominal, setNominal] = useState<string>("");
 
   const actionData = useActionData<typeof action>();
@@ -196,9 +222,7 @@ export function OutcomeTransaction() {
             <strong>Jumlah dalam Rupiah : </strong>
             {currencyFormat.format(Number(nominal))}
           </p>
-          <em style={{ color: "red" }}>
-            {totalTransaction}
-          </em>
+          <em style={{ color: "red" }}>{totalTransaction}</em>
         </div>
         <div className="form-text">
           <label htmlFor="transaction-category">Kategori Pengeluaran</label>
@@ -208,15 +232,14 @@ export function OutcomeTransaction() {
             id="transaction-category"
           />
         </div>
-        <em style={{ color: "red" }}>
-          {categoryTransaction}
-        </em>
+        <em style={{ color: "red" }}>{categoryTransaction}</em>
         <div className="form-text">
           <label htmlFor="transaction-assets">Aset</label>
           <input
             type="text"
             name="transaction-assets"
             id="transaction-assets"
+            list="asset-list"
           />
         </div>
         <em style={{ color: "red" }}>{assetsTransaction}</em>
@@ -229,6 +252,7 @@ export function OutcomeTransaction() {
           <button className="form-submit">Tambah Pengeluaran</button>
         </div>
       </Form>
+      <AssetLists assetData={assetData} />
     </div>
   );
 }

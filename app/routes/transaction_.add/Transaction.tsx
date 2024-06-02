@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { IncomeTransaction, OutcomeTransaction } from "./route";
+import { AssetsData } from "~/@types/assets";
 
 type TypeTransaction = "Pemasukan" | "Pengeluaran" | "Transfer" | null;
-export default function Transaction() {
+export default function Transaction({
+  assetData,
+}: {
+  assetData: AssetsData[];
+}) {
   const [type, setType] = useState<TypeTransaction>(null);
+  console.log(assetData);
   return (
     <div id="transaction-add" className="main-page">
       <h1 id="transaction-add-title">Tambah Transaksi</h1>
@@ -36,8 +42,8 @@ export default function Transaction() {
           </button>
         </section>
       </div>
-      {type === "Pemasukan" && <IncomeTransaction />}
-      {type === "Pengeluaran" && <OutcomeTransaction />}
+      {type === "Pemasukan" && <IncomeTransaction assetData={assetData} />}
+      {type === "Pengeluaran" && <OutcomeTransaction assetData={assetData} />}
     </div>
   );
 }
