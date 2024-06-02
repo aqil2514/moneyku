@@ -121,7 +121,7 @@ export default function Transaction() {
             }}
           >
             <div id="transaction" className="main-page">
-              <h1>Transaksi</h1>
+              <h1 className="font-playfair-bold title-page">Transaksi</h1>
 
               <TransactionNavbar price={noPrice} />
 
@@ -165,7 +165,7 @@ export default function Transaction() {
           }}
         >
           <div id="transaction" className="main-page">
-            <h1 className="font-playfair-bold">Transaksi</h1>
+            <h1 className="font-playfair-bold title-page">Transaksi</h1>
 
             <TransactionNavbar price={allPrices} />
 

@@ -113,7 +113,7 @@ $playfair-display-font-family: "Playfair Display", serif;
         }
     }
 
-    &-medium {
+    &-reguler {
         @include make-poppins-font(400);
         &-italic {
             @include make-poppins-font(400, italic);

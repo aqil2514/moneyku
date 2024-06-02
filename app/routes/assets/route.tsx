@@ -6,6 +6,7 @@ import { AccountUser } from "~/@types/account";
 import { AssetsData } from "~/@types/assets";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
+import { currencyFormat } from "../transaction/route";
 
 export const meta: MetaFunction = () => [
   {
@@ -34,12 +35,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Assets() {
   const { assetData } = useLoaderData<typeof loader>();
-  console.log(assetData);
   return (
-    <div>
-      {assetData.map((d) => (
-        <p key={d.name}>{d.name}</p>
-      ))}
+    <div className="main-page">
+      <h1 className="font-playfair-bold title-page">Aset</h1>
+      <div id="asset-container">
+        {assetData.map((d) => (
+          <div key={d.name} className="item-container">
+            <p className="font-poppins-semibold">{d.name}</p>
+            <hr />
+            <p className="font-poppins-medium">
+              {currencyFormat.format(d.amount)}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

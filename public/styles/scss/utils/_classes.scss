@@ -1,0 +1,45 @@
+@import "../utils/variables";
+// GENERAL CLASS ONLY
+
+.item-container{
+    background-color: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: 200ms;
+
+    &:hover{
+        transform: scale(1.05);
+    }
+    &:active{
+        transform: scale(1);
+    }
+}
+
+.main-page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: $-main-background;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.title-page {
+    text-align: center;
+    border: 4px double black;
+}
+
+@media screen and (min-width: 950px) {
+    .main-page {
+        padding: 2rem 1rem 3rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .main-page {
+        padding: 4rem 0 3rem;
+    }
+}

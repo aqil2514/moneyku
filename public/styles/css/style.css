@@ -526,12 +526,12 @@
   font-weight: 300;
   font-style: italic;
 }
-.font-poppins-medium {
+.font-poppins-reguler {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-.font-poppins-medium-italic {
+.font-poppins-reguler-italic {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: italic;
@@ -628,6 +628,45 @@
   font-style: italic;
 }
 
+.item-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: 200ms;
+}
+.item-container:hover {
+  transform: scale(1.05);
+}
+.item-container:active {
+  transform: scale(1);
+}
+
+.main-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #d5dff1;
+  overflow-y: scroll;
+}
+.main-page::-webkit-scrollbar {
+  display: none;
+}
+
+.title-page {
+  text-align: center;
+  border: 4px double black;
+}
+
+@media screen and (min-width: 950px) {
+  .main-page {
+    padding: 2rem 1rem 3rem;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .main-page {
+    padding: 4rem 0 3rem;
+  }
+}
 @media only screen and (max-width: 600px) {
   #login-form {
     padding: 1rem;
@@ -680,16 +719,21 @@
     height: 32px;
   }
 }
+@media only screen and (max-width: 600px) {
+  #asset-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    font-size: 10px;
+  }
+}
 @media screen and (min-width: 950px) {
   #transaction {
     width: 100%;
     min-height: 100vh;
     background-color: #d5dff1;
     padding: 1rem;
-  }
-  #transaction h1 {
-    text-align: center;
-    border: 4px double black;
   }
   #transaction-data {
     display: flex;
@@ -1101,12 +1145,12 @@
   font-weight: 300;
   font-style: italic;
 }
-.font-poppins-medium {
+.font-poppins-reguler {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-.font-poppins-medium-italic {
+.font-poppins-reguler-italic {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: italic;
@@ -1203,6 +1247,45 @@
   font-style: italic;
 }
 
+.item-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: 200ms;
+}
+.item-container:hover {
+  transform: scale(1.05);
+}
+.item-container:active {
+  transform: scale(1);
+}
+
+.main-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #d5dff1;
+  overflow-y: scroll;
+}
+.main-page::-webkit-scrollbar {
+  display: none;
+}
+
+.title-page {
+  text-align: center;
+  border: 4px double black;
+}
+
+@media screen and (min-width: 950px) {
+  .main-page {
+    padding: 2rem 1rem 3rem;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .main-page {
+    padding: 4rem 0 3rem;
+  }
+}
 @media screen and (min-width: 950px) {
   #login-form {
     display: flex;
@@ -1276,6 +1359,15 @@
     background-position: center;
     background-size: cover;
     background-attachment: scroll;
+  }
+}
+@media screen and (min-width: 950px) {
+  #asset-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    text-align: center;
+    margin: 1rem 0;
   }
 }
 .income-section p {
@@ -1423,12 +1515,12 @@
   font-weight: 300;
   font-style: italic;
 }
-.font-poppins-medium {
+.font-poppins-reguler {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-.font-poppins-medium-italic {
+.font-poppins-reguler-italic {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: italic;
@@ -1525,6 +1617,45 @@
   font-style: italic;
 }
 
+.item-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: 200ms;
+}
+.item-container:hover {
+  transform: scale(1.05);
+}
+.item-container:active {
+  transform: scale(1);
+}
+
+.main-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #d5dff1;
+  overflow-y: scroll;
+}
+.main-page::-webkit-scrollbar {
+  display: none;
+}
+
+.title-page {
+  text-align: center;
+  border: 4px double black;
+}
+
+@media screen and (min-width: 950px) {
+  .main-page {
+    padding: 2rem 1rem 3rem;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .main-page {
+    padding: 4rem 0 3rem;
+  }
+}
 @media screen and (min-width: 950px) {
   .popup {
     position: fixed;
