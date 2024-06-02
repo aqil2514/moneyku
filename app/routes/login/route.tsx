@@ -3,7 +3,7 @@ import {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { redirectWithError, redirectWithSuccess } from "remix-toast";
 import { authenticator } from "~/service/auth.server";
 import { commitSession, getSession } from "~/service/session.server";
@@ -56,10 +56,12 @@ export default function LoginForm() {
 
           <div>
             <p className="font-poppins-medium">Atau login dengan Google</p>
-            <button id="google-login" type="button" className="font-poppins-medium">
+            <Form method="POST" action="/login/oauth">
+            <button id="google-login" className="font-poppins-medium">
               <img src="/images/icon-google.png" alt="Google Sign In" />
               Masuk dengan Google
             </button>
+            </Form>
           </div>
         </form>
         <div id="grid-image"></div>

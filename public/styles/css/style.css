@@ -851,71 +851,72 @@
     }
   }
 }
-#account {
-  text-align: center;
-  border: 4px double white;
-  border-radius: 1rem;
-  color: white;
-  cursor: pointer;
-  transition-duration: 200ms;
+@media screen and (min-width: 950px) {
+  #account {
+    text-align: center;
+    border: 4px double white;
+    border-radius: 1rem;
+    color: white;
+    cursor: pointer;
+    transition-duration: 200ms;
+  }
+  #account:hover {
+    color: black;
+    border-color: black;
+  }
+  #sidebar {
+    min-height: 100vh;
+    background-color: rgba(17, 75, 151, 0.4980392157);
+    padding: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+  }
+  #sidebar-header {
+    display: grid;
+    grid-template-columns: 80% auto;
+    position: relative;
+  }
+  #sidebar-header-image {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  #sidebar-header-title {
+    color: white;
+    font-size: 1.2rem;
+    margin: auto 0;
+    text-decoration: underline;
+    cursor: default;
+  }
+  #sidebar-menu {
+    border-top: 4px double white;
+    border-bottom: 4px double white;
+  }
+  #sidebar-menu h2 {
+    color: white;
+    cursor: default;
+  }
+  #sidebar-footer h2 {
+    color: white;
+  }
+  #mobile-sidebar {
+    display: none;
+  }
+  #mobile-header {
+    display: none;
+  }
+  .sidebar-on {
+    display: grid;
+    grid-template-columns: 20% auto;
+  }
+  .sidebar-off {
+    display: none;
+  }
 }
-#account:hover {
-  color: black;
-  border-color: black;
-}
-
-#sidebar {
-  min-height: 100vh;
-  background-color: rgba(17, 75, 151, 0.4980392157);
-  padding: 0.5rem;
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-}
-#sidebar-header {
-  display: grid;
-  grid-template-columns: 80% auto;
-  position: relative;
-}
-#sidebar-header-image {
-  width: 32px;
-  height: 32px;
-  object-fit: cover;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-#sidebar-header-title {
-  color: white;
-  font-size: 1.2rem;
-  margin: auto 0;
-  text-decoration: underline;
-  cursor: default;
-}
-#sidebar-menu {
-  border-top: 4px double white;
-  border-bottom: 4px double white;
-}
-#sidebar-menu h2 {
-  color: white;
-  cursor: default;
-}
-#sidebar-footer h2 {
-  color: white;
-}
-
-#mobile-sidebar {
-  display: none;
-}
-
-.sidebar-on {
-  display: grid;
-  grid-template-columns: 20% auto;
-}
-.sidebar-off {
-  display: none;
-}
-
 @media screen and (min-width: 950px) {
   #signup-page {
     width: 100%;

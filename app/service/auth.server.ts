@@ -2,8 +2,10 @@ import { Authenticator } from "remix-auth";
 import { sessionStore } from "./session.server";
 import { FormStrategy } from "remix-auth-form";
 import axios, { isAxiosError } from "axios";
-import serverEndpoint from "lib/server";
+import serverEndpoint, { endpoint } from "lib/server";
 import { AccountUser } from "~/@types/account";
+import { GoogleStrategy } from "remix-auth-google";
+import clientEndpoint from "lib/client-endpoint";
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -45,5 +47,25 @@ const formStrategy = new FormStrategy(async ({ form }) => {
 });
 
 authenticator.use(formStrategy, "form");
+
+const googleStrategy = new GoogleStrategy(
+  {
+    clientID: String(process.env.OAUTH_GOOGLE_CLIENT_ID),
+    clientSecret: String(process.env.OAUTH_GOOGLE_CLIENT_SECRET),
+    callbackURL: clientEndpoint,
+  },
+  async ({ profile }) => {
+    const res = await axios.get(`${endpoint}/account/getUser`, {
+      params: {
+        email: profile.emails[0].value,
+      },
+    });
+    const user: User = res.data.user;
+
+    return user;
+  }
+);
+
+authenticator.use(googleStrategy, "google");
 
 export { authenticator };

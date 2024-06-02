@@ -1,29 +1,30 @@
-#account{
-  text-align: center;
-  border: 4px double white;
-  border-radius: 1rem;
-  color: white;
-  cursor: pointer;
-  transition-duration: 200ms;
+@media screen and (min-width: 950px) {
+  #account {
+    text-align: center;
+    border: 4px double white;
+    border-radius: 1rem;
+    color: white;
+    cursor: pointer;
+    transition-duration: 200ms;
 
-  &:hover{
-    color: black;
-    border-color: black;
+    &:hover {
+      color: black;
+      border-color: black;
+    }
   }
-}
-#sidebar {
+  #sidebar {
     min-height: 100vh;
     background-color: #114b977f;
     padding: 0.5rem;
     display: flex;
     gap: 1rem;
     flex-direction: column;
-  
+
     &-header {
       display: grid;
       grid-template-columns: 80% auto;
       position: relative;
-  
+
       &-image {
         width: 32px;
         height: 32px;
@@ -32,7 +33,7 @@
         right: 0;
         top: 0;
       }
-  
+
       &-title {
         color: white;
         font-size: 1.2rem;
@@ -41,7 +42,7 @@
         cursor: default;
       }
     }
-  
+
     &-menu {
       border-top: 4px double white;
       border-bottom: 4px double white;
@@ -50,24 +51,29 @@
         cursor: default;
       }
     }
-  
+
     &-footer {
       h2 {
         color: white;
       }
     }
   }
-  
-  #mobile-sidebar{
+
+  #mobile-sidebar {
     display: none;
   }
 
-.sidebar{
-    &-on{
-        display: grid;
-        grid-template-columns: 20% auto;
+  #mobile-header {
+    display: none;
+  }
+
+  .sidebar {
+    &-on {
+      display: grid;
+      grid-template-columns: 20% auto;
     }
-    &-off{
-        display: none;
+    &-off {
+      display: none;
     }
+  }
 }

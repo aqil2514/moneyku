@@ -15,3 +15,4 @@ export const securityQuestionsData: string[] = [
     "Siapa nama artis atau musisi favorit Anda?",
     "Apa nama klub olahraga favorit Anda?"
 ];
+
