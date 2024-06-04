@@ -6,7 +6,9 @@ import { AccountUser } from "~/@types/account";
 import { AssetsData } from "~/@types/assets";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
-import { currencyFormat } from "../transaction/route";
+import { ClientOnly } from "remix-utils/client-only";
+import MainPage from "./main";
+import { createContext, useContext } from "react";
 
 export const meta: MetaFunction = () => [
   {
@@ -33,22 +35,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ assetData });
 }
 
+interface AssetContextType {
+  assetData: AssetsData[];
+}
+
+const AssetContext = createContext<AssetContextType>({} as AssetContextType);
+
 export default function Assets() {
   const { assetData } = useLoaderData<typeof loader>();
   return (
-    <div className="main-page">
-      <h1 className="font-playfair-bold title-page">Aset</h1>
-      <div id="asset-container">
-        {assetData.map((d) => (
-          <div key={d.name} className="item-container">
-            <p className="font-poppins-semibold">{d.name}</p>
-            <hr />
-            <p className="font-poppins-medium">
-              {currencyFormat.format(d.amount)}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <ClientOnly>
+      {() => (
+        <AssetContext.Provider value={{ assetData }}>
+          <MainPage />
+        </AssetContext.Provider>
+      )}
+    </ClientOnly>
   );
+}
+
+export function useAssetContext() {
+  return useContext(AssetContext);
 }

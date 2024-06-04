@@ -1,9 +1,19 @@
 @media screen and (min-width: 950px) {
-#asset-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    text-align: center;
-    margin : 1rem 0;
-}
+    #asset {
+        &-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        &-detail{
+            margin: 1rem 0;
+        }
+
+        &-footer{
+            justify-content: center !important;
+        }
+    }
 }
