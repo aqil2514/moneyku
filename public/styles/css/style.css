@@ -613,12 +613,12 @@
   font-weight: 300;
   font-style: italic;
 }
-.font-ubuntu-medium {
+.font-ubuntu-reguler {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-.font-ubuntu-medium-italic {
+.font-ubuntu-reguler-italic {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
   font-style: italic;
@@ -647,14 +647,39 @@
 .form {
   /*
   Struktur HTML wajib label dan input yang dibungkus div, contoh:
-  <div> 
-  <label htmlFor="aset-name">Nama Aset : </label>
-  <input />
-  </div> 
+  <div>
+    <label htmlFor="aset-name">Nama Aset : </label>
+    <input />
+  </div>
   */
+}
+.form-input-basic {
+  margin: 0.5rem 0;
 }
 .form-input-basic label {
   display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+.form-input-basic input,
+.form-input-basic select,
+.form-input-basic textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+}
+.form-input-basic input:focus,
+.form-input-basic select:focus,
+.form-input-basic textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.form-input-basic textarea {
+  resize: vertical;
 }
 
 .item-container {
@@ -1268,12 +1293,12 @@
   font-weight: 300;
   font-style: italic;
 }
-.font-ubuntu-medium {
+.font-ubuntu-reguler {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-.font-ubuntu-medium-italic {
+.font-ubuntu-reguler-italic {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
   font-style: italic;
@@ -1302,14 +1327,39 @@
 .form {
   /*
   Struktur HTML wajib label dan input yang dibungkus div, contoh:
-  <div> 
-  <label htmlFor="aset-name">Nama Aset : </label>
-  <input />
-  </div> 
+  <div>
+    <label htmlFor="aset-name">Nama Aset : </label>
+    <input />
+  </div>
   */
+}
+.form-input-basic {
+  margin: 0.5rem 0;
 }
 .form-input-basic label {
   display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+.form-input-basic input,
+.form-input-basic select,
+.form-input-basic textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+}
+.form-input-basic input:focus,
+.form-input-basic select:focus,
+.form-input-basic textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.form-input-basic textarea {
+  resize: vertical;
 }
 
 .item-container {
@@ -1674,12 +1724,12 @@
   font-weight: 300;
   font-style: italic;
 }
-.font-ubuntu-medium {
+.font-ubuntu-reguler {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-.font-ubuntu-medium-italic {
+.font-ubuntu-reguler-italic {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
   font-style: italic;
@@ -1708,14 +1758,39 @@
 .form {
   /*
   Struktur HTML wajib label dan input yang dibungkus div, contoh:
-  <div> 
-  <label htmlFor="aset-name">Nama Aset : </label>
-  <input />
-  </div> 
+  <div>
+    <label htmlFor="aset-name">Nama Aset : </label>
+    <input />
+  </div>
   */
+}
+.form-input-basic {
+  margin: 0.5rem 0;
 }
 .form-input-basic label {
   display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+.form-input-basic input,
+.form-input-basic select,
+.form-input-basic textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+}
+.form-input-basic input:focus,
+.form-input-basic select:focus,
+.form-input-basic textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.form-input-basic textarea {
+  resize: vertical;
 }
 
 .item-container {

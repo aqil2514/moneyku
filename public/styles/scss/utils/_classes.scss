@@ -1,22 +1,46 @@
 @import "../utils/variables";
 // GENERAL CLASS ONLY
 
-.form{
+.form {
     /*
     Struktur HTML wajib label dan input yang dibungkus div, contoh:
-    <div> 
-    <label htmlFor="aset-name">Nama Aset : </label>
-    <input />
-    </div> 
+    <div>
+      <label htmlFor="aset-name">Nama Aset : </label>
+      <input />
+    </div>
     */
-    &-input-basic{
-        label{
+    &-input-basic {
+        margin: 0.5rem 0;
+
+        label {
             display: block;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+            box-sizing: border-box;
+            margin-top: 0.25rem;
+
+            &:focus {
+                outline: none;
+                border-color: #007bff;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
+        }
+
+        textarea {
+            resize: vertical;
         }
     }
 }
-
-.item-container{
+.item-container {
     background-color: white;
     padding: 1rem;
     border-radius: 1rem;
@@ -24,10 +48,10 @@
     cursor: pointer;
     transition: 200ms;
 
-    &:hover{
+    &:hover {
         transform: scale(1.05);
     }
-    &:active{
+    &:active {
         transform: scale(1);
     }
 }

@@ -63,46 +63,60 @@ const PopupEdit = ({
   const [selectValue, setSelectValue] = useState<string>(
     data ? data.group : ""
   );
+
+  // Next tingkatin UX di sini
   return (
     <>
       <h3 className="font-ubuntu-bold text-center">Edit Aset {data?.name}</h3>
 
-      <Form id="asset-form">
+      <Form id="asset-form" method="PUT" action="/api/asset">
+        <input type="hidden" name="old-asset-name" id="old-asset-name" readOnly value={data?.name} />
         <div className="form-input-basic">
-          <label htmlFor="aset-name">Nama Aset : </label>
+          <label htmlFor="asset-name" className="font-ubuntu-reguler">
+            Nama Aset :{" "}
+          </label>
           <input
             type="text"
-            name="aset-name"
-            id="aset-name"
+            name="asset-name"
+            id="asset-name"
             defaultValue={data?.name}
+            className="font-poppins-reguler"
           />
         </div>
-        <div>
-          <label htmlFor="aset-nominal">Total Nominal Aset : </label>
+        <div className="form-input-basic">
+          <label htmlFor="asset-nominal" className="font-ubuntu-reguler">
+            Total Nominal Aset :{" "}
+          </label>
           <input
             type="number"
-            name="aset-nominal"
-            id="aset-nominal"
+            name="asset-nominal"
+            id="asset-nominal"
             defaultValue={data?.amount}
+            className="font-poppins-reguler"
           />
         </div>
-        <div>
-          <label htmlFor="asset-category">Kategori Aset</label>
+        <div className="form-input-basic">
+          <label htmlFor="asset-category" className="font-ubuntu-reguler">
+            Kategori Aset
+          </label>
           <select
             name="asset-category"
             id="asset-category"
             value={selectValue}
+            className="font-poppins-reguler"
             onChange={(e) => setSelectValue(e.target.value)}
           >
             {assetCategoryData.sort().map((d) => (
-              <option value={d} key={d}>
+              <option value={d} key={d} className="font-poppins-reguler">
                 {d}
               </option>
             ))}
             <option value={undefined} disabled>
               ──────────
             </option>
-            <option value="Lainnya">Lainnya</option>
+            <option value="Lainnya" className="font-poppins-reguler">
+              Lainnya
+            </option>
           </select>
           {selectValue === "Lainnya" && (
             <>
@@ -115,12 +129,15 @@ const PopupEdit = ({
             </>
           )}
         </div>
-        <div>
-          <label htmlFor="aset-description">Deskripsi Aset : </label>
+        <div className="form-input-basic">
+          <label htmlFor="asset-description" className="font-ubuntu-reguler">
+            Deskripsi Aset :{" "}
+          </label>
           <textarea
-            name="aset-description"
-            id="aset-description"
+            name="asset-description"
+            id="asset-description"
             defaultValue={data?.description}
+            className="font-poppins-reguler"
           />
         </div>
         <div id="asset-footer" className="container-flex">
@@ -133,7 +150,6 @@ const PopupEdit = ({
           </button>
           <button
             className="button-success"
-            onClick={() => alert("Edit belum berfungsi")}
           >
             Konfirmasi
           </button>
