@@ -644,6 +644,19 @@
   font-style: italic;
 }
 
+.form {
+  /*
+  Struktur HTML wajib label dan input yang dibungkus div, contoh:
+  <div> 
+  <label htmlFor="aset-name">Nama Aset : </label>
+  <input />
+  </div> 
+  */
+}
+.form-input-basic label {
+  display: block;
+}
+
 .item-container {
   background-color: white;
   padding: 1rem;
@@ -1286,6 +1299,19 @@
   font-style: italic;
 }
 
+.form {
+  /*
+  Struktur HTML wajib label dan input yang dibungkus div, contoh:
+  <div> 
+  <label htmlFor="aset-name">Nama Aset : </label>
+  <input />
+  </div> 
+  */
+}
+.form-input-basic label {
+  display: block;
+}
+
 .item-container {
   background-color: white;
   padding: 1rem;
@@ -1677,6 +1703,19 @@
   font-family: "Ubuntu", sans-serif;
   font-weight: 700;
   font-style: italic;
+}
+
+.form {
+  /*
+  Struktur HTML wajib label dan input yang dibungkus div, contoh:
+  <div> 
+  <label htmlFor="aset-name">Nama Aset : </label>
+  <input />
+  </div> 
+  */
+}
+.form-input-basic label {
+  display: block;
 }
 
 .item-container {
