@@ -3,6 +3,7 @@ import { useAssetContext } from "./route";
 import { AssetsData } from "~/@types/assets";
 import { Form } from "@remix-run/react";
 import { assetCategoryData } from "./data";
+import { IoIosWarning } from "react-icons/io";
 
 interface DetailProps {
   assetName: string;
@@ -16,7 +17,12 @@ interface PopupProps {
   setDeleteMode: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const PopupDetail = ({ data, setAssetName, setEditMode }: PopupProps) => {
+const PopupDetail = ({
+  data,
+  setAssetName,
+  setEditMode,
+  setDeleteMode,
+}: PopupProps) => {
   return (
     <>
       <h3 className="font-ubuntu-bold text-center">Aset {data?.name}</h3>
@@ -45,10 +51,7 @@ const PopupDetail = ({ data, setAssetName, setEditMode }: PopupProps) => {
         <button className="button-success" onClick={() => setEditMode(true)}>
           Edit
         </button>
-        <button
-          className="button-close"
-          onClick={() => alert("Hapus belum berfungsi")}
-        >
+        <button className="button-close" onClick={() => setDeleteMode(true)}>
           Hapus
         </button>
       </div>
@@ -70,7 +73,13 @@ const PopupEdit = ({
       <h3 className="font-ubuntu-bold text-center">Edit Aset {data?.name}</h3>
 
       <Form id="asset-form" method="PUT" action="/api/asset">
-        <input type="hidden" name="old-asset-name" id="old-asset-name" readOnly value={data?.name} />
+        <input
+          type="hidden"
+          name="old-asset-name"
+          id="old-asset-name"
+          readOnly
+          value={data?.name}
+        />
         <div className="form-input-basic">
           <label htmlFor="asset-name" className="font-ubuntu-reguler">
             Nama Aset :{" "}
@@ -148,14 +157,56 @@ const PopupEdit = ({
           >
             Kembali
           </button>
-          <button
-            className="button-success"
-          >
-            Konfirmasi
-          </button>
+          <button className="button-success">Konfirmasi</button>
         </div>
       </Form>
     </>
+  );
+};
+
+const PopupDelete = ({
+  data,
+  setDeleteMode,
+}: Pick<PopupProps, "data" | "setDeleteMode">) => {
+  return (
+    <div>
+      <h3 className="font-ubuntu-bold text-center popup-delete-header">
+        Hapus Aset {data?.name}
+      </h3>
+      <Form method="DELETE">
+        <div id="asset-detail" className="popup-delete-body">
+          <p>
+            <strong>Nama Aset</strong> : {data?.name}
+          </p>
+          <p>
+            <strong>Total Aset</strong> : {data?.amount}
+          </p>
+          <p>
+            <strong>Kelompok Aset</strong> : {data?.group}
+          </p>
+          <p>
+            <strong>Deskripsi Aset</strong> : {data?.description}
+          </p>
+        </div>
+        <div className="alert alert-warning">
+          <IoIosWarning />
+          <p>
+            <strong>Warning :</strong> Data yang dihapus tidak dapat
+            dikembalikan
+          </p>
+        </div>
+        <div id="asset-footer" className="container-flex">
+          <button
+            className="button-close"
+            onClick={() => setDeleteMode(false)}
+            type="button"
+          >
+            Kembali
+          </button>
+          <button className="button-success">Konfirmasi</button>
+        </div>
+      </Form>
+    </div>
   );
 };
 
@@ -176,6 +227,9 @@ export default function DetailPopup({ assetName, setAssetName }: DetailProps) {
           />
         )}
         {editMode && <PopupEdit setEditMode={setEditMode} data={data} />}
+        {deleteMode && (
+          <PopupDelete setDeleteMode={setDeleteMode} data={data} />
+        )}
       </div>
     </div>
   );

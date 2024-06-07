@@ -12,19 +12,35 @@ export const meta: MetaFunction = () => [
   { title: "Login | Moneyku " },
 ];
 
+type MethodLoginState = "oauth" | "form";
+
 export async function action({ request }: ActionFunctionArgs) {
-  const auth = await authenticator.authenticate("form", request);
+  const {searchParams} = new URL(request.url);
+  const methodLogin = searchParams.get("method-login") as MethodLoginState;
 
-  if(!auth){
-    return redirectWithError("/login", "Login gagal")
+  if(methodLogin === "form"){
+    const auth = await authenticator.authenticate("form", request);
+
+    if(!auth){
+      return redirectWithError("/login", "Login gagal")
+    }
+  
+    const session = await getSession(request.headers.get("cookie"));
+    session.set(authenticator.sessionKey, auth);
+  
+    const headers = new Headers({ "Set-Cookie": await commitSession(session) });
+  
+    return redirectWithSuccess("/transaction", `Selamat datang ${auth.username}`, {headers})
+    
+    } else if(methodLogin === "oauth"){
+      const auth = await authenticator.authenticate("google", request);
+
+      if(!auth){
+        return redirectWithError("/login", "Login gagal")
+      }
+      
+      return redirectWithSuccess("/transaction", `Selamat datang ${auth.username}`)
   }
-
-  const session = await getSession(request.headers.get("cookie"));
-  session.set(authenticator.sessionKey, auth);
-
-  const headers = new Headers({ "Set-Cookie": await commitSession(session) });
-
-  return redirectWithSuccess("/transaction", `Selamat datang ${auth.username}`, {headers})
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -38,7 +54,7 @@ export default function LoginForm() {
     <div id="login-form">
       <h1 id="main-title" className="font-merriweather-bold">Moneyku</h1>
       <div id="grid-layout">
-        <form action="/login" method="POST" className="form">
+        <form action="/login?method-login=form" method="POST" className="form">
           <h1 className="font-merriweather-bold">Login</h1>
 
           <div>
@@ -56,7 +72,7 @@ export default function LoginForm() {
 
           <div>
             <p className="font-poppins-medium">Atau login dengan Google</p>
-            <Form method="POST" action="/login/oauth">
+            <Form method="POST" action="/login?method-login=oauth">
             <button id="google-login" className="font-poppins-medium">
               <img src="/images/icon-google.png" alt="Google Sign In" />
               Masuk dengan Google
