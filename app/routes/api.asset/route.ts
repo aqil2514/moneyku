@@ -33,6 +33,13 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     return redirectWithSuccess("/assets", res.data.msg)
+    } else if(request.method === "DELETE"){
+    const formData = await request.formData();
+    const assetName = String(formData.get("asset-name"));
+
+    const res = await axios.delete(`${endpoint}/assets?asset-name=${assetName}&user-id=${user.uid}`)
+      
+      return redirectWithSuccess("/assets", res.data.msg)
   }
 
   return redirect("/assets");

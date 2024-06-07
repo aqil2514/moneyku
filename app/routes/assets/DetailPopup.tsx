@@ -173,7 +173,7 @@ const PopupDelete = ({
       <h3 className="font-ubuntu-bold text-center popup-delete-header">
         Hapus Aset {data?.name}
       </h3>
-      <Form method="DELETE">
+      <Form method="DELETE" action="/api/asset">
         <div id="asset-detail" className="popup-delete-body">
           <p>
             <strong>Nama Aset</strong> : {data?.name}
@@ -196,6 +196,7 @@ const PopupDelete = ({
           </p>
         </div>
         <div id="asset-footer" className="container-flex">
+          <input type="hidden" name="asset-name" value={data?.name} />
           <button
             className="button-close"
             onClick={() => setDeleteMode(false)}
