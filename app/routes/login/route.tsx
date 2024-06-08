@@ -58,7 +58,7 @@ export default function LoginForm() {
           <h1 className="font-merriweather-bold">Login</h1>
 
           <div>
-            <label htmlFor="email" className="font-poppins-medium">Email:</label>
+            <label htmlFor="email" className="font-poppins-medium">Username atau Email:</label>
             <input type="text" name="email" id="email" />
           </div>
 

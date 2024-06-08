@@ -1444,6 +1444,7 @@
   }
   #login-form #grid-layout .form input {
     width: 100%;
+    max-width: 300px;
     border: 1px solid #ccc;
     border-radius: 0.3rem;
     padding: 0.5rem;
