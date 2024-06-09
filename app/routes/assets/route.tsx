@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigation } from "@remix-run/react";
 import axios from "axios";
 import { endpoint } from "lib/server";
 import { AccountUser } from "~/@types/account";
@@ -9,6 +9,7 @@ import { getSession } from "~/service/session.server";
 import { ClientOnly } from "remix-utils/client-only";
 import MainPage from "./main";
 import { createContext, useContext } from "react";
+import Loading from "components/Loading/Loading";
 
 export const meta: MetaFunction = () => [
   {
@@ -43,10 +44,13 @@ const AssetContext = createContext<AssetContextType>({} as AssetContextType);
 
 export default function Assets() {
   const { assetData } = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
+  const isPending = navigation.state === "loading";
   return (
     <ClientOnly>
       {() => (
         <AssetContext.Provider value={{ assetData }}>
+          {isPending && <Loading />}
           <MainPage />
         </AssetContext.Provider>
       )}

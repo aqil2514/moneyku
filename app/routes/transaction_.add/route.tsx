@@ -4,7 +4,12 @@ import {
   MetaFunction,
   json,
 } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
 import serverEndpoint, { endpoint } from "lib/server";
@@ -18,6 +23,7 @@ import { TransactionErrors } from "~/@types/transaction";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import axios from "axios";
 import { AssetsData } from "~/@types/assets";
+import Loading from "components/Loading/Loading";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },
@@ -94,18 +100,29 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function AddTransaction() {
   const { assetData } = useLoaderData<typeof loader>();
-  return <ClientOnly>{() => <Transaction assetData={assetData} />}</ClientOnly>;
+  const navigation = useNavigation();
+  const isPending = navigation.state === "loading";
+  return (
+    <ClientOnly>
+      {() => (
+        <>
+          {isPending && <Loading />}
+          <Transaction assetData={assetData} />
+        </>
+      )}
+    </ClientOnly>
+  );
 }
 
 const AssetLists = ({ assetData }: { assetData: AssetsData[] }) => {
-  return(
+  return (
     <datalist id="asset-list">
       {assetData.map((d) => (
-      <option value={d.name} key={d.name} />
+        <option value={d.name} key={d.name} />
       ))}
     </datalist>
-  )
-}
+  );
+};
 
 export function IncomeTransaction({ assetData }: { assetData: AssetsData[] }) {
   const [nominal, setNominal] = useState<string>("");

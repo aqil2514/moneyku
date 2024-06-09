@@ -4,7 +4,7 @@ import {
   json,
 } from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigation } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
 import TransactionData from "./data";
 import { endpoint } from "lib/server";
@@ -14,6 +14,7 @@ import TransactionFilter from "./transaction-filter";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
 import { AccountDB } from "~/@types/account";
+import Loading from "components/Loading/Loading";
 
 export const meta: MetaFunction = () => [
   {
@@ -88,6 +89,8 @@ const TransactionContext = createContext<TransactionContextType>(
 
 export default function Transaction() {
   const res = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
+  const isPending = navigation.state === "loading";
 
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -120,6 +123,8 @@ export default function Transaction() {
               setMenuActive
             }}
           >
+          {isPending && <Loading />} 
+
             <div id="transaction" className="main-page">
               <h1 className="font-playfair-bold title-page">Transaksi</h1>
 
@@ -164,6 +169,7 @@ export default function Transaction() {
             setMenuActive
           }}
         >
+          {isPending && <Loading />} 
           <div id="transaction" className="main-page">
             <h1 className="font-playfair-bold title-page">Transaksi</h1>
 

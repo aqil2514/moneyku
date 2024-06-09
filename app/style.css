@@ -1908,6 +1908,32 @@
     border-radius: 1rem;
   }
 }
+.loading {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5176470588);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+}
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px dashed white;
+  border-radius: 50%;
+  animation: spinning 2s infinite linear;
+}
+
+@keyframes spinning {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 * {
   padding: 0;
   margin: 0;

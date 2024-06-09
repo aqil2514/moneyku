@@ -21,7 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if(methodLogin === "form"){
     const auth = await authenticator.authenticate("form", request);
 
-    if(!auth){
+    if(!auth){ 
       return redirectWithError("/login", "Login gagal")
     }
   
@@ -50,6 +50,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function LoginForm() {
+  
   return (
     <div id="login-form">
       <h1 id="main-title" className="font-merriweather-bold">Moneyku</h1>

@@ -19,6 +19,7 @@ export default function TransactionData() {
     return dateA.getTime() - dateB.getTime()
   });
 
+
   useEffect(() => {
     const keyDownHandler = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
@@ -40,6 +41,7 @@ export default function TransactionData() {
   if (!filteredData || filteredData.length === 0) {
     return <div>Tidak ada data transaksi di bulan {months[month]}</div>;
   }
+  
 
   return (
     <div id="transaction-data-container" ref={dataRef}>

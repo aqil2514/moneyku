@@ -1,7 +1,7 @@
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { useAssetContext } from "./route";
 import { AssetsData } from "~/@types/assets";
-import { Form } from "@remix-run/react";
+import { Form, useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
 import { IoIosWarning } from "react-icons/io";
 
@@ -168,12 +168,24 @@ const PopupDelete = ({
   data,
   setDeleteMode,
 }: Pick<PopupProps, "data" | "setDeleteMode">) => {
+  const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
+  const isLoading = fetcher.state === "loading";
+
+  useEffect(() => {
+    if (isLoading) {
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }
+  }, [isLoading, setDeleteMode]);
+
   return (
     <div>
       <h3 className="font-ubuntu-bold text-center popup-delete-header">
         Hapus Aset {data?.name}
       </h3>
-      <Form method="DELETE" action="/api/asset">
+      <fetcher.Form method="DELETE" action="/api/asset">
         <div id="asset-detail" className="popup-delete-body">
           <p>
             <strong>Nama Aset</strong> : {data?.name}
@@ -204,9 +216,11 @@ const PopupDelete = ({
           >
             Kembali
           </button>
-          <button className="button-success">Konfirmasi</button>
+          <button className="button-success" disabled={isSubmitting}>
+            {isSubmitting ? "Menghapus" : "Konfirmasi"}
+          </button>
         </div>
-      </Form>
+      </fetcher.Form>
     </div>
   );
 };

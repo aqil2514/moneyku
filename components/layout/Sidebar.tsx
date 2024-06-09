@@ -47,7 +47,7 @@ function PCSidebar({ user }: { user: AccountDB | null }) {
           to={"/transaction"}
           replace
           className={({ isActive }) =>
-            isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
+            isActive  ? "sidebar-list sidebar-list-active" : "sidebar-list"
           }
         >
           <AiOutlineTransaction />
