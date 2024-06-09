@@ -18,6 +18,11 @@ export default function MainPage() {
     <>
       <div className="main-page">
         <h1 className="font-playfair-bold title-page">Aset</h1>
+        <div id="asset-menu">
+          <button className="button-success" onClick={() => alert("Belum berfungsi")}>
+            Tambah Aset
+          </button>
+        </div>
         <div id="asset-container">
           {assetData.map((d) => (
             <button

@@ -1,0 +1,251 @@
+// Font Size Utilities
+.font-xs {
+  font-size: 0.75rem; // Extra small
+}
+
+.font-sm {
+  font-size: 0.875rem; // Small
+}
+
+.font-md {
+  font-size: 1rem; // Medium
+}
+
+.font-lg {
+  font-size: 1.125rem; // Large
+}
+
+.font-xl {
+  font-size: 1.25rem; // Extra large
+}
+
+.font-2xl {
+  font-size: 1.5rem; // 2x Extra large
+}
+
+.font-3xl {
+  font-size: 1.875rem; // 3x Extra large
+}
+
+.font-4xl {
+  font-size: 2.25rem; // 4x Extra large
+}
+
+.font-5xl {
+  font-size: 3rem; // 5x Extra large
+}
+
+// Font Weight Utilities
+.font-thin {
+  font-weight: 100;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+.font-black {
+  font-weight: 900;
+}
+
+// Font Style Utilities
+.font-italic {
+  font-style: italic;
+}
+
+.font-normal {
+  font-style: normal;
+}
+
+// Text Align Utilities
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+// Text Transform Utilities
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+// Text Decoration Utilities
+.underline {
+  text-decoration: underline;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+// Line Height Utilities
+.leading-none {
+  line-height: 1;
+}
+
+.leading-tight {
+  line-height: 1.25;
+}
+
+.leading-snug {
+  line-height: 1.375;
+}
+
+.leading-normal {
+  line-height: 1.5;
+}
+
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+.leading-loose {
+  line-height: 2;
+}
+
+// Letter Spacing Utilities
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+  letter-spacing: 0;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
+}
+
+// Font Color Utilities
+.text-white {
+  color: #ffffff;
+}
+
+.text-black {
+  color: #000000;
+}
+
+.text-gray {
+  color: #808080;
+}
+
+.text-red {
+  color: #ff0000;
+}
+
+.text-green {
+  color: #008000;
+}
+
+.text-blue {
+  color: #0000ff;
+}
+
+.text-yellow {
+  color: #ffff00;
+}
+
+.text-purple {
+  color: #800080;
+}
+
+.text-orange {
+  color: #ffa500;
+}
+
+.text-pink {
+  color: #ff69b4;
+}
+
+.text-teal {
+  color: #008080;
+}
+
+// Custom Font Color Utilities
+.text-primary {
+  color: #007bff; // Example custom primary color
+}
+
+.text-secondary {
+  color: #6c757d; // Example custom secondary color
+}
+
+.text-success {
+  color: #28a745; // Example custom success color
+}
+
+.text-danger {
+  color: #dc3545; // Example custom danger color
+}
+
+.text-warning {
+  color: #ffc107; // Example custom warning color
+}
+
+.text-info {
+  color: #17a2b8; // Example custom info color
+}
+
+.text-light {
+  color: #f8f9fa; // Example custom light color
+}
+
+.text-dark {
+  color: #343a40; // Example custom dark color
+}
+
+// Usage example: .text-primary, .text-secondary, .text-success, etc.

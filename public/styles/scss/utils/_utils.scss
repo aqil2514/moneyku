@@ -9,14 +9,3 @@
 .total-section {
     @include font-column-1(white, #1ae3cc);
 }
-// Font Utils
-  @mixin text-alignment($alignment) {
-    .text-#{$alignment} {
-      text-align: $alignment;
-    }
-  }
-  
-  @include text-alignment(left);
-  @include text-alignment(center);
-  @include text-alignment(right);
-  @include text-alignment(justify);

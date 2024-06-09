@@ -1,9 +1,10 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import { useAssetContext } from "./route";
 import { AssetsData } from "~/@types/assets";
-import { Form, useFetcher } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
 import { IoIosWarning } from "react-icons/io";
+import { currencyFormat } from "../transaction/route";
 
 interface DetailProps {
   assetName: string;
@@ -31,13 +32,18 @@ const PopupDetail = ({
           <strong>Nama Aset</strong> : {data?.name}
         </p>
         <p>
-          <strong>Total Aset</strong> : {data?.amount}
+          <strong>Total Aset</strong> :{" "}
+          {data && currencyFormat.format(data.amount)}
         </p>
         <p>
           <strong>Kelompok Aset</strong> : {data?.group}
         </p>
+        <p style={{ whiteSpace: "pre-wrap" }}>
+          <strong style={{ display: "block" }}>Deskripsi Aset : </strong>
+          {data?.description}
+        </p>
         <p>
-          <strong>Deskripsi Aset</strong> : {data?.description}
+          <strong>Jumlah Transaksi : </strong>
         </p>
       </div>
 
@@ -66,19 +72,28 @@ const PopupEdit = ({
   const [selectValue, setSelectValue] = useState<string>(
     data ? data.group : ""
   );
+  const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
+  const isLoading = fetcher.state === "loading";
 
-  // Next tingkatin UX di sini
+  useEffect(() => {
+    if(isLoading){
+      setEditMode(false);
+    }
+  }, [isLoading, setEditMode])
+
   return (
-    <>
+    <div style={{ position: "relative" }}>
       <h3 className="font-ubuntu-bold text-center">Edit Aset {data?.name}</h3>
 
-      <Form id="asset-form" method="PUT" action="/api/asset">
+      <fetcher.Form id="asset-form" method="PUT" action="/api/asset">
         <input
           type="hidden"
           name="old-asset-name"
           id="old-asset-name"
           readOnly
           value={data?.name}
+          disabled={isSubmitting}
         />
         <div className="form-input-basic">
           <label htmlFor="asset-name" className="font-ubuntu-reguler">
@@ -90,6 +105,7 @@ const PopupEdit = ({
             id="asset-name"
             defaultValue={data?.name}
             className="font-poppins-reguler"
+            disabled={isSubmitting}
           />
         </div>
         <div className="form-input-basic">
@@ -102,6 +118,7 @@ const PopupEdit = ({
             id="asset-nominal"
             defaultValue={data?.amount}
             className="font-poppins-reguler"
+            disabled={isSubmitting}
           />
         </div>
         <div className="form-input-basic">
@@ -114,6 +131,7 @@ const PopupEdit = ({
             value={selectValue}
             className="font-poppins-reguler"
             onChange={(e) => setSelectValue(e.target.value)}
+            disabled={isSubmitting}
           >
             {assetCategoryData.sort().map((d) => (
               <option value={d} key={d} className="font-poppins-reguler">
@@ -134,6 +152,7 @@ const PopupEdit = ({
                 type="text"
                 name="new-asset-category"
                 id="new-asset-category"
+                disabled={isSubmitting}
               />
             </>
           )}
@@ -147,8 +166,15 @@ const PopupEdit = ({
             id="asset-description"
             defaultValue={data?.description}
             className="font-poppins-reguler"
+            disabled={isSubmitting}
           />
         </div>
+        {isSubmitting && (
+          <div className="flex gap-1">
+            <div className="popup-spinner"></div>
+            <p className="my-auto font-playfair-bold text-info">Editing...</p>
+          </div>
+        )}
         <div id="asset-footer" className="container-flex">
           <button
             className="button-close"
@@ -157,11 +183,15 @@ const PopupEdit = ({
           >
             Kembali
           </button>
-          <button className="button-success">Konfirmasi</button>
+          <button className="button-success">
+            {isSubmitting ? "Mengedit..." : "Konfirmasi"}
+          </button>
         </div>
-      </Form>
-    </>
+      </fetcher.Form>
+    </div>
   );
+
+  // Next tingkatin UX di sini
 };
 
 const PopupDelete = ({

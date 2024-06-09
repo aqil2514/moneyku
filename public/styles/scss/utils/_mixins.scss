@@ -19,6 +19,11 @@
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
   }
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
   &-active {
     background-color: $-hover-color;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -38,7 +43,7 @@
   background-color: #b3b2b27f;
 }
 
-@mixin transaction-menu($-svg-width: 54px,$-svg-height:54px ) {
+@mixin transaction-menu($-svg-width: 54px, $-svg-height: 54px) {
   display: flex;
   gap: 0.5rem;
   background-color: #064526cf;
@@ -76,7 +81,7 @@
   }
 }
 
-@mixin transaction-navbar(){
+@mixin transaction-navbar() {
   display: flex;
   justify-content: space-evenly;
   padding: 0.5rem 1rem;
@@ -94,17 +99,17 @@
 }
 
 // FONT MIXINS
-@mixin font-column-1($-top-text-color, $-bottom-text-color, $-font-size: 16px){
-    p {
-        margin: 0;
-        font-size: $-font-size;
-        &:nth-child(1) {
-            color: $-top-text-color;
-        }
-        &:nth-child(2) {
-            color: $-bottom-text-color;
-        }
+@mixin font-column-1($-top-text-color, $-bottom-text-color, $-font-size: 16px) {
+  p {
+    margin: 0;
+    font-size: $-font-size;
+    &:nth-child(1) {
+      color: $-top-text-color;
     }
+    &:nth-child(2) {
+      color: $-bottom-text-color;
+    }
+  }
 }
 
 @mixin form($-width: 100%) {

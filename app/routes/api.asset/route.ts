@@ -14,7 +14,9 @@ const getFormData = (formData: FormData): AssetFormValues => {
     assetNominal: Number(formData.get("asset-nominal")),
     assetCategory: formData.get("asset-category") as string,
     newAssetCategory: formData.get("new-asset-category") as string,
-    assetDescription: formData.get("asset-description") as string,
+    assetDescription: encodeURIComponent(
+      formData.get("asset-description") as string
+    ),
   };
   return formValues;
 };
@@ -32,14 +34,16 @@ export async function action({ request }: ActionFunctionArgs) {
       userId: user.uid,
     });
 
-    return redirectWithSuccess("/assets", res.data.msg)
-    } else if(request.method === "DELETE"){
+    return redirectWithSuccess("/assets", res.data.msg);
+  } else if (request.method === "DELETE") {
     const formData = await request.formData();
     const assetName = String(formData.get("asset-name"));
 
-    const res = await axios.delete(`${endpoint}/assets?asset-name=${assetName}&user-id=${user.uid}`)
-      
-      return redirectWithSuccess("/assets", res.data.msg)
+    const res = await axios.delete(
+      `${endpoint}/assets?asset-name=${assetName}&user-id=${user.uid}`
+    );
+
+    return redirectWithSuccess("/assets", res.data.msg);
   }
 
   return redirect("/assets");
