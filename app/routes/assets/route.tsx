@@ -10,6 +10,7 @@ import { ClientOnly } from "remix-utils/client-only";
 import MainPage from "./main";
 import { createContext, useContext } from "react";
 import Loading from "components/Loading/Loading";
+import { TransactionType } from "../transaction/route";
 
 export const meta: MetaFunction = () => [
   {
@@ -32,24 +33,26 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 
   const assetData: AssetsData[] = res.data.assetData;
+  const transactionData: TransactionType[] = res.data.transactionData;
 
-  return json({ assetData });
+  return json({ assetData, transactionData });
 }
 
 interface AssetContextType {
   assetData: AssetsData[];
+  transactionData: TransactionType[];
 }
 
 const AssetContext = createContext<AssetContextType>({} as AssetContextType);
 
 export default function Assets() {
-  const { assetData } = useLoaderData<typeof loader>();
+  const { assetData, transactionData } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isPending = navigation.state === "loading";
   return (
     <ClientOnly>
       {() => (
-        <AssetContext.Provider value={{ assetData }}>
+        <AssetContext.Provider value={{ assetData, transactionData }}>
           {isPending && <Loading />}
           <MainPage />
         </AssetContext.Provider>

@@ -1,20 +1,15 @@
-import {
-  LoaderFunctionArgs,
-  MetaFunction,
-  json,
-} from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
 import TransactionMenu from "./transaction-menu";
-import { useLoaderData, useNavigation } from "@remix-run/react";
+import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import TransactionNavbar from "./transaction-navbar";
 import TransactionData from "./data";
-import { endpoint } from "lib/server";
 import { ClientOnly } from "remix-utils/client-only";
 import React, { createContext, useContext, useState } from "react";
 import TransactionFilter from "./transaction-filter";
 import { authenticator } from "~/service/auth.server";
-import { getSession } from "~/service/session.server";
-import { AccountDB } from "~/@types/account";
 import Loading from "components/Loading/Loading";
+import { getUser } from "utils/account";
+import { getTransPerAssetData, getTransactionData } from "./utils";
 
 export const meta: MetaFunction = () => [
   {
@@ -55,33 +50,40 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-
-  const session = await getSession(request.headers.get("cookie"));
-  const user: AccountDB = session.get(authenticator.sessionKey);
-
-  try {
-    const res = await fetch(`${endpoint}/transaction`, {
-      headers: { "User-ID": String(user.uid) },
+  export const loader = async ({ request }: LoaderFunctionArgs) => {
+    await authenticator.isAuthenticated(request, {
+      failureRedirect: "/login",
     });
 
-    const resData = await res.json();
+    const url = new URL(request.url);
+    const { searchParams } = url;
+    const assetFilter = searchParams.get("asset");
 
-    if (!resData.success) {
-      return json({ data: [], user });
+    const user = await getUser(request);
+
+    if (assetFilter) {
+      // Jika ada filter aset, dapatkan data transaksi berdasarkan aset tertentu
+      const data = await getTransPerAssetData(user, assetFilter);
+
+      if (data.status === 500) {
+        return json({ data: data.data, user, filterData: assetFilter }, { status: data.status });
+      } else if (!data.success) {
+        return json({ data: [], user, filterData: assetFilter });
+      }
+
+      return json({ data: data.data, user, filterData: assetFilter });
     }
 
-    const data: TransactionType[] = resData.data;
+    const data = await getTransactionData(user);
 
-    return json({ data, user });
-  } catch (error) {
-    console.error("Failed to fetch data:", error);
-    return json({ data: [], user }, { status: 500 });
-  }
-};
+    if (data.status === 500) {
+      return json({ data: data.data, user, filterData: "" }, { status: data.status });
+    } else if (!data.success) {
+      return json({ data: [], user, filterData: "" });
+    }
+
+    return json({ data: data.data, user, filterData: "" });
+  };
 
 const TransactionContext = createContext<TransactionContextType>(
   {} as TransactionContextType
@@ -120,10 +122,10 @@ export default function Transaction() {
               year,
               setYear,
               menuActive,
-              setMenuActive
+              setMenuActive,
             }}
           >
-          {isPending && <Loading />} 
+            {isPending && <Loading />}
 
             <div id="transaction" className="main-page">
               <h1 className="font-playfair-bold title-page">Transaksi</h1>
@@ -166,17 +168,22 @@ export default function Transaction() {
             year,
             setYear,
             menuActive,
-            setMenuActive
+            setMenuActive,
           }}
         >
-          {isPending && <Loading />} 
+          {isPending && <Loading />}
           <div id="transaction" className="main-page">
-            <h1 className="font-playfair-bold title-page">Transaksi</h1>
+            <h1 className="font-playfair-bold title-page">{res.filterData ? `${res.filterData}` : "Transaksi"}</h1>
 
             <TransactionNavbar price={allPrices} />
 
-            <header>
+            <header className="flex gap-1">
               <TransactionFilter />
+              {res.filterData && (
+                <Form action="/transaction" replace>
+                  <button>Hapus filter asset</button>
+                </Form>
+              )}
             </header>
 
             <main id="transaction-data">

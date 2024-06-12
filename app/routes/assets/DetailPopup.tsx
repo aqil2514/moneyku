@@ -4,66 +4,19 @@ import { AssetsData } from "~/@types/assets";
 import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
 import { IoIosWarning } from "react-icons/io";
-import { currencyFormat } from "../transaction/route";
+import PopupDetail from "./PopupDetail";
 
 interface DetailProps {
   assetName: string;
   setAssetName: React.Dispatch<SetStateAction<string>>;
 }
 
-interface PopupProps {
+export interface PopupProps {
   data: AssetsData | undefined;
   setAssetName: React.Dispatch<SetStateAction<string>>;
   setEditMode: React.Dispatch<SetStateAction<boolean>>;
   setDeleteMode: React.Dispatch<SetStateAction<boolean>>;
 }
-
-const PopupDetail = ({
-  data,
-  setAssetName,
-  setEditMode,
-  setDeleteMode,
-}: PopupProps) => {
-  return (
-    <>
-      <h3 className="font-ubuntu-bold text-center">Aset {data?.name}</h3>
-      <div id="asset-detail">
-        <p>
-          <strong>Nama Aset</strong> : {data?.name}
-        </p>
-        <p>
-          <strong>Total Aset</strong> :{" "}
-          {data && currencyFormat.format(data.amount)}
-        </p>
-        <p>
-          <strong>Kelompok Aset</strong> : {data?.group}
-        </p>
-        <p style={{ whiteSpace: "pre-wrap" }}>
-          <strong style={{ display: "block" }}>Deskripsi Aset : </strong>
-          {data?.description}
-        </p>
-        <p>
-          <strong>Jumlah Transaksi : </strong>
-        </p>
-      </div>
-
-      <div id="asset-footer" className="container-flex">
-        <button
-          className="button-navigation-1"
-          onClick={() => setAssetName("")}
-        >
-          Tutup
-        </button>
-        <button className="button-success" onClick={() => setEditMode(true)}>
-          Edit
-        </button>
-        <button className="button-close" onClick={() => setDeleteMode(true)}>
-          Hapus
-        </button>
-      </div>
-    </>
-  );
-};
 
 const PopupEdit = ({
   data,
@@ -77,10 +30,10 @@ const PopupEdit = ({
   const isLoading = fetcher.state === "loading";
 
   useEffect(() => {
-    if(isLoading){
+    if (isLoading) {
       setEditMode(false);
     }
-  }, [isLoading, setEditMode])
+  }, [isLoading, setEditMode]);
 
   return (
     <div style={{ position: "relative" }}>
