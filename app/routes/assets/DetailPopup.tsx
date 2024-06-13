@@ -3,8 +3,8 @@ import { useAssetContext } from "./route";
 import { AssetsData } from "~/@types/assets";
 import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
-import { IoIosWarning } from "react-icons/io";
 import PopupDetail from "./PopupDetail";
+import PopupDelete from "./PopupDelete";
 
 interface DetailProps {
   assetName: string;
@@ -144,68 +144,6 @@ const PopupEdit = ({
     </div>
   );
 
-  // Next tingkatin UX di sini
-};
-
-const PopupDelete = ({
-  data,
-  setDeleteMode,
-}: Pick<PopupProps, "data" | "setDeleteMode">) => {
-  const fetcher = useFetcher();
-  const isSubmitting = fetcher.state === "submitting";
-  const isLoading = fetcher.state === "loading";
-
-  useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        location.reload();
-      }, 500);
-    }
-  }, [isLoading, setDeleteMode]);
-
-  return (
-    <div>
-      <h3 className="font-ubuntu-bold text-center popup-delete-header">
-        Hapus Aset {data?.name}
-      </h3>
-      <fetcher.Form method="DELETE" action="/api/asset">
-        <div id="asset-detail" className="popup-delete-body">
-          <p>
-            <strong>Nama Aset</strong> : {data?.name}
-          </p>
-          <p>
-            <strong>Total Aset</strong> : {data?.amount}
-          </p>
-          <p>
-            <strong>Kelompok Aset</strong> : {data?.group}
-          </p>
-          <p>
-            <strong>Deskripsi Aset</strong> : {data?.description}
-          </p>
-        </div>
-        <div className="alert alert-warning">
-          <IoIosWarning />
-          <p>
-            <strong>Warning :</strong> Data yang dihapus tidak dapat
-            dikembalikan
-          </p>
-        </div>
-        <div id="asset-footer" className="container-flex">
-          <input type="hidden" name="asset-name" value={data?.name} />
-          <button
-            className="button-close"
-            onClick={() => setDeleteMode(false)}
-            type="button"
-          >
-            Kembali
-          </button>
-          <button className="button-success" disabled={isSubmitting}>
-            {isSubmitting ? "Menghapus" : "Konfirmasi"}
-          </button>
-        </div>
-      </fetcher.Form>
-    </div>
-  );
 };
 
 export default function DetailPopup({ assetName, setAssetName }: DetailProps) {
