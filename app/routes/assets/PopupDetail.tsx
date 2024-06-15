@@ -6,14 +6,31 @@ import { filterTransPerAsset } from "./utils";
 
 export default function PopupDetail({
   data,
+  assetName,
   setAssetName,
   setEditMode,
   setDeleteMode,
 }: PopupProps) {
   const { transactionData } = useAssetContext();
 
-  const transPerAsset = filterTransPerAsset(transactionData, data?.name);
+  const transPerAsset = filterTransPerAsset(transactionData, assetName);
   const totalTransaction: number = transPerAsset.length;
+
+  if (!data) {
+    return (
+      <div>
+        <p>Memuat detail aset...</p>
+        <div id="asset-footer" className="container-flex">
+          <button
+            className="button-navigation-1"
+            onClick={() => setAssetName("")}
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

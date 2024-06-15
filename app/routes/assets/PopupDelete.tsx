@@ -26,7 +26,6 @@ export default function PopupDelete({
       setActivate("");
     }
   }, [responseForm, setDeleteMode, setActivate]);
-  console.log(fetcher);
 
   return (
     <div>

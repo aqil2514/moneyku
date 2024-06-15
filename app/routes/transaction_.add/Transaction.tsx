@@ -9,7 +9,6 @@ export default function Transaction({
   assetData: AssetsData[];
 }) {
   const [type, setType] = useState<TypeTransaction>(null);
-  console.log(assetData);
   return (
     <div id="transaction-add" className="main-page">
       <h1 id="transaction-add-title">Tambah Transaksi</h1>

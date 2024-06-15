@@ -12,6 +12,7 @@ export function filterTransPerAsset(
 ) {
   const result: TransactionType[] = [];
 
+
   if (!assetName) throw new Error("Nama Aset belum dipilih");
 
   data.forEach((d) => {
