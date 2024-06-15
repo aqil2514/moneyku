@@ -143,7 +143,6 @@ const PopupEdit = ({
       </fetcher.Form>
     </div>
   );
-
 };
 
 export default function DetailPopup({ assetName, setAssetName }: DetailProps) {
@@ -164,7 +163,7 @@ export default function DetailPopup({ assetName, setAssetName }: DetailProps) {
         )}
         {editMode && <PopupEdit setEditMode={setEditMode} data={data} />}
         {deleteMode && (
-          <PopupDelete setDeleteMode={setDeleteMode} data={data} />
+          <PopupDelete setAssetName={setAssetName} setDeleteMode={setDeleteMode} data={data} />
         )}
       </div>
     </div>

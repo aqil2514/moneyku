@@ -1,12 +1,21 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import axios from "axios";
 import { endpoint } from "lib/server";
-import { redirectWithSuccess } from "remix-toast";
+import {
+  jsonWithError,
+  jsonWithSuccess,
+  redirectWithSuccess,
+} from "remix-toast";
 import { AccountDB } from "~/@types/account";
 import { AssetFormValues } from "~/@types/assets";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
 
+/**
+ * Memproses data dari form ke menjadi object
+ * @param formData Form yang sesuai dengan format interface AssetFormValues
+ * @returns Object Asset Form Values
+ */
 const getFormData = (formData: FormData): AssetFormValues => {
   const formValues: AssetFormValues = {
     oldAssetName: formData.get("old-asset-name") as string,
@@ -38,12 +47,26 @@ export async function action({ request }: ActionFunctionArgs) {
   } else if (request.method === "DELETE") {
     const formData = await request.formData();
     const assetName = String(formData.get("asset-name"));
+    const deleteOption = String(formData.get("delete-option"))
+      .toLowerCase()
+      .replaceAll(" ", "-");
+
+    if (deleteOption.includes("pilih-aset"))
+      return jsonWithError(
+        { success: false },
+        "Anda belum memilih aset tujuan"
+      );
+    if (!deleteOption || deleteOption === "null")
+      return jsonWithError(
+        { success: false },
+        "Anda belum memilih opsi tujuan"
+      );
 
     const res = await axios.delete(
-      `${endpoint}/assets?asset-name=${assetName}&user-id=${user.uid}`
+      `${endpoint}/assets?asset-name=${assetName}&user-id=${user.uid}&delete-option=${deleteOption}`
     );
 
-    return redirectWithSuccess("/assets", res.data.msg);
+    return jsonWithSuccess({ success: true, data: res.data }, res.data.msg);
   }
 
   return redirect("/assets");

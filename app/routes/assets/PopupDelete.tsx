@@ -3,28 +3,30 @@ import { PopupProps } from "./DetailPopup";
 import { useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
 import { useAssetContext } from "./route";
+import { BasicResponse } from "~/@types/general";
 
 type DeleteOption = "delete-transaction" | "move-transaction" | "";
 
 export default function PopupDelete({
   data,
   setDeleteMode,
-}: Pick<PopupProps, "data" | "setDeleteMode">) {
+  setAssetName: setActivate,
+}: Pick<PopupProps, "data" | "setDeleteMode" | "setAssetName">) {
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
-  const isLoading = fetcher.state === "loading";
   const [deleteOption, setDeleteOption] = useState<DeleteOption>("");
   const [assetName, setAssetName] = useState<string>("Pilih aset");
   const { assetData } = useAssetContext();
   const assetOptions = assetData.filter((d) => d.name !== data?.name);
+  const responseForm = fetcher.data as BasicResponse;
 
   useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        location.reload();
-      }, 500);
+    if (responseForm && responseForm.success) {
+      setDeleteMode(false);
+      setActivate("");
     }
-  }, [isLoading, setDeleteMode]);
+  }, [responseForm, setDeleteMode, setActivate]);
+  console.log(fetcher);
 
   return (
     <div>
@@ -59,6 +61,8 @@ export default function PopupDelete({
                 id="delete-transaction"
                 checked={deleteOption === "delete-transaction"}
                 onChange={() => setDeleteOption("delete-transaction")}
+                value={"delete-transaction"}
+                required
               />
               <label htmlFor="delete-transaction">Hapus</label>
             </div>
@@ -68,7 +72,9 @@ export default function PopupDelete({
                 name="delete-option"
                 id="move-transaction"
                 checked={deleteOption === "move-transaction"}
-                onChange={() => setDeleteOption("move-transaction")} 
+                onChange={() => setDeleteOption("move-transaction")}
+                value={`move-transaction-to-${assetName}`}
+                required
               />
             </div>
             <label htmlFor="move-transaction">Pindahkan ke</label>

@@ -1,3 +1,11 @@
+
+/**
+ * Response standar dari semua response http
+ */
+export interface BasicResponse{
+    success: boolean;
+}
+
 export interface ErrorResponse{
     message: string;
 }
