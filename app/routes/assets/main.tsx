@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { currencyFormat } from "../transaction/route";
 import DetailPopup from "./DetailPopup";
 import { useAssetContext } from "./route";
+import PopupAdd from "./PopupAdd";
 
 export default function MainPage() {
   const { assetData } = useAssetContext();
   const [assetName, setAssetName] = useState<string>("");
+  const [addMode, setAddMode] = useState<boolean>(false);
 
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget as HTMLButtonElement;
@@ -19,7 +21,7 @@ export default function MainPage() {
       <div className="main-page">
         <h1 className="font-playfair-bold title-page">Aset</h1>
         <div id="asset-menu">
-          <button className="button-success" onClick={() => alert("Belum berfungsi")}>
+          <button className="button-success" onClick={() => setAddMode(true) }>
             Tambah Aset
           </button>
         </div>
@@ -41,6 +43,7 @@ export default function MainPage() {
         </div>
       </div>
       {assetName && <DetailPopup assetName={assetName} setAssetName={setAssetName} />}
+      {addMode && <PopupAdd setAddMode={setAddMode} /> }
     </>
   );
 }

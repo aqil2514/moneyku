@@ -3,6 +3,7 @@ import { currencyFormat } from "../transaction/route";
 import { PopupProps } from "./DetailPopup";
 import { useAssetContext } from "./route";
 import { filterTransPerAsset } from "./utils";
+import { toast } from "react-toastify";
 
 export default function PopupDetail({
   data,
@@ -11,7 +12,7 @@ export default function PopupDetail({
   setEditMode,
   setDeleteMode,
 }: PopupProps) {
-  const { transactionData } = useAssetContext();
+  const { transactionData, assetData } = useAssetContext();
 
   const transPerAsset = filterTransPerAsset(transactionData, assetName);
   const totalTransaction: number = transPerAsset.length;
@@ -30,6 +31,11 @@ export default function PopupDetail({
         </div>
       </div>
     );
+  }
+
+  const deleteHandler = () => {
+    if(assetData.length <= 1) return toast.error("Minimal harus ada 1 Asset");
+    setDeleteMode(true)
   }
 
   return (
@@ -76,7 +82,7 @@ export default function PopupDetail({
         <button className="button-success" onClick={() => setEditMode(true)}>
           Edit
         </button>
-        <button className="button-close" onClick={() => setDeleteMode(true)}>
+        <button className="button-close" onClick={deleteHandler}>
           Hapus
         </button>
       </div>

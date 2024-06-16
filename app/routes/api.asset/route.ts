@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { AccountDB } from "~/@types/account";
@@ -33,15 +33,26 @@ export async function action({ request }: ActionFunctionArgs) {
   if (request.method === "PUT") {
     const data = await request.formData();
     const formData = getFormData(data);
-    const {oldAssetName, assetName} = formData;
+    const { oldAssetName, assetName } = formData;
     const newAssetName = oldAssetName === assetName ? undefined : assetName;
 
-    const res = await axios.put(`${endpoint}/assets`, {
-      formData,
-      userId: user.uid,
-    });
+    try{
+      const res = await axios.put(`${endpoint}/assets`, {
+        formData,
+        userId: user.uid,
+      });
+  
+      return jsonWithSuccess({ success: true, newAssetName }, res.data.msg);
+    }catch (error) {
+      if (isAxiosError(error)) {
+        const statusCode = error.response?.status;
+        if (statusCode === 409) {
+          const message = error.response?.data.message;
+          return jsonWithError({ success: false }, message);
+        }
+      }
+    }
 
-    return jsonWithSuccess({ success: true, newAssetName}, res.data.msg);
   } else if (request.method === "DELETE") {
     const formData = await request.formData();
     const assetName = String(formData.get("asset-name"));
@@ -65,6 +76,42 @@ export async function action({ request }: ActionFunctionArgs) {
     );
 
     return jsonWithSuccess({ success: true, data: res.data }, res.data.msg);
+  } else if (request.method === "POST") {
+    const data = await request.formData();
+    const formData = getFormData(data);
+
+    if (!formData.assetName.trim()) {
+      return jsonWithError({ success: false }, "Nama aset belum diisi");
+    }
+    if (formData.assetCategory === "Lainnya" && !formData.newAssetCategory?.trim()) {
+      return jsonWithError(
+        { success: false },
+        "Kategori asset belum ditentukan"
+      );
+    }
+    if (!formData.assetDescription.trim()) {
+      return jsonWithError(
+        { success: false },
+        "Deskripsi asset belum ditentukan"
+      );
+    }
+
+    try {
+      const res = await axios.post(`${endpoint}/assets`, {
+        formData,
+        userId: user.uid,
+      });
+
+      return jsonWithSuccess({ success: res.data.success }, res.data.message);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const statusCode = error.response?.status;
+        if (statusCode === 409) {
+          const message = error.response?.data.message;
+          return jsonWithError({ success: false }, message);
+        }
+      }
+    }
   }
 
   return redirect("/assets");
