@@ -26,7 +26,6 @@ export default function Sidebar({ user }: { user: AccountUser | null }) {
 
 function PCSidebar({ user }: { user: AccountUser | null }) {
   const navigate = useNavigate();
-  console.log(user)
   return (
     <div id="sidebar">
       <div id="sidebar-header">

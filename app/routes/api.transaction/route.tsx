@@ -2,19 +2,15 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
-import { AccountDB } from "~/@types/account";
+import { getUser } from "utils/account";
 import { TransactionFormData } from "~/@types/transaction";
-import { authenticator } from "~/service/auth.server";
-import { getSession } from "~/service/session.server";
-
-// TODO: Eror handling di sini belum diatur
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const data = getFormData(formData);
+  const user = await getUser(request);
 
-  const session = await getSession(request.headers.get("cookie"));
-  const user: AccountDB = session.get(authenticator.sessionKey);
+  if(!user) throw new Error("Data user tidak ditemukan")
 
   if (request.method === "PUT") {
     try {

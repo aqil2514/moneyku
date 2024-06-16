@@ -42,7 +42,7 @@ export async function action({ request }: ActionFunctionArgs) {
     } catch (error) {
       if (error instanceof Response) return error;
       if (error instanceof AuthorizationError) {
-        console.log(error);
+        console.error(error);
       }
     }
   } else if (methodLogin === "oauth") {

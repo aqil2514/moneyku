@@ -1,5 +1,5 @@
 import { endpoint } from "lib/server";
-import { AccountDB } from "~/@types/account";
+import {  AccountUser } from "~/@types/account";
 import { TransactionType } from "./route";
 
 /**
@@ -7,7 +7,7 @@ import { TransactionType } from "./route";
  */
 interface TransactionDataResponse {
   data: TransactionType[];
-  user: AccountDB;
+  user: AccountUser;
   success: boolean;
   status?: number;
 }
@@ -19,7 +19,7 @@ interface TransactionDataResponse {
  * @returns {Promise<TransactionDataResponse>} Data transaksi yang didekripsi atau pesan kesalahan jika gagal.
  */
 export async function getTransactionData(
-  user: AccountDB
+  user: AccountUser
 ): Promise<TransactionDataResponse> {
   try {
     const res = await fetch(`${endpoint}/transaction`, {
@@ -49,7 +49,7 @@ export async function getTransactionData(
  * @returns {Promise<TransactionType[]>} Data transaksi yang difilter berdasarkan aset.
  */
 export async function getTransPerAssetData(
-  user: AccountDB,
+  user: AccountUser,
   assetFilter: string
 ): Promise<TransactionDataResponse> {
   const data = await getTransactionData(user);

@@ -14,8 +14,6 @@ import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
 import serverEndpoint, { endpoint } from "lib/server";
 import { authenticator } from "~/service/auth.server";
-import { getSession } from "~/service/session.server";
-import { AccountDB, AccountUser } from "~/@types/account";
 import { useState } from "react";
 import { currencyFormat } from "../transaction/route";
 import { ErrorValidationResponse } from "~/@types/general";
@@ -24,6 +22,7 @@ import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import axios from "axios";
 import { AssetsData } from "~/@types/assets";
 import Loading from "components/Loading/Loading";
+import { getUser } from "utils/account";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },
@@ -34,8 +33,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     failureRedirect: "/login",
   });
 
-  const session = await getSession(request.headers.get("cookie"));
-  const user: AccountUser = session.get(authenticator.sessionKey);
+  const user = await getUser(request);
+
+  if(!user) throw new Error("Data user tidak ditemukan");
 
   const res = await axios.get(`${endpoint}/assets/getAssets`, {
     params: {
@@ -49,8 +49,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const session = await getSession(request.headers.get("cookie"));
-  const user: AccountDB = session.get(authenticator.sessionKey);
+  const user = await getUser(request);
+
+  if(!user) throw new Error("Data user tidak ditemukan");
 
   const formData = await request.formData();
   const typeTransaction = String(formData.get("type-data"));

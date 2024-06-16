@@ -61,6 +61,8 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
 
     const user = await getUser(request);
 
+    if(!user) throw new Error("Terjadi kesalahan saat mengambil data user");
+
     if (assetFilter) {
       // Jika ada filter aset, dapatkan data transaksi berdasarkan aset tertentu
       const data = await getTransPerAssetData(user, assetFilter);

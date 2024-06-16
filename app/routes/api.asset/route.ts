@@ -2,10 +2,8 @@ import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
-import { AccountDB } from "~/@types/account";
+import { getUser } from "utils/account";
 import { AssetFormValues } from "~/@types/assets";
-import { authenticator } from "~/service/auth.server";
-import { getSession } from "~/service/session.server";
 
 /**
  * Memproses data dari form ke menjadi object
@@ -27,8 +25,9 @@ const getFormData = (formData: FormData): AssetFormValues => {
 };
 
 export async function action({ request }: ActionFunctionArgs) {
-  const session = await getSession(request.headers.get("cookie"));
-  const user: AccountDB = session.get(authenticator.sessionKey);
+  const user = await getUser(request);
+
+  if(!user) throw new Error("Data user tidak ditemukan")
 
   if (request.method === "PUT") {
     const data = await request.formData();

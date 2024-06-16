@@ -31,7 +31,6 @@ async function login(email: string, password: string):Promise<LoginResult> {
     return {user: data, success: true, message: "Login berhasil"};
   } catch (error) {
     if (isAxiosError(error)) {
-      console.log(error.response?.data);
       const success = error.response?.data.success;
       const message = error.response?.data.message;
       return { user: null, success, message };
