@@ -12,12 +12,10 @@ import style from "~/style.css?url";
 import { LinksFunction, LoaderFunctionArgs, json } from "@remix-run/node";
 import Sidebar from "components/layout/Sidebar";
 import React, { useEffect } from "react";
-import { getSession } from "./service/session.server";
-import { authenticator } from "./service/auth.server";
-import { AccountDB } from "./@types/account";
 import { getToast } from "remix-toast";
 import { ToastContainer, toast as notify } from "react-toastify";
 import toastStyles from "react-toastify/dist/ReactToastify.css?url";
+import { getUser } from "utils/account";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: style },
@@ -26,9 +24,7 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { toast, headers } = await getToast(request);
-  const session = await getSession(request.headers.get("cookie"));
-
-  const user: AccountDB = session.get(authenticator.sessionKey);
+  const user = await getUser(request);
 
   if (!user) return json({ user: null, toast }, { headers });
 

@@ -1684,8 +1684,12 @@
     border: 4px double white;
     border-radius: 1rem;
     color: white;
+    overflow: hidden;
     cursor: pointer;
     transition-duration: 200ms;
+  }
+  #account p {
+    font-size: 1rem;
   }
   #account:hover {
     color: black;

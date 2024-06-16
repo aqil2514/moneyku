@@ -7,10 +7,10 @@ import { MdFeaturedPlayList, MdOutlineMoney } from "react-icons/md";
 import { SiPlangrid } from "react-icons/si";
 import { TbMoneybag } from "react-icons/tb";
 import { TfiStatsUp } from "react-icons/tfi";
-import { AccountDB } from "~/@types/account";
+import { AccountUser } from "~/@types/account";
 import { exceptionPathName } from "~/root";
 
-export default function Sidebar({ user }: { user: AccountDB | null }) {
+export default function Sidebar({ user }: { user: AccountUser | null }) {
   const location = useLocation();
   const pathName = location.pathname;
 
@@ -24,8 +24,9 @@ export default function Sidebar({ user }: { user: AccountDB | null }) {
   );
 }
 
-function PCSidebar({ user }: { user: AccountDB | null }) {
+function PCSidebar({ user }: { user: AccountUser | null }) {
   const navigate = useNavigate();
+  console.log(user)
   return (
     <div id="sidebar">
       <div id="sidebar-header">
@@ -38,8 +39,8 @@ function PCSidebar({ user }: { user: AccountDB | null }) {
           alt="icon-money"
         /> */}
       </div>
-      <div id="account" className="font-poppins-bold">
-        {user?.username}
+      <div id="account" >
+        <p className="font-poppins-bold">{user && user.username ? user.username : "Belum buat"}</p>
       </div>
       <div id="sidebar-menu">
         <h2>Menu</h2>
@@ -47,7 +48,7 @@ function PCSidebar({ user }: { user: AccountDB | null }) {
           to={"/transaction"}
           replace
           className={({ isActive }) =>
-            isActive  ? "sidebar-list sidebar-list-active" : "sidebar-list"
+            isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
           }
         >
           <AiOutlineTransaction />
@@ -120,7 +121,7 @@ function PCSidebar({ user }: { user: AccountDB | null }) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function MobileSidebar({ user }: { user: AccountDB | null }) {
+function MobileSidebar({ user }: { user: AccountUser | null }) {
   const navigate = useNavigate();
 
   return (

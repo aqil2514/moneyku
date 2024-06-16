@@ -1,4 +1,5 @@
-import { AccountDB } from "~/@types/account";
+import { AccountUser } from "~/@types/account";
+import { LoginResult } from "~/@types/general";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
 
@@ -7,9 +8,11 @@ import { getSession } from "~/service/session.server";
  * @param request Request parameter
  * @returns User
  */
-export async function getUser(request:Request){
+export async function getUser(request: Request): Promise<AccountUser | null> {
     const session = await getSession(request.headers.get("cookie"));
-    const user: AccountDB = session.get(authenticator.sessionKey);
-
-    return user
-}
+    const data: LoginResult | null = session.get(authenticator.sessionKey);
+  
+    if (!data || !data.user) return null;
+  
+    return data.user;
+  }

@@ -6,6 +6,7 @@ import serverEndpoint, { endpoint } from "lib/server";
 import { AccountUser } from "~/@types/account";
 import { GoogleStrategy } from "remix-auth-google";
 import clientEndpoint from "lib/client-endpoint";
+import { LoginResult } from "~/@types/general";
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -15,7 +16,7 @@ if (!sessionSecret) {
 
 type User = AccountUser;
 
-async function login(email: string, password: string) {
+async function login(email: string, password: string):Promise<LoginResult> {
   const isLocal = process.env.NODE_ENV === "development";
   const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
 
@@ -27,15 +28,20 @@ async function login(email: string, password: string) {
 
     const data: User = res.data.user;
 
-    return data;
+    return {user: data, success: true, message: "Login berhasil"};
   } catch (error) {
     if (isAxiosError(error)) {
-      return false;
+      console.log(error.response?.data);
+      const success = error.response?.data.success;
+      const message = error.response?.data.message;
+      return { user: null, success, message };
     }
+
+    return {user:null, success: false, message:"Terjadi kesalahan"}
   }
 }
 
-const authenticator = new Authenticator<User | undefined | false>(sessionStore);
+const authenticator = new Authenticator<LoginResult>(sessionStore);
 
 const formStrategy = new FormStrategy(async ({ form }) => {
   const email = form.get("email") as string;
@@ -55,14 +61,22 @@ const googleStrategy = new GoogleStrategy(
     callbackURL: clientEndpoint,
   },
   async ({ profile }) => {
-    const res = await axios.get(`${endpoint}/account/getUser`, {
-      params: {
-        email: profile.emails[0].value,
-      },
-    });
-    const user: User = res.data.user;
+    try {
+      // Pastikan endpoint dan parameter sudah benar
+      const res = await axios.get(`${endpoint}/account/getUser`, {
+        params: {
+          email: profile.emails[0].value,
+        },
+      });
 
-    return user;
+      // Cek apakah user data dikembalikan
+      const user = res.data.user;
+
+      return user;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      return false;
+    }
   }
 );
 
