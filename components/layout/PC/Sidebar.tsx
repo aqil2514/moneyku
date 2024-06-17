@@ -1,32 +1,104 @@
 import { NavLink, useNavigate } from "@remix-run/react";
+import Typography from "components/General/Typography";
 import Button from "components/Inputs/Button";
 import { useState } from "react";
 import { AiOutlineTransaction } from "react-icons/ai";
-import { CiLight } from "react-icons/ci";
+import { CiLight, CiSettings } from "react-icons/ci";
 import { FaLanguage } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
 import { MdOutlineMoney } from "react-icons/md";
 import { SiPlangrid } from "react-icons/si";
 import { TbMoneybag } from "react-icons/tb";
 import { TfiStatsUp } from "react-icons/tfi";
 import { AccountUser } from "~/@types/account";
 
-const Profile = ({ user, setSeeProfile }: { user: AccountUser | null; setSeeProfile:React.Dispatch<React.SetStateAction<boolean>>
+const Profile = ({
+  user,
+  setSeeProfile,
+}: {
+  user: AccountUser | null;
+  setSeeProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  console.log(user);
-  return <div id="profile" className="popup">
-    <div className="popup-edit">
-      <div>Atasan</div>
-      <div>Isi</div>
-      <div id="profile-footer">
-        <Button color="primary" onClick={() => setSeeProfile(false)}>Tutup</Button>
+  const navigate = useNavigate();
+  if (!user) throw new Error("Data user tidak ada");
+  const { username, config, email } = user;
+  const { language, currency, purposeUsage } = config;
+  const mapLanguage: Record<AccountUser["config"]["language"], string> = {
+    ID: "Bahasa Indonesia",
+    EN: "English Language",
+  };
+  const mapCurrency: Record<AccountUser["config"]["currency"], string> = {
+    EUR: "Belum dikembangkan",
+    IDR: "Rupiah",
+    USD: "Dolar",
+  };
+
+  return (
+    <div id="profile" className="popup">
+      <div className="popup-edit">
+        <div className="border-double mb-4">
+          <Typography variant="h1" family="playfair-bold" align="center">
+            Profil Pengguna{" "}
+          </Typography>
+        </div>
+        <div className="mb-4">
+          <div className="flex gap-1">
+            <Typography variant="str" family="poppins-bold">
+              Nama Pengguna :{" "}
+            </Typography>
+            <Typography variant="p" family="poppins-medium">
+              {username ? username : "Belum dibuat"}{" "}
+            </Typography>
+          </div>
+          <div className="flex gap-1">
+            <Typography variant="str" family="poppins-bold">
+              Email :{" "}
+            </Typography>
+            <Typography variant="p" family="poppins-medium">
+              {email ? email : "Belum dibuat"}{" "}
+            </Typography>
+          </div>
+          <div className="flex gap-1">
+            <Typography variant="str" family="poppins-bold">
+              Preferensi Bahasa :{" "}
+            </Typography>
+            <Typography variant="p" family="poppins-medium">
+              {language ? mapLanguage[language] : "Belum diatur"}{" "}
+            </Typography>
+          </div>
+          <div className="flex gap-1">
+            <Typography variant="str" family="poppins-bold">
+              Preferensi Mata Uang :{" "}
+            </Typography>
+            <Typography variant="p" family="poppins-medium">
+              {currency ? mapCurrency[currency] : "Belum diatur"}{" "}
+            </Typography>
+          </div>
+          <div className="flex gap-1">
+            <Typography variant="str" family="poppins-bold">
+              Tujuan Penggunaan :{" "}
+            </Typography>
+            <Typography variant="p" family="poppins-medium">
+              {purposeUsage ? purposeUsage : "Belum diatur"}{" "}
+            </Typography>
+          </div>
+        </div>
+        <div id="profile-footer" className="flex gap-1">
+          <Button color="primary" onClick={() => setSeeProfile(false)}>
+            Tutup
+          </Button>
+          <Button
+            color="success"
+            onClick={() => navigate("/setting", { replace: true })}
+          >
+            Edit Profil
+          </Button>
+        </div>
       </div>
     </div>
-  </div>;
+  );
 };
 
 export default function PCSidebar({ user }: { user: AccountUser | null }) {
-  const navigate = useNavigate();
   const [seeProfile, setSeeProfile] = useState<boolean>(false);
   return (
     <>
@@ -100,7 +172,7 @@ export default function PCSidebar({ user }: { user: AccountUser | null }) {
             <p className="font-poppins-medium">Rencana</p>
           </NavLink>
           <NavLink
-            to={"budgeting"}
+            to={"/budgeting"}
             replace
             className={({ isActive }) =>
               isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
@@ -120,16 +192,16 @@ export default function PCSidebar({ user }: { user: AccountUser | null }) {
             <FaLanguage />
             <p className="font-poppins-medium">Bahasa</p>
           </section>
-          <section
-            className="sidebar-list"
-            tabIndex={0}
-            role="button"
-            aria-hidden
-            onClick={() => navigate("/logout")}
+          <NavLink
+            replace
+            className={({ isActive }) =>
+              isActive ? "sidebar-list sidebar-list-active" : "sidebar-list"
+            }
+            to={"/setting"}
           >
-            <FiLogOut />
-            <p className="font-poppins-medium">Logout</p>
-          </section>
+            <CiSettings />
+            <p className="font-poppins-medium">Setting</p>
+          </NavLink>
         </div>
       </div>
       {seeProfile && <Profile user={user} setSeeProfile={setSeeProfile} />}

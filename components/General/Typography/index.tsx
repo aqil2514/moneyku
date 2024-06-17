@@ -1,4 +1,5 @@
 import React from "react";
+import { Color, FontFamily, FontSize } from "../interface";
 
 type TypographyVariant =
   | "h1"
@@ -7,8 +8,7 @@ type TypographyVariant =
   | "p"
   | "subtitle1"
   | "subtitle2"
-  | "body1"
-  | "body2";
+  | "str";
 // type TextAlign = "left" | "center" | "right" | "justify";
 // type TextColor =
 //   | "primary"
@@ -18,52 +18,13 @@ type TypographyVariant =
 //   | "info"
 //   | "success";
 
-type FontFamily =
-  | "merriweather-light"
-  | "merriweather-light-italic"
-  | "merriweather-medium"
-  | "merriweather-medium-italic"
-  | "merriweather-bold"
-  | "merriweather-bold-italic"
-  | "merriweather-black"
-  | "merriweather-black-italic"
-  | "playfair-light"
-  | "playfair-light-italic"
-  | "playfair-medium"
-  | "playfair-medium-italic"
-  | "playfair-bold"
-  | "playfair-bold-italic"
-  | "playfair-black"
-  | "playfair-black-italic"
-  | "poppins-light"
-  | "poppins-light-italic"
-  | "poppins-extralight"
-  | "poppins-extralight-italic"
-  | "poppins-regular"
-  | "poppins-regular-italic"
-  | "poppins-medium"
-  | "poppins-medium-italic"
-  | "poppins-semibold"
-  | "poppins-semibold-italic"
-  | "poppins-bold"
-  | "poppins-bold-italic"
-  | "poppins-extrabold"
-  | "poppins-extrabold-italic"
-  | "poppins-black"
-  | "poppins-black-italic"
-  | "ubuntu-light"
-  | "ubuntu-light-italic"
-  | "ubuntu-regular"
-  | "ubuntu-regular-italic"
-  | "ubuntu-medium"
-  | "ubuntu-medium-italic"
-  | "ubuntu-bold"
-  | "ubuntu-bold-italic";
-
 interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   variant: TypographyVariant;
   family: FontFamily;
   children: React.ReactNode;
+  fontSize?: FontSize;
+  color?: Color;
+  align?: "left" | "right" | "center" | "justify";
 }
 
 const variantMap: Record<TypographyVariant, React.ElementType> = {
@@ -73,20 +34,37 @@ const variantMap: Record<TypographyVariant, React.ElementType> = {
   p: "p",
   subtitle1: "h4",
   subtitle2: "h5",
-  body1: "p",
-  body2: "p",
+  str: "strong",
 };
 
 export default function Typography({
   variant,
   family,
   children,
+  fontSize,
+  color,
+  align,
   ...props
 }: TypographyProps) {
   const Component = variantMap[variant];
+  const style = `font-${family}
+      ${fontSize ? `font-${fontSize}` : ""} 
+      ${color ? `text-${color}` : ""}
+      ${align ? `text-${align}` : ""}
+      `;
+  const splittedStyle = style.split("\n");
+  const styleArray: string[] = [];
+
+  splittedStyle.forEach((style) => {
+    const trimmedStyle = style.trim();
+
+    if (trimmedStyle) styleArray.push(trimmedStyle);
+  });
+
+  const finalStyle = styleArray.join(" ");
 
   return (
-    <Component className={`font-${family}`} {...props}>
+    <Component className={`${finalStyle} bg-inherit`} {...props}>
       {children}
     </Component>
   );

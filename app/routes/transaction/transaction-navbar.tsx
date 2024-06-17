@@ -1,3 +1,4 @@
+import Typography from "components/General/Typography";
 import { currencyFormat } from "./route";
 
 export default function TransactionNavbar({
@@ -16,16 +17,16 @@ export default function TransactionNavbar({
   return (
     <header id="transaction-navbar">
       <section className="income-section">
-        <p className="font-ubuntu-medium">Pemasukan</p>
-        <p className="font-poppins-medium">{currencyFormat.format(sumIncome)}</p>
+        <Typography variant="p" family="ubuntu-medium">Pemasukan</Typography>
+        <Typography variant="p" family="poppins-medium">{currencyFormat.format(sumIncome)}</Typography>
       </section>
       <section className="outcome-section">
-        <p className="font-ubuntu-medium">Pengeluaran</p>
-        <p className="font-poppins-medium">{currencyFormat.format(sumOutcome)}</p>
+        <Typography variant="p" family="ubuntu-medium">Pengeluaran</Typography>
+        <Typography variant="p" family="poppins-medium">{currencyFormat.format(sumOutcome)}</Typography>
       </section>
       <section className="total-section">
-        <p className="font-ubuntu-medium">Saldo</p>
-        <p className="font-poppins-medium">{currencyFormat.format(total)}</p>
+        <Typography variant="p" family="ubuntu-medium">Total</Typography>
+        <Typography variant="p" family="poppins-medium">{currencyFormat.format(total)}</Typography>
       </section>
     </header>
   );

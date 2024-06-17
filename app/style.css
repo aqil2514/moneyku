@@ -642,7 +642,6 @@
 }
 .form-input-basic label {
   display: block;
-  font-weight: bold;
   margin-bottom: 0.25rem;
 }
 .form-input-basic input,
@@ -1442,6 +1441,10 @@
 
 .text-dark {
   color: #343a40;
+}
+
+.bg-inherit {
+  background-color: inherit;
 }
 
 @media only screen and (max-width: 600px) {
@@ -2051,7 +2054,6 @@
 }
 .form-input-basic label {
   display: block;
-  font-weight: bold;
   margin-bottom: 0.25rem;
 }
 .form-input-basic input,
@@ -2853,6 +2855,10 @@
   color: #343a40;
 }
 
+.bg-inherit {
+  background-color: inherit;
+}
+
 @media screen and (min-width: 950px) {
   #login-form {
     display: flex;
@@ -2942,6 +2948,40 @@
   }
   #asset-footer {
     justify-content: center !important;
+  }
+}
+.setting-navbar {
+  padding: 0.5rem 1rem;
+  transition: 200ms;
+  border-radius: 0.5rem;
+}
+.setting-navbar:hover {
+  background-color: rgba(178, 178, 178, 0.8352941176);
+  color: #100e17;
+}
+.setting-navbar a {
+  text-decoration: none;
+  color: #100e17;
+  font-weight: bold;
+}
+.setting-navbar-active {
+  background-color: rgba(178, 178, 178, 0.8352941176);
+  color: rgb(12, 12, 12);
+}
+
+@media screen and (min-width: 950px) {
+  #setting-page {
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: 30% auto;
+    min-height: 100%;
+  }
+  #setting-page-nav {
+    padding: 1rem;
+    overflow-y: scroll;
+  }
+  #setting-page-profile {
+    padding: 1rem;
   }
 }
 .income-section p {
@@ -3205,7 +3245,6 @@
 }
 .form-input-basic label {
   display: block;
-  font-weight: bold;
   margin-bottom: 0.25rem;
 }
 .form-input-basic input,
@@ -4007,6 +4046,10 @@
   color: #343a40;
 }
 
+.bg-inherit {
+  background-color: inherit;
+}
+
 @media screen and (min-width: 950px) {
   .popup {
     position: fixed;
@@ -4231,6 +4274,23 @@
   background-color: #26a69a;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   outline: 2px solid #fff;
+}
+
+.border-double {
+  border: 4px double black;
+}
+
+.container-body {
+  width: 100%;
+  background-color: white;
+  margin: 1rem 0;
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 70vh;
+  overflow: scroll;
+}
+.container-body::-webkit-scrollbar {
+  display: none;
 }
 
 * {

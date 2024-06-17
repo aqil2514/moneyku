@@ -11,6 +11,7 @@ import Loading from "components/Loading/Loading";
 import { getUser } from "utils/account";
 import { getTransPerAssetData, getTransactionData } from "./utils";
 import Button from "components/Inputs/Button";
+import Typography from "components/General/Typography";
 
 export const meta: MetaFunction = () => [
   {
@@ -51,42 +52,48 @@ export const currencyFormat = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-  export const loader = async ({ request }: LoaderFunctionArgs) => {
-    await authenticator.isAuthenticated(request, {
-      failureRedirect: "/login",
-    });
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
 
-    const url = new URL(request.url);
-    const { searchParams } = url;
-    const assetFilter = searchParams.get("asset");
+  const url = new URL(request.url);
+  const { searchParams } = url;
+  const assetFilter = searchParams.get("asset");
 
-    const user = await getUser(request);
+  const user = await getUser(request);
 
-    if(!user) throw new Error("Terjadi kesalahan saat mengambil data user");
+  if (!user) throw new Error("Terjadi kesalahan saat mengambil data user");
 
-    if (assetFilter) {
-      // Jika ada filter aset, dapatkan data transaksi berdasarkan aset tertentu
-      const data = await getTransPerAssetData(user, assetFilter);
-
-      if (data.status === 500) {
-        return json({ data: data.data, user, filterData: assetFilter }, { status: data.status });
-      } else if (!data.success) {
-        return json({ data: [], user, filterData: assetFilter });
-      }
-
-      return json({ data: data.data, user, filterData: assetFilter });
-    }
-
-    const data = await getTransactionData(user);
+  if (assetFilter) {
+    // Jika ada filter aset, dapatkan data transaksi berdasarkan aset tertentu
+    const data = await getTransPerAssetData(user, assetFilter);
 
     if (data.status === 500) {
-      return json({ data: data.data, user, filterData: "" }, { status: data.status });
+      return json(
+        { data: data.data, user, filterData: assetFilter },
+        { status: data.status }
+      );
     } else if (!data.success) {
-      return json({ data: [], user, filterData: "" });
+      return json({ data: [], user, filterData: assetFilter });
     }
 
-    return json({ data: data.data, user, filterData: "" });
-  };
+    return json({ data: data.data, user, filterData: assetFilter });
+  }
+
+  const data = await getTransactionData(user);
+
+  if (data.status === 500) {
+    return json(
+      { data: data.data, user, filterData: "" },
+      { status: data.status }
+    );
+  } else if (!data.success) {
+    return json({ data: [], user, filterData: "" });
+  }
+
+  return json({ data: data.data, user, filterData: "" });
+};
 
 const TransactionContext = createContext<TransactionContextType>(
   {} as TransactionContextType
@@ -131,7 +138,11 @@ export default function Transaction() {
             {isPending && <Loading />}
 
             <div id="transaction" className="main-page">
-              <h1 className="font-playfair-bold title-page">Transaksi</h1>
+              <div className="flex justify-center border-double">
+                <Typography family="playfair-bold" variant="h1">
+                  {res.filterData ? `${res.filterData}` : "Transaksi"}
+                </Typography>
+              </div>
 
               <TransactionNavbar price={noPrice} />
 
@@ -176,7 +187,11 @@ export default function Transaction() {
         >
           {isPending && <Loading />}
           <div id="transaction" className="main-page">
-            <h1 className="font-playfair-bold title-page">{res.filterData ? `${res.filterData}` : "Transaksi"}</h1>
+            <div className="flex justify-center border-double">
+              <Typography family="playfair-bold" variant="h1">
+                {res.filterData ? `${res.filterData}` : "Transaksi"}
+              </Typography>
+            </div>
 
             <TransactionNavbar price={allPrices} />
 

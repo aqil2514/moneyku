@@ -9,7 +9,7 @@ import serverEndpoint from "lib/server";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import { AccountRegister, AccountResponse } from "~/@types/account";
 import { authenticator } from "~/service/auth.server";
-import { securityQuestionsData } from "./data";
+import { currencyData, securityQuestionsData } from "./data";
 import Button from "components/Inputs/Button";
 
 export const meta: MetaFunction = () => [{ title: "Signup | Moneyku" }];
@@ -134,9 +134,9 @@ export default function Register() {
             Preferensi Mata Uang:
             <select name="currencyPreference" required>
               <option value="">Pilih Mata Uang</option>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="IDR">IDR</option>
+              {currencyData.map((d) => (
+                <option value={d} key={d}>{d}</option>
+              ))}
             </select>
           </label>
           <em style={{ color: "red" }}>{currencyError}</em>

@@ -6,6 +6,7 @@ import {
 import { Form, Link } from "@remix-run/react";
 import Typography from "components/General/Typography";
 import Button from "components/Inputs/Button";
+import Textfield from "components/Inputs/Textfield";
 import { AuthorizationError } from "remix-auth";
 import { redirectWithError, redirectWithSuccess } from "remix-toast";
 import { authenticator } from "~/service/auth.server";
@@ -66,20 +67,26 @@ export default function LoginForm() {
       </Typography>
       <div id="grid-layout">
         <form action="/login?method-login=form" method="POST" className="form">
-          <Typography variant="h1" family="merriweather-bold">Login</Typography>
+          <Typography variant="h1" family="merriweather-bold">
+            Login
+          </Typography>
 
           <div>
-            <label htmlFor="email" className="font-poppins-medium">
-              Username atau Email:
-            </label>
-            <input type="text" name="email" id="email" />
+            <Textfield
+              forId="email"
+              fieldType="text"
+              label="Username atau Email"
+              fontFamily="poppins-medium"
+            />
           </div>
 
           <div>
-            <label htmlFor="password" className="font-poppins-medium">
-              Password:
-            </label>
-            <input type="password" name="password" id="password" />
+            <Textfield
+              forId="password"
+              fieldType="password"
+              label="Password"
+              fontFamily="poppins-medium"
+            />
           </div>
           <Link to={"/signup"}>
             <Typography variant="p" family="ubuntu-medium">
