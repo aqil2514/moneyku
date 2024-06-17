@@ -4,6 +4,7 @@ import {
   MetaFunction,
 } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
+import Typography from "components/General/Typography";
 import Button from "components/Inputs/Button";
 import { AuthorizationError } from "remix-auth";
 import { redirectWithError, redirectWithSuccess } from "remix-toast";
@@ -60,12 +61,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function LoginForm() {
   return (
     <div id="login-form">
-      <h1 id="main-title" className="font-merriweather-bold">
+      <Typography variant="h1" id="main-title" family="merriweather-bold">
         Moneyku
-      </h1>
+      </Typography>
       <div id="grid-layout">
         <form action="/login?method-login=form" method="POST" className="form">
-          <h1 className="font-merriweather-bold">Login</h1>
+          <Typography variant="h1" family="merriweather-bold">Login</Typography>
 
           <div>
             <label htmlFor="email" className="font-poppins-medium">
@@ -80,8 +81,10 @@ export default function LoginForm() {
             </label>
             <input type="password" name="password" id="password" />
           </div>
-          <Link to={"/signup"} className="font-ubuntu-medium">
-            Belum punya akun?
+          <Link to={"/signup"}>
+            <Typography variant="p" family="ubuntu-medium">
+              Belum punya akun?
+            </Typography>
           </Link>
 
           <Button color="success" id="login-button">

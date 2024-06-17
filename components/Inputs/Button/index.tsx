@@ -21,5 +21,3 @@ export default function Button({
     </button>
   );
 }
-
-// rgb(46, 125, 50)
