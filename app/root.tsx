@@ -10,7 +10,7 @@ import {
 
 import style from "~/style.css?url";
 import { LinksFunction, LoaderFunctionArgs, json } from "@remix-run/node";
-import Sidebar from "components/layout/Sidebar";
+import Sidebar from "components/layout/Core/Sidebar";
 import React, { useEffect } from "react";
 import { getToast } from "remix-toast";
 import { ToastContainer, toast as notify } from "react-toastify";

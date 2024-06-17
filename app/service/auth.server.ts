@@ -16,7 +16,7 @@ if (!sessionSecret) {
 
 type User = AccountUser;
 
-async function login(email: string, password: string):Promise<LoginResult> {
+async function login(email: string, password: string): Promise<LoginResult> {
   const isLocal = process.env.NODE_ENV === "development";
   const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
 
@@ -28,7 +28,7 @@ async function login(email: string, password: string):Promise<LoginResult> {
 
     const data: User = res.data.user;
 
-    return {user: data, success: true, message: "Login berhasil"};
+    return { user: data, success: true, message: "Login berhasil" };
   } catch (error) {
     if (isAxiosError(error)) {
       const success = error.response?.data.success;
@@ -36,7 +36,7 @@ async function login(email: string, password: string):Promise<LoginResult> {
       return { user: null, success, message };
     }
 
-    return {user:null, success: false, message:"Terjadi kesalahan"}
+    return { user: null, success: false, message: "Terjadi kesalahan" };
   }
 }
 
@@ -68,13 +68,25 @@ const googleStrategy = new GoogleStrategy(
         },
       });
 
-      // Cek apakah user data dikembalikan
       const user = res.data.user;
 
-      return user;
+      const result: LoginResult = {
+        success: true,
+        user,
+        message: "Login berhasil",
+      };
+
+      // Cek apakah user data dikembalikan
+
+      return result;
     } catch (error) {
+      const result: LoginResult = {
+        success: true,
+        user: null,
+        message: "Login gagal",
+      };
       console.error("Error fetching user:", error);
-      return false;
+      return result;
     }
   }
 );
