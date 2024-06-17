@@ -4,6 +4,7 @@ import {
   MetaFunction,
 } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
+import Button from "components/Inputs/Button";
 import { AuthorizationError } from "remix-auth";
 import { redirectWithError, redirectWithSuccess } from "remix-toast";
 import { authenticator } from "~/service/auth.server";
@@ -83,9 +84,9 @@ export default function LoginForm() {
             Belum punya akun?
           </Link>
 
-          <button className="button-success" id="login-button">
+          <Button color="success" id="login-button">
             Login
-          </button>
+          </Button>
 
           <div>
             <p className="font-poppins-medium">Atau login dengan Google</p>

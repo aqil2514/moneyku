@@ -5,8 +5,8 @@ import {
   json,
 } from "@remix-run/node";
 import {
-  Form,
   useActionData,
+  useFetcher,
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
@@ -23,6 +23,7 @@ import axios from "axios";
 import { AssetsData } from "~/@types/assets";
 import Loading from "components/Loading/Loading";
 import { getUser } from "utils/account";
+import Button from "components/Inputs/Button";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },
@@ -35,7 +36,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const user = await getUser(request);
 
-  if(!user) throw new Error("Data user tidak ditemukan");
+  if (!user) throw new Error("Data user tidak ditemukan");
 
   const res = await axios.get(`${endpoint}/assets/getAssets`, {
     params: {
@@ -51,7 +52,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request }: ActionFunctionArgs) {
   const user = await getUser(request);
 
-  if(!user) throw new Error("Data user tidak ditemukan");
+  if (!user) throw new Error("Data user tidak ditemukan");
 
   const formData = await request.formData();
   const typeTransaction = String(formData.get("type-data"));
@@ -136,10 +137,12 @@ export function IncomeTransaction({ assetData }: { assetData: AssetsData[] }) {
     assetsTransaction,
     totalTransaction,
   } = errors;
+  const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
 
   return (
     <div className="main-page">
-      <Form
+      <fetcher.Form
         className="form-basic"
         action="/transaction/add?type=Pemasukan"
         method="post"
@@ -192,9 +195,11 @@ export function IncomeTransaction({ assetData }: { assetData: AssetsData[] }) {
         </div>
         <em style={{ color: "red" }}>{noteTransaction}</em>
         <div>
-          <button className="form-submit">Tambah Pemasukan</button>
+          <Button color="primary" disabled={isSubmitting}>
+            {isSubmitting ? "Menambah Pemasukan..." : "Tambah Pemasukan"}
+          </Button>
         </div>
-      </Form>
+      </fetcher.Form>
       <AssetLists assetData={assetData} />
     </div>
   );
@@ -202,6 +207,8 @@ export function IncomeTransaction({ assetData }: { assetData: AssetsData[] }) {
 
 export function OutcomeTransaction({ assetData }: { assetData: AssetsData[] }) {
   const [nominal, setNominal] = useState<string>("");
+  const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
 
   const actionData = useActionData<typeof action>();
   const errors = getErrors(actionData?.errors);
@@ -214,7 +221,7 @@ export function OutcomeTransaction({ assetData }: { assetData: AssetsData[] }) {
   } = errors;
   return (
     <div className="main-page">
-      <Form
+      <fetcher.Form
         className="form-basic"
         action="/transaction/add?type=Pengeluaran"
         method="post"
@@ -267,9 +274,11 @@ export function OutcomeTransaction({ assetData }: { assetData: AssetsData[] }) {
         </div>
         <em style={{ color: "red" }}>{noteTransaction}</em>
         <div>
-          <button className="form-submit">Tambah Pengeluaran</button>
+          <Button color="primary" disabled={isSubmitting}>
+            {isSubmitting ? "Menambah Pengeluaran..." : "Tambah Pengeluaran"}
+          </Button>
         </div>
-      </Form>
+      </fetcher.Form>
       <AssetLists assetData={assetData} />
     </div>
   );

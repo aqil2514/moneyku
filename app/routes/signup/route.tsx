@@ -10,6 +10,7 @@ import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import { AccountRegister, AccountResponse } from "~/@types/account";
 import { authenticator } from "~/service/auth.server";
 import { securityQuestionsData } from "./data";
+import Button from "components/Inputs/Button";
 
 export const meta: MetaFunction = () => [{ title: "Signup | Moneyku" }];
 
@@ -165,9 +166,9 @@ export default function Register() {
 
         <em style={{ color: "red" }}>{accountFoundError}</em>
         <div>
-          <button type="submit" className="button-navigation-1">
+          <Button color="success" type="submit">
             Daftar
-          </button>
+          </Button>
         </div>
       </Form>
     </div>

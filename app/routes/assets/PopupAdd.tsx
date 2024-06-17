@@ -2,6 +2,7 @@ import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
 import React, { SetStateAction, useEffect, useState } from "react";
 import { BasicResponse } from "~/@types/general";
+import Button from "components/Inputs/Button";
 
 interface PopupAddProps {
   setAddMode: React.Dispatch<SetStateAction<boolean>>;
@@ -105,16 +106,16 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
           </div>
 
           <div id="asset-footer" className="container-flex">
-            <button
-              className="button-close"
+            <Button
+              color="error"
               onClick={() => setAddMode(false)}
               type="button"
             >
               Kembali
-            </button>
-            <button className="button-success">
-              {isSubmitting ? "Mengedit..." : "Konfirmasi"}
-            </button>
+            </Button>
+            <Button color="success" disabled={isSubmitting}>
+              {isSubmitting ? "Menambahkan..." : "Konfirmasi"}
+            </Button>
           </div>
         </fetcher.Form>
       </div>

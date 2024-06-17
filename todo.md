@@ -1,5 +1,9 @@
 # Todolist
 
+## SCSS Component
+1. Buat komponen khusus untuk button
+2. Buat komponen khusus untuk popup
+
 ## Assets
 1. `Tambahin field jumlah asset di dalam aset ini. Nantinya, user bisa lihat transaksi apa aja yang ada di aset ini`
 2. `Perbaiki penerapan pada deskripsi aset. Jadi, apabila terdapat paragraf baru atau garis baru, penerapannya juga harus sama, ada di garis baru.`

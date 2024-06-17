@@ -10,6 +10,7 @@ import { authenticator } from "~/service/auth.server";
 import Loading from "components/Loading/Loading";
 import { getUser } from "utils/account";
 import { getTransPerAssetData, getTransactionData } from "./utils";
+import Button from "components/Inputs/Button";
 
 export const meta: MetaFunction = () => [
   {
@@ -179,11 +180,11 @@ export default function Transaction() {
 
             <TransactionNavbar price={allPrices} />
 
-            <header className="flex gap-1">
+            <header className="flex gap-1 items-center">
               <TransactionFilter />
               {res.filterData && (
                 <Form action="/transaction" replace>
-                  <button>Hapus filter asset</button>
+                  <Button color="error">Hapus filter asset</Button>
                 </Form>
               )}
             </header>

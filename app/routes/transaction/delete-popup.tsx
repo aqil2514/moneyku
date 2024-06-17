@@ -6,7 +6,8 @@ import {
 } from "./route";
 import { IoIosWarning } from "react-icons/io";
 import axios, { isAxiosError } from "axios";
-import { Form } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
+import Button from "components/Inputs/Button";
 
 const SelectedData = ({ data }: { data: TransactionBodyType }) => {
   return (
@@ -36,6 +37,8 @@ export default function DeletePopup({
   setDeletePopup: React.Dispatch<React.SetStateAction<boolean>>;
   index: number;
 }) {
+  const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
   const { data } = useTransactionData();
   const [globalData, setGlobalData] = useState<TransactionType>();
   const [selectedData, setSelectedData] = useState<TransactionBodyType>();
@@ -103,13 +106,12 @@ export default function DeletePopup({
             </p>
           </div>
           <div className="container container-flex">
-            <button
-              className="button-close"
+            <Button color="primary"
               onClick={() => setDeletePopup(false)}
             >
               Batal
-            </button>
-            <Form method="DELETE" onSubmit={deleteHandler}>
+            </Button>
+            <fetcher.Form method="DELETE" onSubmit={deleteHandler}>
               <input type="hidden" name="main-id" id="main-id" value={globalData?.id} />
               <input
                 type="hidden"
@@ -117,8 +119,10 @@ export default function DeletePopup({
                 id="transaction-uid"
                 value={selectedData?.uid}
               />
-              <button className="button-navigation-1">Hapus</button>
-            </Form>
+              <Button color="error" disabled={isSubmitting}>
+                {isSubmitting ? "Menghapus Data..." : "Hapus Data"}
+              </Button>
+            </fetcher.Form>
           </div>
         </div>
       </div>

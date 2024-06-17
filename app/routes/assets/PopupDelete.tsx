@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
 import { useAssetContext } from "./route";
 import { BasicResponse } from "~/@types/general";
+import Button from "components/Inputs/Button";
 
 type DeleteOption = "delete-transaction" | "move-transaction" | "";
 
@@ -110,16 +111,16 @@ export default function PopupDelete({
 
         <div id="asset-footer" className="container-flex">
           <input type="hidden" name="asset-name" value={data?.name} />
-          <button
-            className="button-close"
+          <Button
+            color="error"
             onClick={() => setDeleteMode(false)}
             type="button"
           >
             Kembali
-          </button>
-          <button className="button-success" disabled={isSubmitting}>
+          </Button>
+          <Button color="success" disabled={isSubmitting}>
             {isSubmitting ? "Menghapus" : "Konfirmasi"}
-          </button>
+          </Button>
         </div>
       </fetcher.Form>
     </div>

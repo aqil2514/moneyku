@@ -3,6 +3,7 @@ import { currencyFormat } from "../transaction/route";
 import DetailPopup from "./DetailPopup";
 import { useAssetContext } from "./route";
 import PopupAdd from "./PopupAdd";
+import Button from "components/Inputs/Button";
 
 export default function MainPage() {
   const { assetData } = useAssetContext();
@@ -20,10 +21,10 @@ export default function MainPage() {
     <>
       <div className="main-page">
         <h1 className="font-playfair-bold title-page">Aset</h1>
-        <div id="asset-menu">
-          <button className="button-success" onClick={() => setAddMode(true) }>
+        <div id="asset-menu" style={{margin:"1rem 0"}}>
+          <Button color="success" onClick={() => setAddMode(true) }>
             Tambah Aset
-          </button>
+          </Button>
         </div>
         <div id="asset-container">
           {assetData.map((d) => (

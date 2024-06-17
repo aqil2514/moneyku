@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IncomeTransaction, OutcomeTransaction } from "./route";
 import { AssetsData } from "~/@types/assets";
+import Button from "components/Inputs/Button";
 
 type TypeTransaction = "Pemasukan" | "Pengeluaran" | "Transfer" | null;
 export default function Transaction({
@@ -15,30 +16,22 @@ export default function Transaction({
       <h2>Tipe Transaksi</h2>
       <div className="form-navigation">
         <section>
-          <button
-            className={
-              type === "Pengeluaran"
-                ? "button-navigation-1 button-navigation-1-active"
-                : "button-navigation-1"
-            }
+          <Button
+            color="primary"
+            disabled={type === "Pengeluaran"}
             onClick={() => setType("Pengeluaran")}
-            id="outcome-data"
           >
             Pengeluaran
-          </button>
+          </Button>
         </section>
         <section>
-          <button
-            className={
-              type === "Pemasukan"
-                ? "button-navigation-1 button-navigation-1-active"
-                : "button-navigation-1"
-            }
+          <Button
+            color="primary"
+            disabled={type === "Pemasukan"}
             onClick={() => setType("Pemasukan")}
-            id="income-data"
           >
-            Pemasukan{" "}
-          </button>
+            Pemasukan
+          </Button>
         </section>
       </div>
       {type === "Pemasukan" && <IncomeTransaction assetData={assetData} />}

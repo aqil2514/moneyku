@@ -18,6 +18,12 @@
     }
   }
 
+  #profile{
+    &-footer{
+      display: flex;
+    }
+  }
+
   #sidebar {
     min-height: 100vh;
     background-color: #114b977f;

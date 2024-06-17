@@ -3,6 +3,7 @@ import { PopupProps } from "./DetailPopup";
 import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
 import { BasicResponse } from "~/@types/general";
+import Button from "components/Inputs/Button";
 
 interface EditAssetResponse extends BasicResponse{
     newAssetName: string|undefined;
@@ -125,16 +126,16 @@ export default function PopupEdit ({
             </div>
           )}
           <div id="asset-footer" className="container-flex">
-            <button
-              className="button-close"
+            <Button
+              color="error"
               onClick={() => setEditMode(false)}
               type="button"
             >
               Kembali
-            </button>
-            <button className="button-success">
+            </Button>
+            <Button color="success" disabled={isSubmitting}>
               {isSubmitting ? "Mengedit..." : "Konfirmasi"}
-            </button>
+            </Button>
           </div>
         </fetcher.Form>
       </div>

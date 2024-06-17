@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRevalidator } from "@remix-run/react";
 import { ErrorValidationResponse } from "~/@types/general";
 import { TransactionErrors } from "~/@types/transaction";
+import Button from "components/Inputs/Button";
 
 interface EditPopupProps {
   index: number;
@@ -173,22 +174,21 @@ export default function EditPopup({
                 defaultValue={selectedData?.item}
               />
               <em style={{ color: "red" }}>{noteTransaction}</em>
-            </div>
-            <div style={{ margin: "1rem 0" }}>
-              <button className="form-submit">Edit Data</button>
+              <div className="popup-edit-footer" style={{ margin: "1rem 0" }}>
+                <div className="container container-flex">
+                  <Button color="success">Edit Data</Button>
+
+                  <Button
+                    color="error"
+                    type="button"
+                    onClick={() => setEditPopup(false)}
+                  >
+                    Batal
+                  </Button>
+                </div>
+              </div>
             </div>
           </form>
-        </div>
-
-        <div className="popup-edit-footer">
-          <div className="container container-flex">
-            <button
-              className="button-close"
-              onClick={() => setEditPopup(false)}
-            >
-              Batal
-            </button>
-          </div>
         </div>
       </div>
     </div>

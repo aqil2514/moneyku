@@ -1,33 +1,47 @@
-// .button {
-//     background-color: $-background;
-//     padding: 1rem 2rem;
-//     border: none;
-//     border-radius: 1rem;
-//     color: $-text-color;
-//     font-size: 16px;
-//     font-family: sans-serif;
-//     cursor: pointer;
-//     transition: background-color 0.3s ease;
-  
-//     &:hover {
-//       background-color: $-hover-color;
-//     }
-  
-//     &:focus {
-//       box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-//     }
-  
-//     &:disabled {
-//       opacity: 0.5;
-//       cursor: default;
-//     }
-  
-//     &-active {
-//       background-color: $-hover-color;
-//       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-//       color: #fff;
-//       font-weight: bold;
-//       cursor: default !important;
-//       outline: 2px solid #fff;
-//     }
-//   }
+//Contained Variant
+@mixin button-contained($-background-color, $-hover-color, $-active-color, $-disable-color) {
+    background-color: $-background-color;
+    padding: 6px 16px 6px 16px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    font-family: sans-serif;
+    cursor: pointer;
+    transition: 100ms;
+
+    &:hover {
+        background-color: $-hover-color;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+
+    &:disabled {
+        background-color: $-disable-color;
+        cursor: default;
+    }
+
+    &:active {
+        background-color: $-active-color;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        outline: 2px solid #fff;
+    }
+}
+
+.button-contained-error {
+    @include button-contained(#d81b60, #971243, #df487f, #ef6694);
+}
+
+.button-contained-info {
+    @include button-contained(#00bcd4, #00acc1, #26c6da, #4dd0e1);
+}
+
+.button-contained-primary {
+    @include button-contained(#2196f3, #1e88e5, #42a5f5, #64b5f6);
+}
+
+.button-contained-success {
+    @include button-contained(#009688, #00897b, #26a69a, #4db6ac);
+}

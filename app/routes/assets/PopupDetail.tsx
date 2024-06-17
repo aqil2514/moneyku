@@ -4,6 +4,7 @@ import { PopupProps } from "./DetailPopup";
 import { useAssetContext } from "./route";
 import { filterTransPerAsset } from "./utils";
 import { toast } from "react-toastify";
+import Button from "components/Inputs/Button";
 
 export default function PopupDetail({
   data,
@@ -22,21 +23,21 @@ export default function PopupDetail({
       <div>
         <p>Memuat detail aset...</p>
         <div id="asset-footer" className="container-flex">
-          <button
-            className="button-navigation-1"
+          <Button
+            color="primary"
             onClick={() => setAssetName("")}
           >
             Tutup
-          </button>
+          </Button>
         </div>
       </div>
     );
   }
 
   const deleteHandler = () => {
-    if(assetData.length <= 1) return toast.error("Minimal harus ada 1 Asset");
-    setDeleteMode(true)
-  }
+    if (assetData.length <= 1) return toast.error("Minimal harus ada 1 Asset");
+    setDeleteMode(true);
+  };
 
   return (
     <>
@@ -56,7 +57,7 @@ export default function PopupDetail({
           <strong style={{ display: "block" }}>Deskripsi Aset : </strong>
           {data?.description}
         </p>
-        <div className="flex">
+        <div className="flex items-center gap-1">
           <p>
             <strong>Jumlah Transaksi : </strong>
             {totalTransaction === 0
@@ -65,26 +66,32 @@ export default function PopupDetail({
           </p>
           {totalTransaction !== 0 && (
             <Form method="GET" action="/transaction" replace>
-              <input type="hidden" name="asset" id="asset" value={data?.name} />
-              <button>lihat transaksi</button>
+              <div>
+                <input
+                  type="hidden"
+                  name="asset"
+                  id="asset"
+                  value={data?.name}
+                />
+                <Button style={{ padding: "0.1rem 0.2rem" }} color="info">
+                  lihat transaksi
+                </Button>
+              </div>
             </Form>
           )}
         </div>
       </div>
 
       <div id="asset-footer" className="container-flex">
-        <button
-          className="button-navigation-1"
-          onClick={() => setAssetName("")}
-        >
+        <Button color="primary" onClick={() => setAssetName("")}>
           Tutup
-        </button>
-        <button className="button-success" onClick={() => setEditMode(true)}>
+        </Button>
+        <Button color="success" onClick={() => setEditMode(true)}>
           Edit
-        </button>
-        <button className="button-close" onClick={deleteHandler}>
+        </Button>
+        <Button color="error" onClick={deleteHandler}>
           Hapus
-        </button>
+        </Button>
       </div>
     </>
   );
