@@ -1,9 +1,10 @@
-import Typography from "components/General/Typography";
-import { useSettingData } from "./route";
-import Textfield from "components/Inputs/Textfield";
 import { useState } from "react";
-import Button from "components/Inputs/Button";
 import { currencyData } from "../signup/data";
+import Typography from "components/General/Typography";
+import Textfield from "components/Inputs/Textfield";
+import Button from "components/Inputs/Button";
+import { useSettingData } from "../_setting/route";
+
 
 export default function ProfileSetting() {
   const { user } = useSettingData();

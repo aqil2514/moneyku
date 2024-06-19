@@ -1,10 +1,9 @@
 import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
-import { NavLink, useLoaderData, useNavigate } from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import Typography from "components/General/Typography";
 import Button from "components/Inputs/Button";
 import { BiLogOut } from "react-icons/bi";
 import { getUser } from "utils/account";
-import ProfileSetting from "./Profile";
 import { createContext, useContext } from "react";
 import { AccountUser } from "~/@types/account";
 
@@ -39,6 +38,7 @@ export default function Setting() {
             <Typography align="center" family="merriweather-bold" variant="h1">
               Pengaturan
             </Typography>
+            {/* Styling di sini  */}
             <div className="setting-navbar">
               <NavLink
                 to={"/setting/profile"}
@@ -62,7 +62,9 @@ export default function Setting() {
               </Button>
             </div>
           </div>
-          <ProfileSetting />
+          <div>
+          <Outlet />
+          </div>
         </div>
       </div>
     </SettingContext.Provider>
