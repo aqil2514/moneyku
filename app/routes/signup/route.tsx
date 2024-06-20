@@ -175,7 +175,7 @@ export default function Register() {
   );
 }
 
-function getErrors(errors: AccountResponse[] | undefined) {
+export function getErrors(errors: AccountResponse[] | undefined) {
   const usernameError = errors?.find((e) => e.path === "username")?.message;
   const emailError = errors?.find((e) => e.path === "email")?.message;
   const passwordError = errors?.find((e) => e.path === "password")?.message;

@@ -1,4 +1,5 @@
 .setting-navbar{
+    display: block;
     padding: .5rem 1rem;
     transition: 200ms;
     border-radius: .5rem;
@@ -17,7 +18,7 @@
     &-active{
         background-color: #b2b2b2d5;
         color: rgb(12, 12, 12);
-
+        cursor: default;
     }
 }
 

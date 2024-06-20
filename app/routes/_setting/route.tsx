@@ -6,6 +6,7 @@ import { BiLogOut } from "react-icons/bi";
 import { getUser } from "utils/account";
 import { createContext, useContext } from "react";
 import { AccountUser } from "~/@types/account";
+import { settingNavLink } from "../_setting.setting/setting-navlinks";
 
 export const meta: MetaFunction = () => [{ title: "Setting | Moneyku" }];
 
@@ -39,19 +40,24 @@ export default function Setting() {
               Pengaturan
             </Typography>
             {/* Styling di sini  */}
-            <div className="setting-navbar">
+            {settingNavLink.map((nav, i) => (
               <NavLink
-                to={"/setting/profile"}
+                key={`nav-${i + 1}`}
+                to={nav.to}
                 replace
                 className={({ isActive }) =>
-                  isActive ? "" : ""
+                  isActive
+                    ? "setting-navbar setting-navbar-active"
+                    : "setting-navbar"
                 }
               >
-                <Typography variant="p" family="playfair-bold">
-                  Profile
-                </Typography>
+                <div>
+                  <Typography variant="p" family="playfair-bold">
+                    {nav.text}
+                  </Typography>
+                </div>
               </NavLink>
-            </div>
+            ))}
             <div className="flex gap-1 my-4">
               <Button
                 color="error"
@@ -63,7 +69,7 @@ export default function Setting() {
             </div>
           </div>
           <div>
-          <Outlet />
+            <Outlet />
           </div>
         </div>
       </div>
