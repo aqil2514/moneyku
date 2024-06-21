@@ -62,7 +62,7 @@ export default function ProfileSetting() {
   return (
     <div id="setting-page-profile">
       <Typography family="merriweather-bold" variant="h1">
-        Pengaturan Profil
+        Profil
       </Typography>
       <fetcher.Form method="PUT" action="/api/profile">
         <input type="hidden" name="user-id" value={user.uid} readOnly />

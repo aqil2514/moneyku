@@ -35,7 +35,7 @@ export default function Setting() {
     <SettingContext.Provider value={{ user }}>
       <div className="main-page">
         <div id="setting-page" className="container-body">
-          <div id="setting-page-nav">
+          <div id="setting-page-nav" className="flex flex-column gap-2">
             <Typography align="center" family="merriweather-bold" variant="h1">
               Pengaturan
             </Typography>
@@ -47,12 +47,13 @@ export default function Setting() {
                 replace
                 className={({ isActive }) =>
                   isActive
-                    ? "setting-navbar setting-navbar-active"
-                    : "setting-navbar"
+                    ? "setting-navbar setting-navbar-active no-underline"
+                    : "setting-navbar no-underline"
                 }
               >
-                <div>
-                  <Typography variant="p" family="playfair-bold">
+                <div className="flex items-center">
+                  {nav.icon}
+                  <Typography variant="p" family="playfair-bold" color="black">
                     {nav.text}
                   </Typography>
                 </div>

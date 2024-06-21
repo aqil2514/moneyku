@@ -1,5 +1,6 @@
 import React from "react";
 import { Color, FontFamily, FontSize } from "../interface";
+import clsx from "clsx";
 
 type TypographyVariant =
   | "h1"
@@ -44,27 +45,20 @@ export default function Typography({
   fontSize,
   color,
   align,
+  className,
   ...props
 }: TypographyProps) {
   const Component = variantMap[variant];
-  const style = `font-${family}
-      ${fontSize ? `font-${fontSize}` : ""} 
-      ${color ? `text-${color}` : ""}
-      ${align ? `text-${align}` : ""}
-      `;
-  const splittedStyle = style.split("\n");
-  const styleArray: string[] = [];
-
-  splittedStyle.forEach((style) => {
-    const trimmedStyle = style.trim();
-
-    if (trimmedStyle) styleArray.push(trimmedStyle);
-  });
-
-  const finalStyle = styleArray.join(" ");
+  const finalStyle = clsx(
+    `font-${family}`,
+    fontSize && `font-${fontSize}`,
+    color && `text-${color}`,
+    align && `text-${align}`,
+    'bg-inherit'
+  );
 
   return (
-    <Component className={`${finalStyle} bg-inherit`} {...props}>
+    <Component className={clsx(`${finalStyle} bg-inherit`, className)} {...props}>
       {children}
     </Component>
   );
