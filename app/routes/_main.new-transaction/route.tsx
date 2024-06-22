@@ -1,13 +1,17 @@
-import { LoaderFunctionArgs, defer } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction, defer } from "@remix-run/node";
 import { getUser } from "utils/account";
-import {
-  TransactionDataResponse,
-  getTransactionPromise,
-} from "../_main.transaction/utils";
 import { Await, useLoaderData } from "@remix-run/react";
-import { Suspense } from "react";
+import { Suspense, useContext } from "react";
 import { authenticator } from "~/service/auth.server";
 import Transactions from "./Transactions";
+import { getTransactionPromise } from "utils/transaction";
+import { TransactionDataResponse } from "~/@types/transaction";
+
+export const meta: MetaFunction = () => [
+  {
+    title: "Transaksi | Moneyku",
+  },
+];
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, { failureRedirect: "/login" });
@@ -33,4 +37,8 @@ export default function TransactionRoute() {
       </Await>
     </Suspense>
   );
+}
+
+export function useTransactionData() {
+  return useContext(TransactionContext);
 }

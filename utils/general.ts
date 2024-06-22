@@ -6,3 +6,8 @@
 export const toCapitalizeWords = (str: string): string => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
+
+  export const currencyFormat = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });

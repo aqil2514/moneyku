@@ -17,3 +17,19 @@ export interface TransactionErrors{
   assetsTransaction?: string;
   noteTransaction?: string;
 }
+
+export interface TransactionType {
+  id?: string;
+  header: string;
+  body: TransactionBodyType[];
+}
+
+/**
+ * Interface untuk tipe data yang dikembalikan oleh fungsi getTransactionData.
+ */
+export interface TransactionDataResponse {
+  data: TransactionType[];
+  user: AccountUser;
+  success: boolean;
+  status?: number;
+}

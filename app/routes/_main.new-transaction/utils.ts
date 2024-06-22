@@ -2,16 +2,9 @@ import { endpoint } from "lib/server";
 import {  AccountUser } from "~/@types/account";
 import { getUser } from "utils/account";
 import { TransactionType } from "../_main.transaction/route";
+import { TransactionDataResponse } from "~/@types/transaction";
 
-/**
- * Interface untuk tipe data yang dikembalikan oleh fungsi getTransactionData.
- */
-export interface TransactionDataResponse {
-  data: TransactionType[];
-  user: AccountUser;
-  success: boolean;
-  status?: number;
-}
+
 
 /**
  * Mengambil data transaksi untuk pengguna yang diberikan.
