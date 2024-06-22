@@ -15,7 +15,7 @@ import Transaction from "./Transaction";
 import serverEndpoint, { endpoint } from "lib/server";
 import { authenticator } from "~/service/auth.server";
 import { useState } from "react";
-import { currencyFormat } from "../transaction/route";
+import { currencyFormat } from "../_main.transaction/route";
 import { ErrorValidationResponse } from "~/@types/general";
 import { TransactionErrors } from "~/@types/transaction";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";

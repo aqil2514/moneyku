@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { currencyData } from "../signup/data";
+import { currencyData } from "~/routes/_auth.signup/data";
 import Typography from "components/General/Typography";
 import Textfield from "components/Inputs/Textfield";
 import Button from "components/Inputs/Button";

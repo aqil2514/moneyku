@@ -8,11 +8,9 @@ import { getSession } from "~/service/session.server";
  * @param request Request parameter
  * @returns User
  */
-export async function getUser(request: Request): Promise<AccountUser | null> {
+export async function getUser(request: Request): Promise<AccountUser> {
     const session = await getSession(request.headers.get("cookie"));
-    const data: LoginResult | null = session.get(authenticator.sessionKey);
-  
-    if (!data || !data.user) return null;
+    const data: LoginResult = session.get(authenticator.sessionKey);
   
     return data.user;
   }

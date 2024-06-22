@@ -17,7 +17,7 @@ export interface ErrorValidationResponse extends ErrorResponse {
 }
 
 export interface LoginResult {
-  user: AccountUser | null | undefined;
+  user: AccountUser;
   success: boolean;
   message: string;
 }

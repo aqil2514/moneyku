@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { currencyFormat } from "../transaction/route";
+import { currencyFormat } from "../_main.transaction/route";
 import DetailPopup from "./DetailPopup";
 import { useAssetContext } from "./route";
 import PopupAdd from "./PopupAdd";

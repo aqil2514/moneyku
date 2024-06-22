@@ -8,8 +8,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const statusLogin = searchParams.get("status");
   const strategyLogin = searchParams.get("strategy");
 
-  console.log(user);
-
   if(!user) throw new Error("Data user tidak ditemukan")
 
   if (strategyLogin === "google") {

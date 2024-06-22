@@ -1,5 +1,5 @@
 import { Form } from "@remix-run/react";
-import { currencyFormat } from "../transaction/route";
+import { currencyFormat } from "../_main.transaction/route";
 import { PopupProps } from "./DetailPopup";
 import { useAssetContext } from "./route";
 import { filterTransPerAsset } from "./utils";

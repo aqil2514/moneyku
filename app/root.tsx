@@ -5,17 +5,14 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useLocation,
 } from "@remix-run/react";
 
 import style from "~/style.css?url";
 import { LinksFunction, LoaderFunctionArgs, json } from "@remix-run/node";
-import Sidebar from "components/layout/Core/Sidebar";
 import React, { useEffect } from "react";
 import { getToast } from "remix-toast";
 import { ToastContainer, toast as notify } from "react-toastify";
 import toastStyles from "react-toastify/dist/ReactToastify.css?url";
-import { getUser } from "utils/account";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: style },
@@ -24,24 +21,16 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { toast, headers } = await getToast(request);
-  const user = await getUser(request);
 
-  if (!user) return json({ user: null, toast }, { headers });
-
-  return json({ user, toast }, { headers });
+  return json({ toast }, { headers });
 }
 
-export const exceptionPathName = ["/login", "/signup"];
-
 export function Layout({ children }: { children: React.ReactNode }) {
-  const location = useLocation();
-  const pathName = location.pathname;
-  const isExceptionPath = exceptionPathName.includes(pathName);
-  const { user, toast } = useLoaderData<typeof loader>();
+  const { toast } = useLoaderData<typeof loader>();
 
   useEffect(() => {
     if (toast) {
-      notify(toast.message, {type: toast.type});
+      notify(toast.message, { type: toast.type });
     }
   }, [toast]);
 
@@ -54,11 +43,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div className={isExceptionPath ? "" : "sidebar-on"}>
-          <Sidebar user={user} />
-          {children}
-          <ToastContainer />
-        </div>
+        {children}
+        <ToastContainer />
         <ScrollRestoration />
         <Scripts />
       </body>

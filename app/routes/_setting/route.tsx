@@ -7,6 +7,7 @@ import { getUser } from "utils/account";
 import { createContext, useContext } from "react";
 import { AccountUser } from "~/@types/account";
 import { settingNavLink } from "../_setting.setting/setting-navlinks";
+import Sidebar from "components/layout/Core/Sidebar";
 
 export const meta: MetaFunction = () => [{ title: "Setting | Moneyku" }];
 
@@ -33,44 +34,55 @@ export default function Setting() {
   // Bikin Navlink di sini nanti. Lanjutin nanti
   return (
     <SettingContext.Provider value={{ user }}>
-      <div className="main-page">
-        <div id="setting-page" className="container-body">
-          <div id="setting-page-nav" className="flex flex-column gap-2">
-            <Typography align="center" family="merriweather-bold" variant="h1">
-              Pengaturan
-            </Typography>
-            {/* Styling di sini  */}
-            {settingNavLink.map((nav, i) => (
-              <NavLink
-                key={`nav-${i + 1}`}
-                to={nav.to}
-                replace
-                className={({ isActive }) =>
-                  isActive
-                    ? "setting-navbar setting-navbar-active no-underline"
-                    : "setting-navbar no-underline"
-                }
+      <div className="sidebar-on">
+        <Sidebar user={user} />
+        <div className="main-page">
+          <div id="setting-page" className="container-body">
+            <div id="setting-page-nav" className="flex flex-column gap-2">
+              <Typography
+                align="center"
+                family="merriweather-bold"
+                variant="h1"
               >
-                <div className="flex items-center">
-                  {nav.icon}
-                  <Typography variant="p" family="playfair-bold" color="black">
-                    {nav.text}
-                  </Typography>
-                </div>
-              </NavLink>
-            ))}
-            <div className="flex gap-1 my-4">
-              <Button
-                color="error"
-                startIcon={<BiLogOut />}
-                onClick={() => navigate("/logout")}
-              >
-                Logout
-              </Button>
+                Pengaturan
+              </Typography>
+              {/* Styling di sini  */}
+              {settingNavLink.map((nav, i) => (
+                <NavLink
+                  key={`nav-${i + 1}`}
+                  to={nav.to}
+                  replace
+                  className={({ isActive }) =>
+                    isActive
+                      ? "setting-navbar setting-navbar-active no-underline"
+                      : "setting-navbar no-underline"
+                  }
+                >
+                  <div className="flex items-center">
+                    {nav.icon}
+                    <Typography
+                      variant="p"
+                      family="playfair-bold"
+                      color="black"
+                    >
+                      {nav.text}
+                    </Typography>
+                  </div>
+                </NavLink>
+              ))}
+              <div className="flex gap-1 my-4">
+                <Button
+                  color="error"
+                  startIcon={<BiLogOut />}
+                  onClick={() => navigate("/logout")}
+                >
+                  Logout
+                </Button>
+              </div>
             </div>
-          </div>
-          <div>
-            <Outlet />
+            <div>
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
