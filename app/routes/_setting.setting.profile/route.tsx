@@ -8,7 +8,7 @@ import { useFetcher } from "@remix-run/react";
 
 interface ResponseForm {
   data: unknown | null;
-  errors: ErrorResponseForm[] | null;
+  errors: ErrorResponseForm[] | string | null;
   message: string;
 }
 
@@ -39,23 +39,30 @@ export default function ProfileSetting() {
 
   useEffect(() => {
     if (fetcher.data) {
-      const errors = (fetcher.data as ResponseForm).errors;
-      if (errors) {
-        setErrorResponse(errors);
+      const { errors } = fetcher.data as ResponseForm;
+      if (!errors) {
+        setErrorResponse([]);
+      } else {
+        setErrorResponse(errors as ErrorResponseForm[]);
       }
     }
   }, [fetcher.data]);
-
   useEffect(() => {
+    if (!errorResponse) {
+      setErrorMapping({} as ErrorMapping);
+      return;
+    }
+
+    const ER_Map = new Map(errorResponse.map((d) => [d.path, d.message]));
     if (errorResponse) {
       setErrorMapping({
-        username: errorResponse.find((e) => e.path === "username")?.message,
-        category: errorResponse.find((e) => e.path === "category")?.message,
-        email: errorResponse.find((e) => e.path === "email")?.message,
-        language: errorResponse.find((e) => e.path === "language")?.message,
-        purposeUsage: errorResponse.find((e) => e.path === "purposeUsage")
-          ?.message,
+        username: ER_Map.get("username"),
+        category: ER_Map.get("category"),
+        email: ER_Map.get("email"),
+        language: ER_Map.get("language"),
+        purposeUsage: ER_Map.get("purposeUsage"),
       });
+      return;
     }
   }, [errorResponse]);
 
