@@ -50,8 +50,9 @@
     cursor: pointer;
   }
   #mobile-sidebar {
-    display: flex !important;
-    justify-content: space-between;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -110,8 +111,9 @@
     cursor: pointer;
   }
   #mobile-sidebar {
-    display: flex !important;
-    justify-content: space-between;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -139,7 +141,6 @@
   }
   #transaction h1 {
     text-align: center;
-    border: 4px double black;
   }
   #transaction-data {
     display: flex;

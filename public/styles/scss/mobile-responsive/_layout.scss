@@ -62,8 +62,9 @@
     }
 
     #mobile-sidebar {
-        display: flex !important;
-        justify-content: space-between;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 1rem;
         position: fixed;
         bottom: 0;
         width: 100%;
