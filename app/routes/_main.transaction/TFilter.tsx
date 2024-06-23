@@ -1,5 +1,5 @@
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
-import { useTransactionData } from "./route";
+import { useTransactionData } from "./Transactions";
 
 export const months = [
   "Januari",

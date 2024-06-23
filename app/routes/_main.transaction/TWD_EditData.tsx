@@ -1,14 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  TransactionBodyType,
-  TransactionType,
-  useTransactionData,
-} from "./route";
 import axios from "axios";
 import { useRevalidator } from "@remix-run/react";
 import { ErrorValidationResponse } from "~/@types/general";
-import { TransactionErrors } from "~/@types/transaction";
+import { TransactionBodyType, TransactionErrors, TransactionType } from "~/@types/transaction";
 import Button from "components/Inputs/Button";
+import { useTransactionData } from "./Transactions";
 
 interface EditPopupProps {
   index: number;

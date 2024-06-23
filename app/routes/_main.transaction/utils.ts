@@ -1,16 +1,10 @@
 import { endpoint } from "lib/server";
 import {  AccountUser } from "~/@types/account";
-import { TransactionType } from "./route";
+import { getUser } from "utils/account";
+import { TransactionType } from "../_main.transaction/route";
+import { TransactionDataResponse } from "~/@types/transaction";
 
-/**
- * Interface untuk tipe data yang dikembalikan oleh fungsi getTransactionData.
- */
-interface TransactionDataResponse {
-  data: TransactionType[];
-  user: AccountUser;
-  success: boolean;
-  status?: number;
-}
+
 
 /**
  * Mengambil data transaksi untuk pengguna yang diberikan.
@@ -21,6 +15,32 @@ interface TransactionDataResponse {
 export async function getTransactionData(
   user: AccountUser
 ): Promise<TransactionDataResponse> {
+  try {
+    const res = await fetch(`${endpoint}/transaction`, {
+      headers: { "User-ID": String(user.uid) },
+    });
+
+    const resData = await res.json();
+
+    if (!resData.success) {
+      return { data: [], user, success: false };
+    }
+
+    const data: TransactionType[] = resData.data;
+
+    return { data, user, success: true };
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+    return { data: [], user, success: false, status: 500 };
+  }
+}
+
+export async function getTransactionPromise(
+  request: Request
+): Promise<TransactionDataResponse> {
+  const user = await getUser(request);
+  if(!user) throw new Error("User tidak ada");
+
   try {
     const res = await fetch(`${endpoint}/transaction`, {
       headers: { "User-ID": String(user.uid) },

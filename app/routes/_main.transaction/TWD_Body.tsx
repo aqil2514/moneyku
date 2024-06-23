@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import {
-  TransactionBodyType,
-  currencyFormat,
-  useTransactionData,
-} from "./route";
-import DeletePopup from "./delete-popup";
 import { MdEdit } from "react-icons/md";
-import EditPopup from "./edit-data";
+import { TransactionBodyType } from "~/@types/transaction";
+import { useTransactionData } from "./Transactions";
+import { useState } from "react";
+import { currencyFormat } from "utils/general";
+import DeletePopup from "./TWD_DeleteData";
+import EditPopup from "./TWD_EditData";
 
 export default function TransactionDataBody({
   body,

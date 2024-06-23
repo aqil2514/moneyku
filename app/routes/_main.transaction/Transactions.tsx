@@ -27,11 +27,6 @@ export default function Transactions({data} : {data:TransactionType[]}){
   const [menuActive, setMenuActive] = useState<boolean>(false);
   const [month, setMonth] = useState<number>(new Date().getMonth());
   const [year, setYear] = useState<number>(new Date().getFullYear());
-  const selectedData = data.filter(
-    (d) => new Date(d.header).getMonth() === month
-  );
-
-  const noPrice = [0];
 
     return(
         <TransactionContext.Provider value={{

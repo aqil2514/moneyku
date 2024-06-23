@@ -24,6 +24,14 @@ export interface TransactionType {
   body: TransactionBodyType[];
 }
 
+export interface TransactionBodyType {
+  uid: string;
+  category: string;
+  asset: string;
+  item: string;
+  price: number;
+}
+
 /**
  * Interface untuk tipe data yang dikembalikan oleh fungsi getTransactionData.
  */
