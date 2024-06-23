@@ -8,13 +8,14 @@ import { createContext, useContext } from "react";
 import { AccountUser } from "~/@types/account";
 import { settingNavLink } from "../_setting.setting/setting-navlinks";
 import Sidebar from "components/layout/Core/Sidebar";
+import { authenticator } from "~/service/auth.server";
 
 export const meta: MetaFunction = () => [{ title: "Setting | Moneyku" }];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await getUser(request);
+  await authenticator.isAuthenticated(request, {failureRedirect:"/login"})
 
-  if (!user) throw new Error("User tidak ditemukan");
+  const user = await getUser(request);
 
   return json({ user });
 }
@@ -38,7 +39,7 @@ export default function Setting() {
         <Sidebar user={user} />
         <div className="main-page">
           <div id="setting-page" className="container-body">
-            <div id="setting-page-nav" className="flex flex-column gap-2">
+            <div id="setting-page-nav" className="flex flex-col gap-2">
               <Typography
                 align="center"
                 family="merriweather-bold"

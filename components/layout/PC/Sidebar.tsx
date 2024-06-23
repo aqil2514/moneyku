@@ -88,7 +88,7 @@ const Profile = ({
           </Button>
           <Button
             color="success"
-            onClick={() => navigate("/setting", { replace: true })}
+            onClick={() => navigate("/setting/profile", { replace: true })}
           >
             Edit Profil
           </Button>

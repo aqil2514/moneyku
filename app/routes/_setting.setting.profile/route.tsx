@@ -4,7 +4,10 @@ import Typography from "components/General/Typography";
 import Textfield from "components/Inputs/Textfield";
 import Button from "components/Inputs/Button";
 import { useSettingData } from "../_setting/route";
-import { useFetcher } from "@remix-run/react";
+import { MetaFunction, useFetcher } from "@remix-run/react";
+
+export const meta: MetaFunction = () => [{ title: "Profile | Moneyku" }];
+
 
 interface ResponseForm {
   data: unknown | null;

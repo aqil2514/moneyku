@@ -15,7 +15,7 @@ export default function Textfield({
   ...props
 }: TextfieldProps) {
   return (
-    <div className="flex flex-column form-input-basic">
+    <div className="flex flex-col form-input-basic">
       <label htmlFor={forId} className={`font-${fontFamily}`}>
         {label}:
       </label>

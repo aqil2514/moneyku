@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { ButtonHTMLAttributes } from "react";
 
 type Color = "success" | "error" | "info" | "primary";
@@ -17,10 +18,11 @@ export default function Button({
   children,
   startIcon,
   endIcon,
+  className,
   ...props
 }: ButtonComponentProps) {
   return (
-    <button className={`button-${variant}-${color} flex gap-1 items-center`} {...props}>
+    <button className={clsx(`button-${variant}-${color} flex gap-1 items-center`, className)} {...props}>
     {startIcon} {children} {endIcon}
     </button>
   );
