@@ -1,10 +1,10 @@
 import { useFetcher } from "@remix-run/react";
-import { PopupProps } from "./DetailPopup";
 import { useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
-import { useAssetContext } from "./route";
 import { BasicResponse } from "~/@types/general";
 import Button from "components/Inputs/Button";
+import { PopupProps } from "./A_Detail";
+import { useAssetContext } from "./Assets";
 
 type DeleteOption = "delete-transaction" | "move-transaction" | "";
 

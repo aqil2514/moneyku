@@ -1,9 +1,11 @@
 import React, { SetStateAction, useState } from "react";
-import { useAssetContext } from "./route";
 import { AssetsData } from "~/@types/assets";
-import PopupDetail from "./PopupDetail";
-import PopupDelete from "./PopupDelete";
-import PopupEdit from "./PopupEdit";
+import { useAssetContext } from "./Assets";
+import PopupDetail from "./A_PopupDetail";
+import PopupEdit from "./A_EditMode";
+import PopupDelete from "./A_DeleteMode";
+// import PopupDelete from "./PopupDelete";
+// import PopupEdit from "./PopupEdit";
 
 interface DetailProps {
   assetName: string;

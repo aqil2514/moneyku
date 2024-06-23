@@ -1,66 +1,35 @@
-import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/node";
-import { useLoaderData, useNavigation } from "@remix-run/react";
-import axios from "axios";
-import { endpoint } from "lib/server";
-import { AssetsData } from "~/@types/assets";
+import { LoaderFunctionArgs, MetaFunction, defer } from "@remix-run/node";
+import { Await, useLoaderData } from "@remix-run/react";
+import { Suspense } from "react";
+import { getAssetsPromise } from "utils/server/assets";
 import { authenticator } from "~/service/auth.server";
-import { ClientOnly } from "remix-utils/client-only";
-import MainPage from "./main";
-import { createContext, useContext } from "react";
-import Loading from "components/Loading/Loading";
-import { TransactionType } from "../transaction/route";
-import { getUser } from "utils/account";
+import Assets from "./Assets";
+import AssetsSkeleton from "./A_Skeleton";
 
 export const meta: MetaFunction = () => [
-  {
-    title: "Asset | Moneyku",
-  },
-];
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
-
-  const user = await getUser(request);
-
-  if(!user) throw new Error("Data user tidak ditemukan")
-
-  const res = await axios.get(`${endpoint}/assets/getAssets`, {
-    params: {
-      uid: user.uid as string,
+    {
+      title: "Asset | Moneyku",
     },
-  });
+  ];
 
-  const assetData: AssetsData[] = res.data.assetData;
-  const transactionData: TransactionType[] = res.data.transactionData;
+  export async function loader({ request }: LoaderFunctionArgs) {
+    await authenticator.isAuthenticated(request, {
+      failureRedirect: "/login",
+    });
 
-  return json({ assetData, transactionData });
-}
+    const data = getAssetsPromise(request);
+  
+    return defer({ data });
+  }
 
-interface AssetContextType {
-  assetData: AssetsData[];
-  transactionData: TransactionType[];
-}
+export default function AssetsPromise(){
+    const {data} = useLoaderData<typeof loader>();
 
-const AssetContext = createContext<AssetContextType>({} as AssetContextType);
-
-export default function Assets() {
-  const { assetData, transactionData } = useLoaderData<typeof loader>();
-  const navigation = useNavigation();
-  const isPending = navigation.state === "loading";
-  return (
-    <ClientOnly>
-      {() => (
-        <AssetContext.Provider value={{ assetData, transactionData }}>
-          {isPending && <Loading />}
-          <MainPage />
-        </AssetContext.Provider>
-      )}
-    </ClientOnly>
-  );
-}
-
-export function useAssetContext() {
-  return useContext(AssetContext);
+    return(
+        <Suspense fallback={<AssetsSkeleton />}>
+            <Await resolve={data}>
+                {(data) => <Assets assetData={data.assetData} transactionData={data.transactionData} /> }
+            </Await>
+        </Suspense>
+    )
 }

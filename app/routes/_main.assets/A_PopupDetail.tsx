@@ -1,10 +1,10 @@
 import { Form } from "@remix-run/react";
-import { currencyFormat } from "../_main.transaction/route";
-import { PopupProps } from "./DetailPopup";
-import { useAssetContext } from "./route";
-import { filterTransPerAsset } from "./utils";
 import { toast } from "react-toastify";
 import Button from "components/Inputs/Button";
+import { PopupProps } from "./A_Detail";
+import { useAssetContext } from "./Assets";
+import { currencyFormat } from "utils/general";
+import { filterTransPerAsset } from "utils/client/assets";
 
 export default function PopupDetail({
   data,

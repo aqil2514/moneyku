@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { currencyFormat } from "../_main.transaction/route";
-import DetailPopup from "./DetailPopup";
-import { useAssetContext } from "./route";
-import PopupAdd from "./PopupAdd";
 import Button from "components/Inputs/Button";
+import { useAssetContext } from "./Assets";
+import { currencyFormat } from "utils/general";
+import PopupAdd from "./A_AddMode";
+import DetailPopup from "./A_Detail";
 
 export default function MainPage() {
   const { assetData } = useAssetContext();

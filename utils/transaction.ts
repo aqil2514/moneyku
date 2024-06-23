@@ -1,8 +1,8 @@
-import { TransactionType } from "~/@types/transaction";
+import { TransactionDataResponse, TransactionType } from "~/@types/transaction";
 import { getUser } from "./account";
 import { endpoint } from "lib/server";
 
-export async function getTransactionPromise(request:Request){
+export async function getTransactionPromise(request:Request):Promise<TransactionDataResponse>{
     const user = await getUser(request);
 
     try {

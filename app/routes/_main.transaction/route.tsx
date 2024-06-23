@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import { authenticator } from "~/service/auth.server";
 import Transactions from "./Transactions";
 import { getTransactionPromise } from "utils/transaction";
-import { TransactionDataResponse } from "~/@types/transaction";
 import TransactionSkeleton from "./T_Skeleton";
 
 export const meta: MetaFunction = () => [
@@ -17,9 +16,7 @@ export const meta: MetaFunction = () => [
 export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, { failureRedirect: "/login" });
 
-  const transactionPromise = getTransactionPromise(request).then(
-    (data) => new Promise((resolve) => setTimeout(() => resolve(data), 3000))
-  ) as Promise<TransactionDataResponse>;
+  const transactionPromise = getTransactionPromise(request);
   const user = await getUser(request);
 
   return defer({

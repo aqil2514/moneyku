@@ -11,3 +11,5 @@ export const toCapitalizeWords = (str: string): string => {
     style: "currency",
     currency: "IDR",
   });
+
+export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

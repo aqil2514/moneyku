@@ -1,28 +1,50 @@
+import { useEffect, useState } from "react";
 import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
-import React, { SetStateAction, useEffect, useState } from "react";
 import { BasicResponse } from "~/@types/general";
 import Button from "components/Inputs/Button";
+import { PopupProps } from "./A_Detail";
 
-interface PopupAddProps {
-  setAddMode: React.Dispatch<SetStateAction<boolean>>;
+interface EditAssetResponse extends BasicResponse{
+    newAssetName: string|undefined;
 }
 
-export default function PopupAdd({ setAddMode }: PopupAddProps) {
-  const fetcher = useFetcher();
-  const isSubmitting = fetcher.state === "submitting";
-  const [selectValue, setSelectValue] = useState<string>("");
-  const data = fetcher.data as BasicResponse;
+export default function PopupEdit ({
+    data,
+    setEditMode,
+    setAssetName,
+  }: Pick<PopupProps, "data" | "setEditMode" | "setAssetName">) {
+    const [selectValue, setSelectValue] = useState<string>(
+      data ? data.group : ""
+    );
+    const fetcher = useFetcher();
+    const isSubmitting = fetcher.state === "submitting";
+    const isLoading = fetcher.state === "loading";
+    const fetcherData = fetcher.data as EditAssetResponse;
 
-  useEffect(() => {
-    if (data && data.success === true) setAddMode(false);
-  }, [data, setAddMode]);
-
-  return (
-    <div className="popup">
-      <div className="popup-edit">
-        <h3 className="font-ubuntu-bold text-center">Tambah Aset Baru</h3>
-        <fetcher.Form method="POST" action="/api/asset" id="asset-form">
+  
+    useEffect(() => {
+      if (isLoading && fetcherData.success) {
+        if(fetcherData.newAssetName){
+            setAssetName(fetcherData.newAssetName);
+        }
+        setEditMode(false);
+      }
+    }, [isLoading, setEditMode, fetcherData,setAssetName]);
+  
+    return (
+      <div style={{ position: "relative" }}>
+        <h3 className="font-ubuntu-bold text-center">Edit Aset {data?.name}</h3>
+  
+        <fetcher.Form id="asset-form" method="PUT" action="/api/asset">
+          <input
+            type="hidden"
+            name="old-asset-name"
+            id="old-asset-name"
+            readOnly
+            value={data?.name}
+            disabled={isSubmitting}
+          />
           <div className="form-input-basic">
             <label htmlFor="asset-name" className="font-ubuntu-reguler">
               Nama Aset :{" "}
@@ -31,8 +53,7 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
               type="text"
               name="asset-name"
               id="asset-name"
-              placeholder="Masukkan nama aset"
-              required
+              defaultValue={data?.name}
               className="font-poppins-reguler"
               disabled={isSubmitting}
             />
@@ -44,10 +65,8 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
             <input
               type="number"
               name="asset-nominal"
-              placeholder="Masukkan nominal awal aset"
               id="asset-nominal"
-              required
-              defaultValue={0}
+              defaultValue={data?.amount}
               className="font-poppins-reguler"
               disabled={isSubmitting}
             />
@@ -60,7 +79,6 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
               name="asset-category"
               id="asset-category"
               value={selectValue}
-              required
               className="font-poppins-reguler"
               onChange={(e) => setSelectValue(e.target.value)}
               disabled={isSubmitting}
@@ -84,8 +102,6 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
                   type="text"
                   name="new-asset-category"
                   id="new-asset-category"
-                  placeholder="Nama kategori aset baru"
-                  required
                   disabled={isSubmitting}
                 />
               </>
@@ -98,27 +114,30 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
             <textarea
               name="asset-description"
               id="asset-description"
+              defaultValue={data?.description}
               className="font-poppins-reguler"
-              placeholder="Contoh: Aset khusus untuk transportasi"
-              required
               disabled={isSubmitting}
             />
           </div>
-
+          {isSubmitting && (
+            <div className="flex gap-1">
+              <div className="popup-spinner"></div>
+              <p className="my-auto font-playfair-bold text-info">Editing...</p>
+            </div>
+          )}
           <div id="asset-footer" className="container-flex">
             <Button
               color="error"
-              onClick={() => setAddMode(false)}
+              onClick={() => setEditMode(false)}
               type="button"
             >
               Kembali
             </Button>
             <Button color="success" disabled={isSubmitting}>
-              {isSubmitting ? "Menambahkan..." : "Konfirmasi"}
+              {isSubmitting ? "Mengedit..." : "Konfirmasi"}
             </Button>
           </div>
         </fetcher.Form>
       </div>
-    </div>
-  );
-}
+    );
+  }

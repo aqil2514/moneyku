@@ -15,7 +15,6 @@ import Transaction from "./Transaction";
 import serverEndpoint, { endpoint } from "lib/server";
 import { authenticator } from "~/service/auth.server";
 import { useState } from "react";
-import { currencyFormat } from "../_main.transaction/route";
 import { ErrorValidationResponse } from "~/@types/general";
 import { TransactionErrors } from "~/@types/transaction";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
@@ -24,6 +23,7 @@ import { AssetsData } from "~/@types/assets";
 import Loading from "components/Loading/Loading";
 import { getUser } from "utils/account";
 import Button from "components/Inputs/Button";
+import { currencyFormat } from "utils/general";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },

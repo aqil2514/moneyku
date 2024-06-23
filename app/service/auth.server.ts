@@ -33,10 +33,10 @@ async function login(email: string, password: string): Promise<LoginResult> {
     if (isAxiosError(error)) {
       const success = error.response?.data.success;
       const message = error.response?.data.message;
-      return { user: null, success, message };
+      return { user: {} as User, success, message };
     }
 
-    return { user: null, success: false, message: "Terjadi kesalahan" };
+    return { user: {} as User, success: false, message: "Terjadi kesalahan" };
   }
 }
 
@@ -82,7 +82,7 @@ const googleStrategy = new GoogleStrategy(
     } catch (error) {
       const result: LoginResult = {
         success: true,
-        user: null,
+        user: {} as User,
         message: "Login gagal",
       };
       console.error("Error fetching user:", error);

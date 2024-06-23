@@ -13,3 +13,8 @@ export interface AssetFormValues {
   newAssetCategory?: string;
   assetDescription: string;
 }
+
+export interface AssetResponse{
+  assetData: AssetsData[];
+    transactionData: TransactionType[];
+}
