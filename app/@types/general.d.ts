@@ -7,6 +7,12 @@ export interface BasicResponse {
   success: boolean;
 }
 
+export interface BasicHTTPResponse{
+  status: "success" | "error";
+  message: string;
+  data?: unknown;
+}
+
 export interface ErrorResponse {
   message: string;
 }

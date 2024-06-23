@@ -1,38 +1,43 @@
 import Textfield from "components/Inputs/Textfield";
-import { useSettingData } from "../_setting/route"
+import { useSettingData } from "../_setting/route";
 import { useState } from "react";
 import Alert from "components/Feedback/Alert";
 import { CiWarning } from "react-icons/ci";
 import { BiInfoCircle } from "react-icons/bi";
 import Button from "components/Inputs/Button";
 import Typography from "components/General/Typography";
+import { Form, useFetcher } from "@remix-run/react";
+import { securityQuestionsData } from "../_auth.signup/data";
 
-export default function DataVisible(){
-    const { user } = useSettingData();
+export default function DataVisible() {
+  const { user } = useSettingData();
   const privacy = user.privacy;
 
-    const isHavePrivacy = Object.keys(privacy).length > 0;
+  const isHavePrivacy = Object.keys(privacy).length > 0;
   const [isVisible_SA, setIsVisible_SA] = useState<boolean>(false);
-  const [alert, setAlert] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const fetcher = useFetcher();
 
-  const changeHandler = () => {
-    setAlert(true);
-
-    setTimeout(() => setAlert(false), 3000);
-  };
-    return(
-        <div>
-        <input type="hidden" readOnly value={user.uid} />
+  return (
+    <div>
+      <fetcher.Form>
+        <input type="hidden" readOnly defaultValue={user.uid} />
         <Textfield
           fieldType="text"
           fontFamily="poppins-regular"
           forId="securityQuiz"
           label="Pertanyaan Keamanan"
-          readOnly
-          onKeyDown={changeHandler}
-          value={isHavePrivacy ? privacy.securityQuiz : ""}
+          list="security-question-data"
+          defaultValue={isHavePrivacy ? privacy.securityQuiz : ""}
           placeholder="Masukkan pertanyaan keamanan"
+          onChange={() => setIsEditing(true)}
         />
+
+        <datalist id="security-question-data">
+          {securityQuestionsData.map((d) => (
+            <option value={d} key={d} />
+          ))}
+        </datalist>
         {!isHavePrivacy && (
           <Alert type="warning" className="relative flex items-center">
             <CiWarning /> Pertanyaan keamanan belum dibuat{" "}
@@ -56,9 +61,9 @@ export default function DataVisible(){
             forId="securityAnswer"
             fontFamily="poppins-regular"
             label="Jawaban Pertanyaan Keamanan"
-            onKeyDown={changeHandler}
-            readOnly
-            value={isHavePrivacy ? "Click tombol di bawah untuk melanjutkan" : ""}
+            placeholder="Masukkan jawabannya"
+            defaultValue={isHavePrivacy ? user.privacy.securityAnswer : ""}
+            onChange={() => setIsEditing(true)}
           />
         </div>
         <Textfield
@@ -66,23 +71,20 @@ export default function DataVisible(){
           forId="password"
           label="Password"
           fontFamily="poppins-medium"
-          readOnly
-          value={"************************"}
-          onKeyDown={changeHandler}
+          onChange={() => setIsEditing(true)}
+          defaultValue={"********************"}
         />
-        {alert && (
-          <Typography
-            variant="p"
-            family="poppins-medium-italic"
-            className="text-cyan-500"
-          >
-            Ingin ubah data? Klik tombol di bawah
-          </Typography>
-        )}
-        {/* Client tidak dapat mengubah data dan data yang ada di halaman ini bukanlah data sebenarnya, hanya semacam formalitas saja. Jika ingin mengubah data keamanan, client harus klik tombol di bawah dan nanti mereka akan dimintai password mereka. Setelah berhasil, halaman akan merender data sensitif. */}
-        <Button color="primary" type="button">
-          Atur Keamanan
-        </Button>
-      </div>
-    )
+        <div className="flex items-center gap-4">
+          <Button color="primary" disabled={!isEditing}>
+            {isEditing ? "Ubah Keamanan" : "Belum ada perubahan"}
+          </Button>
+          <Form>
+            <Button color="error" name="sessionDelete" value={"delete"}>
+              Hapus Sesi
+            </Button>
+          </Form>
+        </div>
+      </fetcher.Form>
+    </div>
+  );
 }
