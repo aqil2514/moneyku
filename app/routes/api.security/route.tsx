@@ -1,42 +1,80 @@
 import { ActionFunctionArgs } from "@remix-run/node";
+import { jsonWithError, jsonWithSuccess, redirectWithError, redirectWithSuccess } from "remix-toast";
+import { getUser } from "utils/account";
+import { getDataForm } from "./security-utils";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
-import { jsonWithError, jsonWithInfo, jsonWithSuccess } from "remix-toast";
-import { getUser } from "utils/account";
 import { BasicHTTPResponse } from "~/@types/general";
+
+// export async function action({ request }: ActionFunctionArgs) {
+//   const formData = await request.formData();
+//   const user = await getUser(request);
+//   const securityQuiz = formData.get("securityQuiz") as string;
+//   const securityAnswer = formData.get("securityAnswer") as string;
+//   const oldPassword = formData.get("old-password") as string;
+//   const newPassword = formData.get("new-password") as string;
+//   const confirmNewPassword = formData.get("confirm-new-password") as string;
+//   const cta = formData.get("cta");
+//   const securityOption = formData.get("security-option") as "password-option" | "security-question-option";
+
+//   if (cta === "create-new-security") {
+//     console.log("ok")
+//     await createNewSecurity({
+//       securityData: {
+//         confirmNewPassword,
+//         newPassword,
+//         securityAnswer,
+//         securityQuiz,
+//       },
+//       securityOption,
+//       user,
+//     });
+//     return redirectWithSuccess("/setting/security", "Lanjut");
+//   } else if(cta === "")
+
+//   const clientData = {
+//     uid: user.uid,
+//     securityQuiz,
+//     securityAnswer,
+//     oldPassword,
+//     newPassword,
+//     confirmNewPassword,
+//   };
+
+//   try {
+//     const { data } = await axios.put<BasicHTTPResponse>(
+//       `${endpoint}/account/security`,
+//       clientData
+//     );
+
+//     return jsonWithSuccess({ data }, data.message);
+//   } catch (error) {
+//     if (isAxiosError(error)) {
+//       const data: BasicHTTPResponse = error.response?.data;
+
+//       return jsonWithError({ data }, data.message);
+//     }
+//   }
+
+//   return jsonWithInfo({ mesage: "ok" }, "Ok");
+// }
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const user = await getUser(request);
-  const securityQuiz = formData.get("securityQuiz");
-  const securityAnswer = formData.get("securityAnswer");
-  const oldPassword = formData.get("old-password");
-  const newPassword = formData.get("new-password");
-  const confirmNewPassword = formData.get("confirm-new-password");
-
-  const clientData = {
-    uid: user.uid,
-    securityQuiz,
-    securityAnswer,
-    oldPassword,
-    newPassword,
-    confirmNewPassword,
-  };
+  const securityFormData = getDataForm(formData, user);
 
   try {
     const { data } = await axios.put<BasicHTTPResponse>(
       `${endpoint}/account/security`,
-      clientData
+      securityFormData
     );
 
-    return jsonWithSuccess({ data }, data.message);
+    return redirectWithSuccess("/setting/security", "Berhasil! Namun fitur dalam pengembangan");
   } catch (error) {
     if (isAxiosError(error)) {
       const data: BasicHTTPResponse = error.response?.data;
-
-      return jsonWithError({ data }, data.message);
+      return redirectWithError("/setting/security", data.message);
     }
   }
-
-  return jsonWithInfo({ mesage: "ok" }, "Ok");
 }

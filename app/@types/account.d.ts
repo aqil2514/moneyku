@@ -6,6 +6,12 @@ export interface Account {
 
 export type AccountUser = Omit<AccountDB, "password">;
 
+export interface AccountStatusFlags {
+  isVerified: boolean;
+  isHavePassword: boolean;
+  isHaveSecurityQuiz: boolean;
+}
+
 export interface AccountConfig {
   currency: CurrencyType;
   language: LanguageType;
@@ -21,6 +27,7 @@ export interface AccountDB extends Account {
   uid?: string;
   config: AccountConfig;
   privacy: AccountPrivacy;
+  readonly statusFlags: AccountStatusFlags;
 }
 
 export interface AccountRegister extends Account {

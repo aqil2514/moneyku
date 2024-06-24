@@ -7,56 +7,65 @@ import { useFetcher } from "@remix-run/react";
 import { useSettingData } from "../_setting/route";
 import { useState } from "react";
 import Typography from "components/General/Typography";
+import UnvisibleNoPassword from "./SS_UnvisibleNoPassword";
+import UnvisibleSecurityQuiz from "./SS_UnvisibleSecurityQuiz";
 
 type securityOptionState = "password" | "security-question";
 
-export default function UnvisibleData(){
-  const { user } = useSettingData();
+export default function UnvisibleData() {
+  const {
+    user,
+    user: {
+      statusFlags: { isHavePassword, isHaveSecurityQuiz },
+    },
+  } = useSettingData();
   const fetcher = useFetcher();
   const [securityOption, setSecurityOption] =
     useState<securityOptionState>("password");
 
-    return(
-        <fetcher.Form method="POST">
-        <Alert type="info" className="flex items-center gap-1">
-          {" "}
-          <PiNoteDuotone /> Beritahu kami bahwa ini memang Anda
-        </Alert>
-        <div className="flex gap-4">
-          <div>
-            <input
-              type="radio"
-              value={"password-option"}
-              checked={securityOption === "password"}
-              name="security-option"
-              id="password-option"
-              onChange={() => setSecurityOption("password")}
-            />
-            <label htmlFor="password-option">Password</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              name="security-option"
-              id="security-question-option"
-              value={"security-question-option"}
-              checked={securityOption === "security-question"}
-              onChange={() => setSecurityOption("security-question")}
-            />
-            <label htmlFor="security-question-option">
-              Pertanyaan Keamanan
-            </label>
-          </div>
+  return (
+    <fetcher.Form method="POST">
+      <Alert type="info" className="flex items-center gap-1">
+        {" "}
+        <PiNoteDuotone /> Beritahu kami bahwa ini memang Anda
+      </Alert>
+      <div className="flex gap-4">
+        <div>
+          <input
+            type="radio"
+            value={"password-option"}
+            checked={securityOption === "password"}
+            name="security-option"
+            id="password-option"
+            onChange={() => setSecurityOption("password")}
+          />
+          <label htmlFor="password-option">Password</label>
         </div>
-        {securityOption === "password" && (
+        <div>
+          <input
+            type="radio"
+            name="security-option"
+            id="security-question-option"
+            value={"security-question-option"}
+            checked={securityOption === "security-question"}
+            onChange={() => setSecurityOption("security-question")}
+          />
+          <label htmlFor="security-question-option">Pertanyaan Keamanan</label>
+        </div>
+      </div>
+      {securityOption === "password" &&
+        (isHavePassword ? (
           <Textfield
             fieldType="password"
             fontFamily="poppins-medium"
             forId="password"
             label="Password"
           />
-        )}
-        {securityOption === "security-question" && (
+        ) : (
+          <UnvisibleNoPassword />
+        ))}
+      {securityOption === "security-question" &&
+        (isHaveSecurityQuiz ? (
           <>
             <Typography
               family="poppins-medium"
@@ -72,11 +81,15 @@ export default function UnvisibleData(){
               label="Jawaban"
             />
           </>
-        )}
+        ) : (
+          <UnvisibleSecurityQuiz />
+        ))}
 
+      {isHavePassword && (
         <Button startIcon={<FaUnlockAlt />} color="success">
           Buka Akses
         </Button>
-      </fetcher.Form>
-    )
+      )}
+    </fetcher.Form>
+  );
 }

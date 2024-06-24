@@ -7,10 +7,11 @@ export interface BasicResponse {
   success: boolean;
 }
 
-export interface BasicHTTPResponse{
+export interface BasicHTTPResponse<T = unknown>{
   status: "success" | "error";
+  statusCode?: number;
   message: string;
-  data?: unknown;
+  data?: T;
 }
 
 export interface ErrorResponse {
