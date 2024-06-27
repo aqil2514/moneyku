@@ -5,6 +5,8 @@ import { getDataForm } from "./security-utils";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { BasicHTTPResponse } from "~/@types/general";
+import { commitSession, getSession } from "~/service/session.server";
+import { authenticator } from "~/service/auth.server";
 
 // export async function action({ request }: ActionFunctionArgs) {
 //   const formData = await request.formData();
@@ -70,11 +72,17 @@ export async function action({ request }: ActionFunctionArgs) {
       securityFormData
     );
 
-    return jsonWithSuccess({data}, "Berhasil! Namun fitur dalam pengembangan");
+    const session = await getSession(request.headers.get("cookie"));
+    session.set(authenticator.sessionKey, data.data);
+    const headers = new Headers({
+      "Set-Cookie": await commitSession(session),
+    });
+
+    return jsonWithSuccess({ data }, data.message, { headers });
   } catch (error) {
     if (isAxiosError(error)) {
       const data: BasicHTTPResponse = error.response?.data;
-      return jsonWithError({data}, data.message);
+      return jsonWithError({ data }, data.message);
     }
   }
 }

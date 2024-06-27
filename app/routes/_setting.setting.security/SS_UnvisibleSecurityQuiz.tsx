@@ -3,6 +3,7 @@ import Typography from "components/General/Typography";
 import Button from "components/Inputs/Button";
 import Textfield from "components/Inputs/Textfield";
 import { MdOutlineSecurity } from "react-icons/md";
+import { securityQuestionsData } from "../_auth.signup/data";
 
 export default function UnvisibleSecurityQuiz() {
   const fetcher = useFetcher();
@@ -29,6 +30,7 @@ export default function UnvisibleSecurityQuiz() {
           fieldType="text"
           fontFamily="poppins-regular"
           label="Pertanyaan Keamanan"
+          list="security-question-list"
         />
         <Textfield
           forId="securityAnswer"
@@ -40,6 +42,12 @@ export default function UnvisibleSecurityQuiz() {
           Buat Pertanyaan Keamanan
         </Button>
       </fetcher.Form>
+
+      <datalist id="security-question-list">
+        {securityQuestionsData.map((d) => (
+          <option value={d} key={d} />
+        ))}
+      </datalist>
     </div>
   );
 }
