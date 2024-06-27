@@ -3,7 +3,6 @@ import Alert from "components/Feedback/Alert";
 import { PiNoteDuotone } from "react-icons/pi";
 import Button from "components/Inputs/Button";
 import { FaUnlockAlt } from "react-icons/fa";
-import { useFetcher } from "@remix-run/react";
 import { useSettingData } from "../_setting/route";
 import { useState } from "react";
 import Typography from "components/General/Typography";
@@ -19,12 +18,11 @@ export default function UnvisibleData() {
       statusFlags: { isHavePassword, isHaveSecurityQuiz },
     },
   } = useSettingData();
-  const fetcher = useFetcher();
   const [securityOption, setSecurityOption] =
     useState<securityOptionState>("password");
 
   return (
-    <fetcher.Form method="POST">
+    <div>
       <Alert type="info" className="flex items-center gap-1">
         {" "}
         <PiNoteDuotone /> Beritahu kami bahwa ini memang Anda
@@ -90,6 +88,6 @@ export default function UnvisibleData() {
           Buka Akses
         </Button>
       )}
-    </fetcher.Form>
+    </div>
   );
 }

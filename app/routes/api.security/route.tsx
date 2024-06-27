@@ -1,5 +1,5 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import { jsonWithError, jsonWithSuccess, redirectWithError, redirectWithSuccess } from "remix-toast";
+import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/account";
 import { getDataForm } from "./security-utils";
 import axios, { isAxiosError } from "axios";
@@ -70,11 +70,11 @@ export async function action({ request }: ActionFunctionArgs) {
       securityFormData
     );
 
-    return redirectWithSuccess("/setting/security", "Berhasil! Namun fitur dalam pengembangan");
+    return jsonWithSuccess({data}, "Berhasil! Namun fitur dalam pengembangan");
   } catch (error) {
     if (isAxiosError(error)) {
       const data: BasicHTTPResponse = error.response?.data;
-      return redirectWithError("/setting/security", data.message);
+      return jsonWithError({data}, data.message);
     }
   }
 }
