@@ -7,7 +7,7 @@ import { LoginResult } from "~/@types/general";
 import { authenticator } from "~/service/auth.server";
 import { commitSession, getSession } from "~/service/session.server";
 
-type AccountProfile = Omit<AccountUser, "privacy">;
+type AccountProfile = Omit<AccountUser, "privacy" | "statusFlags">;
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();

@@ -27,6 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function TransactionRoute() {
   const { data } = useLoaderData<typeof loader>();
+  
   return (
     <Suspense fallback={<TransactionSkeleton />}>
       <Await resolve={data}>

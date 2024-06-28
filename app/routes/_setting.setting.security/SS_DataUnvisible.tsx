@@ -8,8 +8,8 @@ import { useState } from "react";
 import Typography from "components/General/Typography";
 import UnvisibleNoPassword from "./SS_UnvisibleNoPassword";
 import UnvisibleSecurityQuiz from "./SS_UnvisibleSecurityQuiz";
-
-type securityOptionState = "password" | "security-question";
+import { useFetcher } from "@remix-run/react";
+import { securityOptionState } from "~/@types/setting";
 
 export default function UnvisibleData() {
   const {
@@ -19,7 +19,10 @@ export default function UnvisibleData() {
     },
   } = useSettingData();
   const [securityOption, setSecurityOption] =
-    useState<securityOptionState>("password");
+    useState<securityOptionState>("password-option");
+    const [passwordInput, setPasswordInput] = useState<string>("")
+    const [answerInput, setAnswerInput] = useState<string>("")
+    const fetcher = useFetcher();
 
   return (
     <div>
@@ -32,10 +35,10 @@ export default function UnvisibleData() {
           <input
             type="radio"
             value={"password-option"}
-            checked={securityOption === "password"}
+            checked={securityOption === "password-option"}
             name="security-option"
             id="password-option"
-            onChange={() => setSecurityOption("password")}
+            onChange={() => setSecurityOption("password-option")}
           />
           <label htmlFor="password-option">Password</label>
         </div>
@@ -45,24 +48,25 @@ export default function UnvisibleData() {
             name="security-option"
             id="security-question-option"
             value={"security-question-option"}
-            checked={securityOption === "security-question"}
-            onChange={() => setSecurityOption("security-question")}
+            checked={securityOption === "security-question-option"}
+            onChange={() => setSecurityOption("security-question-option")}
           />
           <label htmlFor="security-question-option">Pertanyaan Keamanan</label>
         </div>
       </div>
-      {securityOption === "password" &&
+      {securityOption === "password-option" &&
         (isHavePassword ? (
           <Textfield
             fieldType="password"
             fontFamily="poppins-medium"
             forId="password"
+            onChange={(e) => setPasswordInput(e.target.value)}
             label="Password"
           />
         ) : (
           <UnvisibleNoPassword />
         ))}
-      {securityOption === "security-question" &&
+      {securityOption === "security-question-option" &&
         (isHaveSecurityQuiz ? (
           <>
             <Typography
@@ -77,16 +81,30 @@ export default function UnvisibleData() {
               fontFamily="poppins-medium"
               forId="securityAnswer"
               label="Jawaban"
+              onChange={(e) => setAnswerInput(e.target.value)}
             />
           </>
         ) : (
           <UnvisibleSecurityQuiz />
         ))}
 
-      {isHavePassword && (
+      {securityOption === "password-option" && isHavePassword && (
+        <fetcher.Form method="POST">
+          <input type="hidden" name="security-option" readOnly value={securityOption} />
+          <input type="hidden" name="password" readOnly value={passwordInput} />
         <Button startIcon={<FaUnlockAlt />} color="success">
           Buka Akses
         </Button>
+        </fetcher.Form>
+      )}  
+      {securityOption === "security-question-option" && isHaveSecurityQuiz && (
+        <fetcher.Form method="POST">
+        <input type="hidden" name="security-option" readOnly value={securityOption} />
+        <input type="hidden" name="securityAnswer" readOnly value={answerInput} />
+      <Button startIcon={<FaUnlockAlt />} color="success">
+        Buka Akses
+      </Button>
+      </fetcher.Form>
       )}
     </div>
   );

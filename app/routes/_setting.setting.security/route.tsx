@@ -6,7 +6,11 @@ import {
   json,
 } from "@remix-run/node";
 
-import { jsonWithError, redirectWithSuccess } from "remix-toast";
+import {
+  jsonWithError,
+  jsonWithSuccess,
+  redirectWithSuccess,
+} from "remix-toast";
 import { getUser } from "utils/account";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
@@ -15,6 +19,7 @@ import { commitSession, getSession } from "~/service/session.server";
 import { useLoaderData } from "@remix-run/react";
 import DataVisible from "./SS_DataVisible";
 import UnvisibleData from "./SS_DataUnvisible";
+import { CD_SettingSecurityCore, securityOptionState } from "~/@types/setting";
 
 export const meta: MetaFunction = () => [{ title: "Keamanan | Moneyku" }];
 
@@ -28,14 +33,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const headers = new Headers({
       "Set-Cookie": await commitSession(session),
     });
-    return redirectWithSuccess(
-      "/setting/security",
-      "Session berhasil dihapus",
-      { headers }
-    );
+    return redirectWithSuccess("/setting/security", "Session berhasil dihapus", {
+      headers,
+    });
   }
 
-  const securityVerified = session.get("securityVerified");
+  const securityVerified:boolean = session.get("securityVerified");
 
   return json({ securityVerified });
 }
@@ -44,15 +47,18 @@ export async function action({ request }: ActionFunctionArgs) {
   const user = await getUser(request);
   const formData = await request.formData();
 
-  const securityOption = formData.get("security-option");
-  const password = formData.get("password");
-  const securityAnswer = formData.get("securityAnswer");
+  const securityOption = formData.get("security-option") as securityOptionState;
+  const password = formData.get("password") as string;
+  const securityAnswer = formData.get("securityAnswer") as string;
 
-  const clientData = {
-    securityAnswer,
-    password,
+  const clientData: CD_SettingSecurityCore = {
+    cta: "verify-security",
     securityOption,
-    uid: user.uid,
+    securityData: {
+      oldPassword: password,
+      securityAnswer,
+    },
+    uid: user.uid as string,
   };
 
   try {
@@ -65,10 +71,11 @@ export async function action({ request }: ActionFunctionArgs) {
     session.set("securityVerified", true);
     const headers = new Headers({ "Set-Cookie": await commitSession(session) });
 
-    return redirectWithSuccess("/setting/security", data.message, { headers });
+    return jsonWithSuccess({ data }, data.message, { headers });
   } catch (error) {
     if (isAxiosError(error)) {
       const data: BasicHTTPResponse = error.response?.data;
+      console.error(error);
       return jsonWithError({ data }, data.message);
     }
   }
@@ -80,7 +87,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Security() {
   const { securityVerified } = useLoaderData<typeof loader>();
-  
 
   return (
     <div id="setting-page-security">
