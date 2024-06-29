@@ -1,5 +1,4 @@
 import { LoaderFunctionArgs, MetaFunction, defer } from "@remix-run/node";
-import { getUser } from "utils/account";
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { authenticator } from "~/service/auth.server";
@@ -17,11 +16,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, { failureRedirect: "/login" });
 
   const transactionPromise = getTransactionPromise(request);
-  const user = await getUser(request);
 
   return defer({
     data: transactionPromise,
-    user,
   });
 }
 
