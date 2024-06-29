@@ -1,10 +1,12 @@
 import { FontFamily } from "components/General/interface";
+import React from "react";
 
 interface TextfieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   forId: string;
   fontFamily: FontFamily;
   label: string;
   fieldType: "email" | "password" | "text";
+  errorMessage?: React.JSX.Element;
 }
 
 export default function Textfield({
@@ -12,6 +14,7 @@ export default function Textfield({
   fontFamily,
   label,
   fieldType,
+  errorMessage,
   ...props
 }: TextfieldProps) {
   return (
@@ -20,6 +23,7 @@ export default function Textfield({
         {label}:
       </label>
       <input type={fieldType} name={forId} id={forId} {...props} className={`font-${fontFamily}`}/>
+      {errorMessage ? errorMessage : <></>}
     </div>
   );
 }

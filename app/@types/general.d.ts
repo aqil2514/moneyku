@@ -8,7 +8,7 @@ export interface BasicResponse {
 }
 
 export interface BasicHTTPResponse<T = unknown>{
-  status: "success" | "error";
+  status: "success" | "error" | "idle";
   statusCode?: number;
   message: string;
   data?: T;
