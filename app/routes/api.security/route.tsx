@@ -5,9 +5,9 @@ import { getDataForm } from "./security-utils";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { BasicHTTPResponse, LoginResult } from "~/@types/general";
+import { AccountDB, AccountUser } from "~/@types/account";
 import { commitSession, getSession } from "~/service/session.server";
 import { authenticator } from "~/service/auth.server";
-import { AccountDB, AccountUser } from "~/@types/account";
 
 // export async function action({ request }: ActionFunctionArgs) {
 //   const formData = await request.formData();
@@ -83,6 +83,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const session = await getSession(request.headers.get("cookie"));
     session.set(authenticator.sessionKey, newSession);
+    session.unset("securityVerified");
     const headers = new Headers({
       "Set-Cookie": await commitSession(session),
     });
