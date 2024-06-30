@@ -11,6 +11,7 @@ export default function TransferTransaction() {
   const { assetData } = useTransactionAddData();
   const [isBill, setIsBill] = useState<boolean>(false);
   const fetcher = useFetcher();
+  const isSubmitting = fetcher.state !== "idle";
 
   return (
     <div className="main-page">
@@ -18,7 +19,14 @@ export default function TransferTransaction() {
         Transfer
       </Typography>
 
-      <fetcher.Form>
+      <fetcher.Form action="/transaction/add?type=Transfer" method="post">
+        <input
+          disabled={isSubmitting}
+          type="hidden"
+          name="type-data"
+          value={"Transfer"}
+        />
+
         <div className="form-date">
           <label htmlFor="transaction-date">
             <Typography variant="p" family="poppins-medium">
@@ -31,7 +39,7 @@ export default function TransferTransaction() {
         <Textfield
           fieldType="number"
           fontFamily="poppins-medium"
-          forId="total-nominal"
+          forId="transaction-total"
           label="Total"
         />
         <CheckboxWithText isBill={isBill} setIsBill={setIsBill} />
@@ -63,17 +71,21 @@ export default function TransferTransaction() {
         <Textfield
           fieldType="text"
           fontFamily="poppins-medium"
-          forId="note"
+          forId="transaction-note"
           label="Catatan"
         />
 
         <div className="form-input-basic">
-          <label htmlFor="asset-description" className="font-ubuntu-reguler">
-            Deskripsi Aset :{" "}
+          <label
+            htmlFor="transaction-description"
+            className="font-ubuntu-reguler"
+          >
+            Deskripsi :{" "}
           </label>
+
           <textarea
-            name="asset-description"
-            id="asset-description"
+            name="transaction-description"
+            id="transaction-description"
             className="font-poppins-reguler"
             placeholder="Contoh: Alokasi keuangan"
           />

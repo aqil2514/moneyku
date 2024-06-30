@@ -5,7 +5,6 @@ interface CheckboxWithTextProps {
   setIsBill: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export function CheckboxWithText({ isBill, setIsBill }: CheckboxWithTextProps) {
-  console.log(isBill);
   return (
     <div className="flex items-start space-x-2">
       <input

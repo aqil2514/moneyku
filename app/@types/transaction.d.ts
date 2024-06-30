@@ -14,10 +14,14 @@ export interface TransactionAddFormData {
   typeTransaction: string;
   totalTransaction: number;
   dateTransaction: Date;
+  billTransaction: number;
   categoryTransaction: string;
   assetsTransaction: string;
   noteTransaction: string;
   price: number;
+  fromAsset: string;
+  toAsset: string;
+  descriptionTransaction: string;
 }
 
 export interface TransactionErrors{
