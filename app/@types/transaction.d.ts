@@ -9,6 +9,17 @@ export interface TransactionFormData {
   noteTransaction: string | null; // Catatan transaksi, diambil dari formulir
 }
 
+export interface TransactionAddFormData {
+  userId: string;
+  typeTransaction: string;
+  totalTransaction: number;
+  dateTransaction: Date;
+  categoryTransaction: string;
+  assetsTransaction: string;
+  noteTransaction: string;
+  price: number;
+}
+
 export interface TransactionErrors{
   typeTransaction?: string;
   totalTransaction?: string;

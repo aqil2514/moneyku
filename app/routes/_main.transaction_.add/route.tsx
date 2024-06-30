@@ -2,28 +2,29 @@ import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
+  defer,
   json,
 } from "@remix-run/node";
 import {
+  Await,
   useActionData,
   useFetcher,
   useLoaderData,
-  useNavigation,
 } from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
 import Transaction from "./Transaction";
-import serverEndpoint, { endpoint } from "lib/server";
+import serverEndpoint from "lib/server";
 import { authenticator } from "~/service/auth.server";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { ErrorValidationResponse } from "~/@types/general";
 import { TransactionErrors } from "~/@types/transaction";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
-import axios from "axios";
 import { AssetsData } from "~/@types/assets";
-import Loading from "components/Loading/Loading";
 import { getUser } from "utils/account";
 import Button from "components/Inputs/Button";
 import { currencyFormat } from "utils/general";
+import { getAssetsPromise } from "utils/server/assets";
+import TransactionAddSkeleton from "./TA_Skeleton";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },
@@ -34,19 +35,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     failureRedirect: "/login",
   });
 
-  const user = await getUser(request);
+  const assetPromise = getAssetsPromise(request);
 
-  if (!user) throw new Error("Data user tidak ditemukan");
-
-  const res = await axios.get(`${endpoint}/assets/getAssets`, {
-    params: {
-      uid: user.uid as string,
-    },
-  });
-
-  const assetData: AssetsData[] = res.data.assetData;
-
-  return json({ assetData });
+  return defer({ assetPromise });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -101,18 +92,21 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function AddTransaction() {
-  const { assetData } = useLoaderData<typeof loader>();
-  const navigation = useNavigation();
-  const isPending = navigation.state === "loading";
+  const { assetPromise } = useLoaderData<typeof loader>();
   return (
-    <ClientOnly>
-      {() => (
-        <>
-          {isPending && <Loading />}
-          <Transaction assetData={assetData} />
-        </>
-      )}
-    </ClientOnly>
+    <Suspense fallback={<TransactionAddSkeleton />}>
+      <Await resolve={assetPromise}>
+        {(assetData) => (
+          <ClientOnly>
+            {() => (
+              <>
+                <Transaction assetData={assetData.assetData} />
+              </>
+            )}
+          </ClientOnly>
+        )}
+      </Await>
+    </Suspense>
   );
 }
 
