@@ -3,16 +3,26 @@ import { AssetsData } from "~/@types/assets";
 import Button from "components/Inputs/Button";
 import { IncomeTransaction } from "./TA_Income";
 import OutcomeTransaction from "./TA_Outcome";
-
-interface TransactionAddContextProps {
-  assetData: AssetsData[];
-}
+import TransferTransaction from "./TA_Transfer";
+import { TransactionAddContextProps, TypeTransaction } from "./interface";
+import { buttonLists } from "./data";
+import Typography from "components/General/Typography";
 
 const TransactionAddContext = createContext<TransactionAddContextProps>(
   {} as TransactionAddContextProps
 );
 
-type TypeTransaction = "Pemasukan" | "Pengeluaran" | "Transfer" | null;
+
+const TransactionChoice = ({ type }: { type: TypeTransaction }) => {
+  if (type === "Pemasukan") return <IncomeTransaction />;
+  else if(type === "Transfer") return <TransferTransaction />
+  else if(type === "Pengeluaran") return <OutcomeTransaction />;
+
+  return <div>
+    <Typography family="playfair-black" variant="h1" >Pilih tipe transaksi yang diinginkan</Typography>
+  </div>
+};
+
 export default function Transaction({
   assetData,
 }: {
@@ -25,32 +35,25 @@ export default function Transaction({
         <h1 id="transaction-add-title">Tambah Transaksi</h1>
         <h2>Tipe Transaksi</h2>
         <div className="form-navigation">
-          <section>
-            <Button
-              color="primary"
-              disabled={type === "Pengeluaran"}
-              onClick={() => setType("Pengeluaran")}
+          {buttonLists.map((d) => (
+            <section key={d.type}>
+              <Button
+              color={d.color}
+              disabled={type === d.type}
+              onClick={() => setType(d.type)}
             >
-              Pengeluaran
+              {d.label}
             </Button>
-          </section>
-          <section>
-            <Button
-              color="primary"
-              disabled={type === "Pemasukan"}
-              onClick={() => setType("Pemasukan")}
-            >
-              Pemasukan
-            </Button>
-          </section>
+            </section>
+          ))}
         </div>
-        {type === "Pemasukan" && <IncomeTransaction assetData={assetData} />}
-        {type === "Pengeluaran" && <OutcomeTransaction />}
+
+        <TransactionChoice type={type} />
       </div>
     </TransactionAddContext.Provider>
   );
 }
 
-export function useTransactionAddData(){
+export function useTransactionAddData() {
   return useContext(TransactionAddContext);
 }

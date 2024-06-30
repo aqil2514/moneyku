@@ -14,11 +14,13 @@ import { getToast } from "remix-toast";
 import { ToastContainer, toast as notify } from "react-toastify";
 import toastStyles from "react-toastify/dist/ReactToastify.css?url";
 import tailwindcss from "./tailwind.css?url"
+import globals from "./globals.css?url"
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: style },
   { rel: "stylesheet", href: toastStyles },
   { rel: "stylesheet", href: tailwindcss },
+  { rel: "stylesheet", href: globals },
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {

@@ -5,7 +5,7 @@ interface TextfieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   forId: string;
   fontFamily: FontFamily;
   label: string;
-  fieldType: "email" | "password" | "text";
+  fieldType: "email" | "password" | "text" | "number";
   errorMessage?: React.JSX.Element;
 }
 

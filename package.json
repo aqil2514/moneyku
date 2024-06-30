@@ -12,13 +12,16 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.1.1",
     "@remix-run/node": "^2.9.1",
     "@remix-run/react": "^2.9.1",
     "@remix-run/serve": "^2.9.1",
     "axios": "^1.6.8",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "concurrently": "^8.2.2",
     "isbot": "^4.1.0",
+    "lucide-react": "^0.399.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.0",
@@ -29,6 +32,8 @@
     "remix-auth-google": "^2.0.0",
     "remix-toast": "^1.2.0",
     "remix-utils": "^7.6.0",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {

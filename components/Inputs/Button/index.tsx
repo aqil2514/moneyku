@@ -4,7 +4,7 @@ import React, { ButtonHTMLAttributes } from "react";
 type Color = "success" | "error" | "info" | "primary";
 type Variant = "contained" | "outlined";
 
-interface ButtonComponentProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonComponentProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   color: Color;
   startIcon?: React.ReactNode;
