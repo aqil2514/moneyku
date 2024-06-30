@@ -17,25 +17,25 @@ export function getErrors(errors: ErrorValidationResponse[]) {
     return error;
   }
 
-  const totalError = errors.find((e) => e.path === "totalTransaction");
-  const typeError = errors.find((e) => e.path === "typeTransaction");
-  const dateError = errors.find((e) => e.path === "dateTransaction");
-  const categoryError = errors.find((e) => e.path === "categoryTransaction");
-  const assetsError = errors.find((e) => e.path === "assetsTransaction");
-  const noteError = errors.find((e) => e.path === "noteTransaction");
 
-  const error: TransactionErrors = {
-    dateTransaction: dateError && dateError.message ? dateError.message : "",
-    typeTransaction: typeError && typeError.message ? typeError.message : "",
-    totalTransaction:
-      totalError && totalError.message ? totalError.message : "",
-    categoryTransaction:
-      categoryError && categoryError.message ? categoryError.message : "",
-    assetsTransaction:
-      assetsError && assetsError.message ? assetsError.message : "",
-    noteTransaction: noteError && noteError.message ? noteError.message : "",
+  const errorsMap = new Map(errors.map((d) => [d.path, d.message]));
+
+  const totalError = errorsMap.get("totalTransaction");
+  const typeError = errorsMap.get("typeTransaction");
+  const dateError = errorsMap.get("dateTransaction");
+  const categoryError = errorsMap.get("categoryTransaction");
+  const assetsError = errorsMap.get("assetsTransaction");
+  const noteError = errorsMap.get("noteTransaction");
+
+  const result: TransactionErrors = {
+    dateTransaction: dateError,
+    typeTransaction: typeError,
+    totalTransaction: totalError,
+    categoryTransaction: categoryError,
+    assetsTransaction: assetsError,
+    noteTransaction: noteError,
   };
-  return error;
+  return result;
 }
 
 export function getFormData(formData: FormData): TransactionAddFormData {
@@ -57,7 +57,7 @@ export function getFormData(formData: FormData): TransactionAddFormData {
     assetsTransaction,
     noteTransaction,
     price,
-    userId
+    userId,
   };
 
   return result;

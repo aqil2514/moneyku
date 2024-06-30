@@ -1,7 +1,16 @@
-import { useState } from "react";
-import { IncomeTransaction, OutcomeTransaction } from "./route";
+import { createContext, useContext, useState } from "react";
 import { AssetsData } from "~/@types/assets";
 import Button from "components/Inputs/Button";
+import { IncomeTransaction } from "./TA_Income";
+import OutcomeTransaction from "./TA_Outcome";
+
+interface TransactionAddContextProps {
+  assetData: AssetsData[];
+}
+
+const TransactionAddContext = createContext<TransactionAddContextProps>(
+  {} as TransactionAddContextProps
+);
 
 type TypeTransaction = "Pemasukan" | "Pengeluaran" | "Transfer" | null;
 export default function Transaction({
@@ -11,31 +20,37 @@ export default function Transaction({
 }) {
   const [type, setType] = useState<TypeTransaction>(null);
   return (
-    <div id="transaction-add" className="main-page">
-      <h1 id="transaction-add-title">Tambah Transaksi</h1>
-      <h2>Tipe Transaksi</h2>
-      <div className="form-navigation">
-        <section>
-          <Button
-            color="primary"
-            disabled={type === "Pengeluaran"}
-            onClick={() => setType("Pengeluaran")}
-          >
-            Pengeluaran
-          </Button>
-        </section>
-        <section>
-          <Button
-            color="primary"
-            disabled={type === "Pemasukan"}
-            onClick={() => setType("Pemasukan")}
-          >
-            Pemasukan
-          </Button>
-        </section>
+    <TransactionAddContext.Provider value={{ assetData }}>
+      <div id="transaction-add" className="main-page">
+        <h1 id="transaction-add-title">Tambah Transaksi</h1>
+        <h2>Tipe Transaksi</h2>
+        <div className="form-navigation">
+          <section>
+            <Button
+              color="primary"
+              disabled={type === "Pengeluaran"}
+              onClick={() => setType("Pengeluaran")}
+            >
+              Pengeluaran
+            </Button>
+          </section>
+          <section>
+            <Button
+              color="primary"
+              disabled={type === "Pemasukan"}
+              onClick={() => setType("Pemasukan")}
+            >
+              Pemasukan
+            </Button>
+          </section>
+        </div>
+        {type === "Pemasukan" && <IncomeTransaction assetData={assetData} />}
+        {type === "Pengeluaran" && <OutcomeTransaction />}
       </div>
-      {type === "Pemasukan" && <IncomeTransaction assetData={assetData} />}
-      {type === "Pengeluaran" && <OutcomeTransaction assetData={assetData} />}
-    </div>
+    </TransactionAddContext.Provider>
   );
+}
+
+export function useTransactionAddData(){
+  return useContext(TransactionAddContext);
 }
