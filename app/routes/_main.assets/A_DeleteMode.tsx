@@ -1,7 +1,7 @@
 import { useFetcher } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
-import { BasicResponse } from "~/@types/general";
+import { BasicHTTPResponse } from "~/@types/general";
 import Button from "components/Inputs/Button";
 import { PopupProps } from "./A_Detail";
 import { useAssetContext } from "./Assets";
@@ -19,10 +19,10 @@ export default function PopupDelete({
   const [assetName, setAssetName] = useState<string>("Pilih aset");
   const { assetData } = useAssetContext();
   const assetOptions = assetData.filter((d) => d.name !== data?.name);
-  const responseForm = fetcher.data as BasicResponse;
+  const responseForm = fetcher.data as BasicHTTPResponse<null>;
 
   useEffect(() => {
-    if (responseForm && responseForm.success) {
+    if (responseForm && responseForm.status === "success") {
       setDeleteMode(false);
       setActivate("");
     }

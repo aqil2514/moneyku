@@ -37,18 +37,24 @@ export async function action({ request }: ActionFunctionArgs) {
     const newAssetName = oldAssetName === assetName ? undefined : assetName;
 
     try {
-      const res = await axios.put(`${endpoint}/assets`, {
-        formData,
-        userId: user.uid,
-      });
+      const res = await axios.put<BasicHTTPResponse<AssetsData>>(
+        `${endpoint}/assets`,
+        {
+          formData,
+          userId: user.uid,
+        }
+      );
 
-      return jsonWithSuccess({ success: true, newAssetName }, res.data.msg);
+      const data = res.data;
+
+      return jsonWithSuccess({ data, newAssetName }, data.message);
     } catch (error) {
       if (isAxiosError(error)) {
-        const statusCode = error.response?.status;
+        const data: BasicHTTPResponse<AssetsData> = error.response?.data;
+        const statusCode = data.statusCode;
         if (statusCode === 409) {
-          const message = error.response?.data.message;
-          return jsonWithError({ success: false }, message);
+          const message = data.message;
+          return jsonWithError(data, message);
         }
       }
     }
@@ -59,22 +65,32 @@ export async function action({ request }: ActionFunctionArgs) {
       .toLowerCase()
       .replaceAll(" ", "-");
 
-    if (deleteOption.includes("pilih-aset"))
-      return jsonWithError(
-        { success: false },
-        "Anda belum memilih aset tujuan"
-      );
-    if (!deleteOption || deleteOption === "null")
-      return jsonWithError(
-        { success: false },
-        "Anda belum memilih opsi tujuan"
-      );
+    if (deleteOption.includes("pilih-aset")) {
+      const result: BasicHTTPResponse<null> = {
+        message: "Anda belum memilih aset tujuan",
+        status: "error",
+        data: null,
+      };
 
-    const res = await axios.delete(
+      return jsonWithError(result, result.message);
+    }
+    if (!deleteOption || deleteOption === "null"){
+      const result: BasicHTTPResponse<null> = {
+        message: "Anda belum memilih opsi tujuan",
+        status: "error",
+        data: null,
+      };
+
+      return jsonWithError(result, result.message);
+    }
+
+    const res = await axios.delete<BasicHTTPResponse<null>>(
       `${endpoint}/assets?asset-name=${assetName}&user-id=${user.uid}&delete-option=${deleteOption}`
     );
 
-    return jsonWithSuccess({ success: true, data: res.data }, res.data.msg);
+    const data = res.data;
+
+    return jsonWithSuccess(data, data.message);
   } else if (request.method === "POST") {
     const data = await request.formData();
     const formData = getFormData(data);
