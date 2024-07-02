@@ -3,7 +3,8 @@ import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/account";
-import { AssetFormValues } from "~/@types/assets";
+import { AssetFormValues, AssetsData } from "~/@types/assets";
+import { BasicHTTPResponse } from "~/@types/general";
 
 /**
  * Memproses data dari form ke menjadi object
@@ -27,7 +28,7 @@ const getFormData = (formData: FormData): AssetFormValues => {
 export async function action({ request }: ActionFunctionArgs) {
   const user = await getUser(request);
 
-  if(!user) throw new Error("Data user tidak ditemukan")
+  if (!user) throw new Error("Data user tidak ditemukan");
 
   if (request.method === "PUT") {
     const data = await request.formData();
@@ -35,14 +36,14 @@ export async function action({ request }: ActionFunctionArgs) {
     const { oldAssetName, assetName } = formData;
     const newAssetName = oldAssetName === assetName ? undefined : assetName;
 
-    try{
+    try {
       const res = await axios.put(`${endpoint}/assets`, {
         formData,
         userId: user.uid,
       });
-  
+
       return jsonWithSuccess({ success: true, newAssetName }, res.data.msg);
-    }catch (error) {
+    } catch (error) {
       if (isAxiosError(error)) {
         const statusCode = error.response?.status;
         if (statusCode === 409) {
@@ -51,7 +52,6 @@ export async function action({ request }: ActionFunctionArgs) {
         }
       }
     }
-
   } else if (request.method === "DELETE") {
     const formData = await request.formData();
     const assetName = String(formData.get("asset-name"));
@@ -80,35 +80,47 @@ export async function action({ request }: ActionFunctionArgs) {
     const formData = getFormData(data);
 
     if (!formData.assetName.trim()) {
-      return jsonWithError({ success: false }, "Nama aset belum diisi");
+      const result: BasicHTTPResponse<AssetsData> = {
+        message: "Nama Aset belum diisi",
+        status: "error",
+        data: {} as AssetsData,
+      };
+      return jsonWithError(result, result.message);
     }
-    if (formData.assetCategory === "Lainnya" && !formData.newAssetCategory?.trim()) {
-      return jsonWithError(
-        { success: false },
-        "Kategori asset belum ditentukan"
-      );
+    if (
+      formData.assetCategory === "Lainnya" &&
+      !formData.newAssetCategory?.trim()
+    ) {
+      const result: BasicHTTPResponse<AssetsData> = {
+        message: "Kategori asset belum ditentukan",
+        status: "error",
+        data: {} as AssetsData,
+      };
+      return jsonWithError(result, result.message);
     }
     if (!formData.assetDescription.trim()) {
-      return jsonWithError(
-        { success: false },
-        "Deskripsi asset belum ditentukan"
-      );
+      const result: BasicHTTPResponse<AssetsData> = {
+        message: "Kategori asset belum ditentukan",
+        status: "error",
+        data: {} as AssetsData,
+      };
+      return jsonWithError(result, result.message);
     }
 
     try {
-      const res = await axios.post(`${endpoint}/assets`, {
-        formData,
-        userId: user.uid,
-      });
+      const res = await axios.post<BasicHTTPResponse<AssetsData>>(
+        `${endpoint}/assets`,
+        {
+          formData,
+          userId: user.uid,
+        }
+      );
 
-      return jsonWithSuccess({ success: res.data.success }, res.data.message);
+      return jsonWithSuccess(res.data, res.data.message);
     } catch (error) {
       if (isAxiosError(error)) {
-        const statusCode = error.response?.status;
-        if (statusCode === 409) {
-          const message = error.response?.data.message;
-          return jsonWithError({ success: false }, message);
-        }
+        const data: BasicHTTPResponse<AssetsData> = error.response?.data;
+        return jsonWithError(data, data.message);
       }
     }
   }

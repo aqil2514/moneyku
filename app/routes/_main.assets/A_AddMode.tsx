@@ -1,8 +1,9 @@
 import { useFetcher } from "@remix-run/react";
 import React, { SetStateAction, useEffect, useState } from "react";
-import { BasicResponse } from "~/@types/general";
+import { BasicHTTPResponse } from "~/@types/general";
 import Button from "components/Inputs/Button";
 import { assetCategoryData } from "./data";
+import { AssetsData } from "~/@types/assets";
 
 interface PopupAddProps {
   setAddMode: React.Dispatch<SetStateAction<boolean>>;
@@ -12,10 +13,12 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
   const [selectValue, setSelectValue] = useState<string>("");
-  const data = fetcher.data as BasicResponse;
+  const data = fetcher.data as BasicHTTPResponse<AssetsData>;
+
+  console.log(data);
 
   useEffect(() => {
-    if (data && data.success === true) setAddMode(false);
+    if (data && data.status === "success") setAddMode(false);
   }, [data, setAddMode]);
 
   return (
