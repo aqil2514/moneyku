@@ -4,6 +4,7 @@ import TransactionNavbar from "./TNavbar";
 import TransactionFilter from "./TFilter";
 import TransactionData from "./TWD_Data";
 import TransactionMenu from "./TMenu";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export default function TransactionWithData() {
   const { data, month } = useTransactionData();
@@ -34,9 +35,9 @@ export default function TransactionWithData() {
         <TransactionFilter />
       </header>
 
-      <main id="transaction-data">
+      <ScrollArea className="max-h-[300px]" id="transaction-data">
         <TransactionData />
-      </main>
+      </ScrollArea>
 
       <TransactionMenu />
 

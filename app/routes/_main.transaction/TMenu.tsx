@@ -24,7 +24,6 @@ export default function TransactionMenu() {
     );
     const clickHandler = (e: Event) => {
 
-      // Fix ini nanti 
       if (
         menuActive &&
         e.target !== transactionMenu &&
