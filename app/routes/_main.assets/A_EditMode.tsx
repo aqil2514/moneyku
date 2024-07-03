@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
-import { BasicHTTPResponse } from "~/@types/General";
 import Button from "components/Inputs/Button";
 import { PopupProps } from "./A_Detail";
-import { AssetsData } from "~/@types/Assets";
+import { AssetApiPut } from "~/@types/Assets";
 
-interface EditAssetResponse {
-  data:BasicHTTPResponse<AssetsData>; 
-  newAssetName: string | undefined;
-}
 
 export default function PopupEdit({
   data,
@@ -22,12 +17,14 @@ export default function PopupEdit({
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
   const isLoading = fetcher.state === "loading";
-  const fetcherData = fetcher.data as EditAssetResponse;
+  const fetcherData = fetcher.data as AssetApiPut;
+
+  console.log(fetcherData);
 
   useEffect(() => {
-    if (isLoading && fetcherData.data.status === "success") {
-      if (fetcherData.newAssetName) {
-        setAssetName(fetcherData.newAssetName);
+    if (isLoading && fetcherData.status === "success") {
+      if (fetcherData.newName) {
+        setAssetName(fetcherData.newName);
       }
       setEditMode(false);
     }

@@ -23,6 +23,16 @@ export interface ErrorValidationResponse extends ErrorResponse {
   path: string;
 }
 
+/** Interface untuk api getFormData */
+export interface FormDataHandler{
+  /**
+   * Mengambil semua data yang ada di Form Aset
+   * @param formData Form data dari yang bersangkutan
+   * @returns Data dengan bentuk AssesFormValues
+   */
+  asset: (formData: FormData) => AssetFormValues;
+}
+
 export interface LoginResult {
   user: AccountUser;
   success: boolean;

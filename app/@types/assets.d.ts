@@ -1,3 +1,15 @@
+import { BasicHTTPResponse } from "./General";
+
+export interface AssetApiHandler{
+  delete: (request:Request) => Promise<BasicHTTPResponse<null>>
+  post: (request:Request) => Promise<BasicHTTPResponse<AssetsData>>
+  put: (request: Request) => Promise<AssetApiPut>; 
+}
+
+export interface AssetApiPut extends BasicHTTPResponse<AssetsData>{
+  newName: string;
+}
+
 export interface AssetsData {
   group: string;
   amount: number;
