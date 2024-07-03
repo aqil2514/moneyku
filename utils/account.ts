@@ -1,5 +1,5 @@
-import { AccountUser } from "~/@types/account";
-import { LoginResult } from "~/@types/general";
+import { AccountUser } from "~/@types/Account";
+import { LoginResult } from "~/@types/General";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";
 

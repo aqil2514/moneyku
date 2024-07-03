@@ -1,4 +1,4 @@
-import { AssetsData } from "~/@types/assets";
+import { AssetsData } from "~/@types/Assets";
 import { ButtonListProps } from "./interface";
 
 export const buttonLists:ButtonListProps[] = [

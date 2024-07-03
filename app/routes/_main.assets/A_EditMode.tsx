@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useFetcher } from "@remix-run/react";
 import { assetCategoryData } from "./data";
-import { BasicHTTPResponse } from "~/@types/general";
+import { BasicHTTPResponse } from "~/@types/General";
 import Button from "components/Inputs/Button";
 import { PopupProps } from "./A_Detail";
-import { AssetsData } from "~/@types/assets";
+import { AssetsData } from "~/@types/Assets";
 
 interface EditAssetResponse {
   data:BasicHTTPResponse<AssetsData>; 

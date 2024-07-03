@@ -3,8 +3,8 @@ import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/account";
-import { AssetFormValues, AssetsData } from "~/@types/assets";
-import { BasicHTTPResponse } from "~/@types/general";
+import { AssetFormValues, AssetsData } from "~/@types/Assets";
+import { BasicHTTPResponse } from "~/@types/General";
 
 /**
  * Memproses data dari form ke menjadi object

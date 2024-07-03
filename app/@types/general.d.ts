@@ -1,4 +1,4 @@
-import { AccountUser } from "./account";
+import { AccountUser } from "./Account";
 
 /**
  * Response standar dari semua response http

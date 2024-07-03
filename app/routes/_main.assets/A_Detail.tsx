@@ -1,5 +1,5 @@
 import React, { SetStateAction, useState } from "react";
-import { AssetsData } from "~/@types/assets";
+import { AssetsData } from "~/@types/Assets";
 import { useAssetContext } from "./Assets";
 import PopupDetail from "./A_PopupDetail";
 import PopupEdit from "./A_EditMode";

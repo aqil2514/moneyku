@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRevalidator } from "@remix-run/react";
-import { ErrorValidationResponse } from "~/@types/general";
-import { TransactionBodyType, TransactionErrors, TransactionType } from "~/@types/transaction";
+import { ErrorValidationResponse } from "~/@types/General";
+import { TransactionBodyType, TransactionErrors, TransactionType } from "~/@types/Transaction";
 import Button from "components/Inputs/Button";
 import { useTransactionData } from "./Transactions";
 

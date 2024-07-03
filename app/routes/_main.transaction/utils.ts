@@ -1,8 +1,8 @@
 import { endpoint } from "lib/server";
-import {  AccountUser } from "~/@types/account";
+import {  AccountUser } from "~/@types/Account";
 import { getUser } from "utils/account";
 import { TransactionType } from "../_main.transaction/route";
-import { TransactionDataResponse } from "~/@types/transaction";
+import { TransactionDataResponse } from "~/@types/Transaction";
 
 
 

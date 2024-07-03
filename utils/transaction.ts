@@ -1,4 +1,4 @@
-import { TransactionDataResponse, TransactionType } from "~/@types/transaction";
+import { TransactionDataResponse, TransactionType } from "~/@types/Transaction";
 import { getUser } from "./account";
 import { endpoint } from "lib/server";
 

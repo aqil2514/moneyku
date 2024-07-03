@@ -1,5 +1,5 @@
 import { MdEdit } from "react-icons/md";
-import { TransactionBodyType } from "~/@types/transaction";
+import { TransactionBodyType } from "~/@types/Transaction";
 import { useTransactionData } from "./Transactions";
 import { useState } from "react";
 import { currencyFormat } from "utils/general";

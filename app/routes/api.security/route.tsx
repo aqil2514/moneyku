@@ -4,8 +4,8 @@ import { getUser } from "utils/account";
 import { getDataForm } from "./security-utils";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
-import { BasicHTTPResponse, LoginResult } from "~/@types/general";
-import { AccountDB, AccountUser } from "~/@types/account";
+import { BasicHTTPResponse, LoginResult } from "~/@types/General";
+import { AccountDB, AccountUser } from "~/@types/Account";
 import { commitSession, getSession } from "~/service/session.server";
 import { authenticator } from "~/service/auth.server";
 

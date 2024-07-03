@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { AssetsData } from "~/@types/assets";
+import { AssetsData } from "~/@types/Assets";
 import Button from "components/Inputs/Button";
 import { IncomeTransaction } from "./TA_Income";
 import OutcomeTransaction from "./TA_Outcome";

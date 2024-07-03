@@ -8,12 +8,12 @@ import { Form, useActionData } from "@remix-run/react";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
-import { AccountResponse } from "~/@types/account";
+import { AccountResponse } from "~/@types/Account";
 import { authenticator } from "~/service/auth.server";
 import { currencyData, securityQuestionsData } from "./data";
 import Button from "components/Inputs/Button";
 import { getFormData } from "./utils";
-import { BasicHTTPResponse } from "~/@types/general";
+import { BasicHTTPResponse } from "~/@types/General";
 
 export const meta: MetaFunction = () => [{ title: "Signup | Moneyku" }];
 

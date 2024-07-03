@@ -1,9 +1,9 @@
 import { useFetcher } from "@remix-run/react";
 import React, { SetStateAction, useEffect, useState } from "react";
-import { BasicHTTPResponse } from "~/@types/general";
+import { BasicHTTPResponse } from "~/@types/General";
 import Button from "components/Inputs/Button";
 import { assetCategoryData } from "./data";
-import { AssetsData } from "~/@types/assets";
+import { AssetsData } from "~/@types/Assets";
 
 interface PopupAddProps {
   setAddMode: React.Dispatch<SetStateAction<boolean>>;

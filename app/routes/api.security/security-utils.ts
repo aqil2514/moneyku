@@ -1,8 +1,8 @@
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
-import { AccountUser } from "~/@types/account";
-import { AccountSecurityProps, CD_SettingSecurityCore } from "~/@types/setting";
+import { AccountUser } from "~/@types/Account";
+import { AccountSecurityProps, CD_SettingSecurityCore } from "~/@types/Setting";
 
 interface SecurityProps {
   OldPassword: string;

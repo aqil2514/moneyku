@@ -9,7 +9,7 @@ import Typography from "components/General/Typography";
 import UnvisibleNoPassword from "./SS_UnvisibleNoPassword";
 import UnvisibleSecurityQuiz from "./SS_UnvisibleSecurityQuiz";
 import { useFetcher } from "@remix-run/react";
-import { securityOptionState } from "~/@types/setting";
+import { securityOptionState } from "~/@types/Setting";
 
 export default function UnvisibleData() {
   const {

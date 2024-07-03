@@ -1,8 +1,8 @@
 import axios from "axios";
 import { endpoint } from "lib/server";
 import { getUser } from "../account";
-import { TransactionType } from "~/@types/transaction";
-import { AssetResponse, AssetsData } from "~/@types/assets";
+import { TransactionType } from "~/@types/Transaction";
+import { AssetResponse, AssetsData } from "~/@types/Assets";
 
 export async function getAssetsPromise(request: Request):Promise<AssetResponse>{
     const user = await getUser(request);

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { currencyFormat } from "utils/general";
 import Button from "components/Inputs/Button";
 import { AssetLists } from "./data";
-import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/general";
+import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/General";
 import { getErrors } from "./utils";
 import { useTransactionAddData } from "./Transaction";
 

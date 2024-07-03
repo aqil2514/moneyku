@@ -1,7 +1,7 @@
 import { useFetcher } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
-import { BasicHTTPResponse } from "~/@types/general";
+import { BasicHTTPResponse } from "~/@types/General";
 import Button from "components/Inputs/Button";
 import { PopupProps } from "./A_Detail";
 import { useAssetContext } from "./Assets";

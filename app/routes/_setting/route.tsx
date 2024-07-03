@@ -5,7 +5,7 @@ import Button from "components/Inputs/Button";
 import { BiLogOut } from "react-icons/bi";
 import { getUser } from "utils/account";
 import { createContext, useContext } from "react";
-import { AccountUser } from "~/@types/account";
+import { AccountUser } from "~/@types/Account";
 import { settingNavLink } from "../_setting.setting/setting-navlinks";
 import Sidebar from "components/layout/Core/Sidebar";
 import { authenticator } from "~/service/auth.server";

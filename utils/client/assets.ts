@@ -1,4 +1,4 @@
-import { TransactionType } from "~/@types/transaction";
+import { TransactionType } from "~/@types/Transaction";
 
 /**
  * Filter data sesuai aset

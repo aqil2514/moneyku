@@ -14,12 +14,12 @@ import {
 import { getUser } from "utils/account";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
-import { BasicHTTPResponse } from "~/@types/general";
+import { BasicHTTPResponse } from "~/@types/General";
 import { commitSession, getSession } from "~/service/session.server";
 import { useLoaderData } from "@remix-run/react";
 import DataVisible from "./SS_DataVisible";
 import UnvisibleData from "./SS_DataUnvisible";
-import { CD_SettingSecurityCore, securityOptionState } from "~/@types/setting";
+import { CD_SettingSecurityCore, securityOptionState } from "~/@types/Setting";
 
 export const meta: MetaFunction = () => [{ title: "Keamanan | Moneyku" }];
 

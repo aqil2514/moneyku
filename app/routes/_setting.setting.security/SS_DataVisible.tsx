@@ -7,8 +7,8 @@ import { BiInfoCircle } from "react-icons/bi";
 import Button from "components/Inputs/Button";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { securityQuestionsData } from "../_auth.signup/data";
-import { CD_SettingSecurityCore } from "~/@types/setting";
-import { AccountPrivacy } from "~/@types/account";
+import { CD_SettingSecurityCore } from "~/@types/Setting";
+import { AccountPrivacy } from "~/@types/Account";
 
 interface DataVisibleProps {
   privacy: AccountPrivacy;

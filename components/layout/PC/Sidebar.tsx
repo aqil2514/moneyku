@@ -9,7 +9,7 @@ import { MdOutlineMoney } from "react-icons/md";
 import { SiPlangrid } from "react-icons/si";
 import { TbMoneybag } from "react-icons/tb";
 import { TfiStatsUp } from "react-icons/tfi";
-import { AccountUser } from "~/@types/account";
+import { AccountUser } from "~/@types/Account";
 
 const Profile = ({
   user,

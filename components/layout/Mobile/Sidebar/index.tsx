@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "@remix-run/react";
 import { FiLogOut } from "react-icons/fi";
-import { AccountUser } from "~/@types/account";
+import { AccountUser } from "~/@types/Account";
 import { SidebarLinks } from "./data";
 
 export default function MobileSidebar({ user }: { user: AccountUser | null }) {

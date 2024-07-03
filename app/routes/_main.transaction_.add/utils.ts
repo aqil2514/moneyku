@@ -1,8 +1,8 @@
-import { ErrorValidationResponse } from "~/@types/general";
+import { ErrorValidationResponse } from "~/@types/General";
 import {
   TransactionAddFormData,
   TransactionErrors,
-} from "~/@types/transaction";
+} from "~/@types/Transaction";
 
 export function getErrors(errors: ErrorValidationResponse[]) {
   if (!errors) {

@@ -1,5 +1,5 @@
 import { ClientOnly } from "remix-utils/client-only";
-import { AccountUser } from "~/@types/account";
+import { AccountUser } from "~/@types/Account";
 import PCSidebar from "../PC/Sidebar";
 import MobileSidebar from "../Mobile/Sidebar";
 

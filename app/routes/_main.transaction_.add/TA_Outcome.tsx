@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { currencyFormat } from "utils/general";
 import { AssetLists } from "./data";
 import { useTransactionAddData } from "./Transaction";
-import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/general";
+import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/General";
 import { getErrors } from "./utils";
 
 const ErrorMessage = ({ message }: { message: string | null | undefined }) => {

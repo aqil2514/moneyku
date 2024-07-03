@@ -3,7 +3,7 @@ import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/account";
-import { TransactionFormData } from "~/@types/transaction";
+import { TransactionFormData } from "~/@types/Transaction";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();

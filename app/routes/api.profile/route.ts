@@ -2,8 +2,8 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
-import { AccountUser } from "~/@types/account";
-import { LoginResult } from "~/@types/general";
+import { AccountUser } from "~/@types/Account";
+import { LoginResult } from "~/@types/General";
 import { authenticator } from "~/service/auth.server";
 import { commitSession, getSession } from "~/service/session.server";
 

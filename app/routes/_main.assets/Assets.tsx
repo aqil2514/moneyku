@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import { AssetsData } from "~/@types/assets";
-import { TransactionType } from "~/@types/transaction";
+import { AssetsData } from "~/@types/Assets";
+import { TransactionType } from "~/@types/Transaction";
 import MainPage from "./A_Main";
 
 interface AssetsProps {

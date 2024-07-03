@@ -1,5 +1,5 @@
 import { ButtonComponentProps } from "components/Inputs/Button";
-import { AssetsData } from "~/@types/assets";
+import { AssetsData } from "~/@types/Assets";
 
 export interface ButtonListProps{
     color: ButtonComponentProps["color"];

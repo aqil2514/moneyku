@@ -1,4 +1,4 @@
-import { TransactionType } from "~/@types/transaction";
+import { TransactionType } from "~/@types/Transaction";
 import TransactionNoData from "./TNoData";
 import TransactionWithData from "./TWithData";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";

@@ -16,7 +16,7 @@ import { getAssetsPromise } from "utils/server/assets";
 import TransactionAddSkeleton from "./TA_Skeleton";
 import axios, { isAxiosError } from "axios";
 import { getFormData } from "./utils";
-import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/general";
+import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/General";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },
