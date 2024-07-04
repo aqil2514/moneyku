@@ -1,12 +1,13 @@
+import React from "react";
 import { BasicHTTPResponse } from "./General";
 
-export interface AssetApiHandler{
-  delete: (request:Request) => Promise<BasicHTTPResponse<null>>
-  post: (request:Request) => Promise<BasicHTTPResponse<AssetsData>>
-  put: (request: Request) => Promise<AssetApiPut>; 
+export interface AssetApiHandler {
+  delete: (request: Request) => Promise<BasicHTTPResponse<null>>;
+  post: (request: Request) => Promise<BasicHTTPResponse<AssetsData>>;
+  put: (request: Request) => Promise<AssetApiPut>;
 }
 
-export interface AssetApiPut extends BasicHTTPResponse<AssetsData>{
+export interface AssetApiPut extends BasicHTTPResponse<AssetsData> {
   newName: string;
 }
 
@@ -15,6 +16,15 @@ export interface AssetsData {
   amount: number;
   description: string;
   name: string;
+}
+
+export interface FormAddState {
+  element: React.ElementType;
+  type: "text" | "number";
+  forId: string;
+  placeHolder: string;
+  isRequired?: boolean;
+  disabled?: boolean;
 }
 
 export interface AssetFormValues {
@@ -26,7 +36,7 @@ export interface AssetFormValues {
   assetDescription: string;
 }
 
-export interface AssetResponse{
+export interface AssetResponse {
   assetData: AssetsData[];
-    transactionData: TransactionType[];
+  transactionData: TransactionType[];
 }

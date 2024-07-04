@@ -73,7 +73,9 @@ export default function PopupDetail({
                   id="asset"
                   value={data?.name}
                 />
-                <Button style={{ padding: "0.1rem 0.2rem" }} color="info">
+                <Button style={{ padding: "0.1rem 0.2rem" }} color="info" type="button" onClick={() => {
+                  toast.info("Dalam pengembangan")
+                }}>
                   lihat transaksi
                 </Button>
               </div>

@@ -1,3 +1,5 @@
+import { FormAddState } from "~/@types/Assets"
+
 export const assetCategoryData:string[] = [
     "Tunai",
     "Bank",
@@ -5,4 +7,14 @@ export const assetCategoryData:string[] = [
     "Asuransi", 
     "Investasi",
     "E-Wallet",
+]
+
+// Lanjutin nanti ajah refactoring ini
+export const formAddPage:FormAddState[] =[
+    {
+        element: "input",
+        type: "text",
+        forId:"asset-name",
+        placeHolder:"Masukkan nama aset",
+    }
 ]

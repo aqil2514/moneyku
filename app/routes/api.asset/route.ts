@@ -2,8 +2,9 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import { jsonWithError, jsonWithSuccess, redirectWithError } from "remix-toast";
 import apiHandler from "./utils";
 import { authenticator } from "~/service/auth.server";
+import { AssetApiHandler } from "~/@types/Assets";
 
-type RequestMethodState = "post" | "put" | "delete";
+type RequestMethodState = keyof AssetApiHandler;
 export async function action({ request }: ActionFunctionArgs) {
   const isAuthenticated = await authenticator.isAuthenticated(request);
 

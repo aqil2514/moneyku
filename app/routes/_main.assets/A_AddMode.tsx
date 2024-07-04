@@ -4,6 +4,7 @@ import { BasicHTTPResponse } from "~/@types/General";
 import Button from "components/Inputs/Button";
 import { assetCategoryData } from "./data";
 import { AssetsData } from "~/@types/Assets";
+import { formatCurrency } from "utils/general";
 
 interface PopupAddProps {
   setAddMode: React.Dispatch<SetStateAction<boolean>>;
@@ -13,9 +14,14 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
   const [selectValue, setSelectValue] = useState<string>("");
+  const [assetNominal, setAssetNominal] = useState("Rp. 0");
   const data = fetcher.data as BasicHTTPResponse<AssetsData>;
 
-  console.log(data);
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const formattedValue = `Rp. ${formatCurrency(value)}`;
+    setAssetNominal(formattedValue);
+  };
 
   useEffect(() => {
     if (data && data.status === "success") setAddMode(false);
@@ -45,12 +51,13 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
               Total Nominal Aset :{" "}
             </label>
             <input
-              type="number"
+              type="text"
               name="asset-nominal"
               placeholder="Masukkan nominal awal aset"
               id="asset-nominal"
               required
-              defaultValue={0}
+              onChange={handleChange}
+              value={assetNominal}
               className="font-poppins-reguler"
               disabled={isSubmitting}
             />

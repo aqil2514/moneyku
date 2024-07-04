@@ -55,17 +55,17 @@ const apiHandler: AssetApiHandler = {
         return data;
       }
 
-      const result:BasicHTTPResponse<AssetsData> = {
-        message:"Terjadi kesalahan pada server",
-        status:"error",
+      const result: BasicHTTPResponse<AssetsData> = {
+        message: "Terjadi kesalahan pada server",
+        status: "error",
         statusCode: 500,
-        data: {} as AssetsData
-      } 
+        data: {} as AssetsData,
+      };
 
       return result;
     }
   },
-    async put(request) {
+  async put(request) {
     const data = await request.formData();
     const formData = getFormData.asset(data);
     const { oldAssetName, assetName } = formData;
@@ -134,7 +134,7 @@ const apiHandler: AssetApiHandler = {
 
       return result;
     }
-    if (!deleteOption || deleteOption === "null"){
+    if (!deleteOption || deleteOption === "null") {
       const result: BasicHTTPResponse<null> = {
         message: "Anda belum memilih opsi tujuan",
         status: "error",
