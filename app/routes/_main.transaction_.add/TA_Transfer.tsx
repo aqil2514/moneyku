@@ -6,12 +6,23 @@ import { AssetLists } from "./data";
 import { useTransactionAddData } from "./Transaction";
 import { useFetcher } from "@remix-run/react";
 import Button from "components/Inputs/Button";
+import { rupiahConvert } from "utils/client/general";
 
 export default function TransferTransaction() {
   const { assetData } = useTransactionAddData();
+  const [nominal, setNominal] = useState<string>("Rp. 0");
+  const [nominalBill, setNominalBill] = useState<string>("Rp. 0");
   const [isBill, setIsBill] = useState<boolean>(false);
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state !== "idle";
+
+  const nominalHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+    return rupiahConvert(e, setNominal)
+  }
+
+  const billHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+    return rupiahConvert(e, setNominalBill)
+  }
 
   return (
     <div className="main-page">
@@ -37,7 +48,9 @@ export default function TransferTransaction() {
         </div>
 
         <Textfield
-          fieldType="number"
+          fieldType="text"
+          value={nominal}
+          onChange={nominalHandler}
           fontFamily="poppins-medium"
           forId="transaction-total"
           label="Total"
@@ -45,7 +58,9 @@ export default function TransferTransaction() {
         <CheckboxWithText isBill={isBill} setIsBill={setIsBill} />
         {isBill && (
           <Textfield
-            fieldType="number"
+            fieldType="text"
+            value={nominalBill}
+            onChange={billHandler}
             fontFamily="poppins-medium"
             forId="bill"
             label="Jumlah biaya"

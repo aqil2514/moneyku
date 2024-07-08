@@ -15,8 +15,8 @@ import { getUser } from "utils/account";
 import { getAssetsPromise } from "utils/server/assets";
 import TransactionAddSkeleton from "./TA_Skeleton";
 import axios, { isAxiosError } from "axios";
-import { getFormData } from "./utils";
 import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/General";
+import { getFormData } from "utils/general";
 
 export const meta: MetaFunction = () => [
   { title: "Tambah Transaksi | Moneyku" },
@@ -84,13 +84,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 // }
 
 export async function action({ request }: ActionFunctionArgs) {
+  
   try {
     const user = await getUser(request);
+    const formData = await request.formData();
+    const data = getFormData.transaction(formData);
 
     if (!user) throw new Error("Data user tidak ditemukan");
 
-    const formData = await request.formData();
-    const data = getFormData(formData);
     data.userId = user.uid as string;
 
     await axios.post(`${endpoint}/transaction/add`, data);

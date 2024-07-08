@@ -1,11 +1,11 @@
 import { useFetcher } from "@remix-run/react";
 import Button from "components/Inputs/Button";
 import { useEffect, useState } from "react";
-import { currencyFormat } from "utils/general";
 import { AssetLists } from "./data";
 import { useTransactionAddData } from "./Transaction";
 import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/General";
 import { getErrors } from "./utils";
+import { rupiahConvert } from "utils/client/general";
 
 const ErrorMessage = ({ message }: { message: string | null | undefined }) => {
   return message && typeof message === "string" ? (
@@ -16,12 +16,16 @@ const ErrorMessage = ({ message }: { message: string | null | undefined }) => {
 };
 
 export default function OutcomeTransaction() {
-  const [nominal, setNominal] = useState<string>("");
+  const [nominal, setNominal] = useState<string>("Rp. 0");
   const [fetcherData, setFetcherData] = useState<ErrorValidationResponse[]>([]);
 
   const fetcher = useFetcher<BasicHTTPResponse<ErrorValidationResponse[]>>();
   const isSubmitting = fetcher.state !== "idle";
   const { assetData } = useTransactionAddData();
+
+  const changeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+    return rupiahConvert(e, setNominal)
+  }
 
   const errors = getErrors(fetcherData);
   const {
@@ -65,18 +69,12 @@ export default function OutcomeTransaction() {
           <label htmlFor="transaction-total">Nominal</label>
           <input
             disabled={isSubmitting}
-            type="number"
+            type="text"
             value={nominal}
-            onChange={(e) => {
-              setNominal(e.target.value);
-            }}
+            onChange={changeHandler}
             name="transaction-total"
             id="transaction-total"
           />
-          <p>
-            <strong>Jumlah dalam Rupiah : </strong>
-            {currencyFormat.format(Number(nominal))}
-          </p>
           <ErrorMessage message={totalTransaction} />
         </div>
         <div className="form-text">

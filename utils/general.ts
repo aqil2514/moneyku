@@ -1,5 +1,6 @@
 import { AssetFormValues } from "~/@types/Assets";
 import { FormDataHandler } from "~/@types/General";
+import { TransactionAddFormData } from "~/@types/Transaction";
 
 /**
  * Mengkapitalisasi huruf pertama dari setiap kata dalam string.
@@ -31,14 +32,15 @@ export const formatCurrency = (value: string) => {
   return currency;
 };
 
+export const removeCurrencyFormat = (value:string) => {
+  return Number(value.replace(/[Rp. ]/g, ""));
+};
+
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getFormData: FormDataHandler = {
   asset(formData) {
-    const removeCurrencyFormat = (value:string) => {
-      return Number(value.replace(/[Rp. ]/g, ""));
-    };
 
     const formValues: AssetFormValues = {
       oldAssetName: formData.get("old-asset-name") as string,
@@ -51,7 +53,39 @@ export const getFormData: FormDataHandler = {
       ),
     };
 
-    console.log(formValues)
     return formValues;
+  },
+  transaction(formData) {
+    const userId = String(formData.get("us"));
+    const typeTransaction = String(formData.get("type-data"));
+    const totalTransaction = removeCurrencyFormat(formData.get("transaction-total") as string);
+    // const billTransaction = removeCurrencyFormat(formData.get("bill") as string);
+    const billTransaction = formData.get("bill") ? removeCurrencyFormat(formData.get("bill") as string) : undefined;
+    const dateTransaction = new Date(String(formData.get("transaction-date")));
+    const categoryTransaction = String(formData.get("transaction-category"));
+    const assetsTransaction = String(formData.get("transaction-assets"));
+    const fromAsset = String(formData.get("from-asset"));
+    const toAsset = String(formData.get("to-asset"));
+    const noteTransaction = String(formData.get("transaction-note"));
+    const descriptionTransaction = String(formData.get("transaction-description"));
+    const price =
+      typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
+  
+    const result: TransactionAddFormData = {
+      typeTransaction,
+      totalTransaction,
+      dateTransaction,
+      categoryTransaction,
+      assetsTransaction,
+      noteTransaction,
+      price,
+      billTransaction,
+      userId,
+      toAsset,
+      descriptionTransaction,
+      fromAsset
+    };
+
+    return result;
   },
 };

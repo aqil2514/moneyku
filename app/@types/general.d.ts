@@ -28,9 +28,15 @@ export interface FormDataHandler{
   /**
    * Mengambil semua data yang ada di Form Aset
    * @param formData Form data dari yang bersangkutan
-   * @returns Data dengan bentuk AssesFormValues
+   * @returns Data dengan bentuk AssetsFormValues
    */
   asset: (formData: FormData) => AssetFormValues;
+  /**
+   * Mengambil semua data yang ada di Form Aset
+   * @param formData Form data dari yang bersangkutan
+   * @returns Data dengan bentuk TransactionAddFormData
+   */
+  transaction: (formData: FormData) => TransactionAddFormData;
 }
 
 export interface LoginResult {

@@ -19,8 +19,6 @@ export default function PopupEdit({
   const isLoading = fetcher.state === "loading";
   const fetcherData = fetcher.data as AssetApiPut;
 
-  console.log(fetcherData);
-
   useEffect(() => {
     if (isLoading && fetcherData.status === "success") {
       if (fetcherData.newName) {

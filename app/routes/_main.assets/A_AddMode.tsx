@@ -4,7 +4,7 @@ import { BasicHTTPResponse } from "~/@types/General";
 import Button from "components/Inputs/Button";
 import { assetCategoryData } from "./data";
 import { AssetsData } from "~/@types/Assets";
-import { formatCurrency } from "utils/general";
+import { rupiahConvert } from "utils/client/general";
 
 interface PopupAddProps {
   setAddMode: React.Dispatch<SetStateAction<boolean>>;
@@ -18,9 +18,7 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
   const data = fetcher.data as BasicHTTPResponse<AssetsData>;
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const formattedValue = `Rp. ${formatCurrency(value)}`;
-    setAssetNominal(formattedValue);
+    return rupiahConvert(e, setAssetNominal);
   };
 
   useEffect(() => {

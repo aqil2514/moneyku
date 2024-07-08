@@ -14,7 +14,7 @@ export interface TransactionAddFormData {
   typeTransaction: string;
   totalTransaction: number;
   dateTransaction: Date;
-  billTransaction: number;
+  billTransaction?: number;
   categoryTransaction: string;
   assetsTransaction: string;
   noteTransaction: string;

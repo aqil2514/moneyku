@@ -1,11 +1,11 @@
 import { useFetcher } from "@remix-run/react";
-import { useEffect, useState } from "react";
-import { currencyFormat } from "utils/general";
+import React, { useEffect, useState } from "react";
 import Button from "components/Inputs/Button";
 import { AssetLists } from "./data";
 import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/General";
 import { getErrors } from "./utils";
 import { useTransactionAddData } from "./Transaction";
+import { rupiahConvert } from "utils/client/general";
 
 const ErrorMessage = ({ message }: { message: string | null | undefined }) => {
   return message && typeof message === "string" ? (
@@ -16,7 +16,7 @@ const ErrorMessage = ({ message }: { message: string | null | undefined }) => {
 };
 
 export function IncomeTransaction() {
-  const [nominal, setNominal] = useState<string>("");
+  const [nominal, setNominal] = useState<string>("Rp. 0");
   const [fetcherData, setFetcherData] = useState<ErrorValidationResponse[]>([]);
 
   const {assetData} = useTransactionAddData()
@@ -32,6 +32,10 @@ export function IncomeTransaction() {
     noteTransaction,
     totalTransaction,
   } = errors;
+
+  const changeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+    return rupiahConvert(e, setNominal)
+  }
 
   useEffect(() => {
     if (fetcher.data && fetcher.data.data) {
@@ -55,18 +59,12 @@ export function IncomeTransaction() {
         <div className="form-text">
           <label htmlFor="transaction-total">Nominal</label>
           <input
-            type="number"
+            type="text"
             value={nominal}
-            onChange={(e) => {
-              setNominal(e.target.value);
-            }}
+            onChange={changeHandler}
             name="transaction-total"
             id="transaction-total"
           />
-          <p>
-            <strong>Jumlah dalam Rupiah : </strong>
-            {currencyFormat.format(Number(nominal))}
-          </p>
         <ErrorMessage message={totalTransaction} />
         </div>
         <div className="form-text">
