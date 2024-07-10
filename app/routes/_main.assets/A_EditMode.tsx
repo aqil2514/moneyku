@@ -4,6 +4,7 @@ import { assetCategoryData } from "./data";
 import Button from "components/Inputs/Button";
 import { PopupProps } from "./A_Detail";
 import { AssetApiPut } from "~/@types/Assets";
+import { rupiahConvert } from "utils/client/general";
 
 
 export default function PopupEdit({
@@ -14,10 +15,16 @@ export default function PopupEdit({
   const [selectValue, setSelectValue] = useState<string>(
     data ? data.group : ""
   );
+  const [assetNominal, setAssetNominal] = useState<string>("Rp. 0");
+
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
   const isLoading = fetcher.state === "loading";
   const fetcherData = fetcher.data as AssetApiPut;
+
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    return rupiahConvert(e, setAssetNominal);
+  };
 
   useEffect(() => {
     if (isLoading && fetcherData.status === "success") {
@@ -55,18 +62,21 @@ export default function PopupEdit({
           />
         </div>
         <div className="form-input-basic">
-          <label htmlFor="asset-nominal" className="font-ubuntu-reguler">
-            Total Nominal Aset :{" "}
-          </label>
-          <input
-            type="number"
-            name="asset-nominal"
-            id="asset-nominal"
-            defaultValue={data?.amount}
-            className="font-poppins-reguler"
-            disabled={isSubmitting}
-          />
-        </div>
+            <label htmlFor="asset-nominal" className="font-ubuntu-reguler">
+              Total Nominal Aset :{" "}
+            </label>
+            <input
+              type="text"
+              name="asset-nominal"
+              placeholder="Masukkan nominal awal aset"
+              id="asset-nominal"
+              required
+              onChange={handleChange}
+              value={assetNominal}
+              className="font-poppins-reguler"
+              disabled={isSubmitting}
+            />
+          </div>
         <div className="form-input-basic">
           <label htmlFor="asset-category" className="font-ubuntu-reguler">
             Kategori Aset

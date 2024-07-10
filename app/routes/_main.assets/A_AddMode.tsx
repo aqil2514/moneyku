@@ -14,7 +14,7 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
   const fetcher = useFetcher();
   const isSubmitting = fetcher.state === "submitting";
   const [selectValue, setSelectValue] = useState<string>("");
-  const [assetNominal, setAssetNominal] = useState("Rp. 0");
+  const [assetNominal, setAssetNominal] = useState<string>("Rp. 0");
   const data = fetcher.data as BasicHTTPResponse<AssetsData>;
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
