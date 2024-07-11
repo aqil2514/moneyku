@@ -1,5 +1,7 @@
+
 export interface ChartData{
-    percent: string;
-    nominal: string;
+    percent: number;
     name: string;
+    color?: string;
+    fill?: string;
 }
