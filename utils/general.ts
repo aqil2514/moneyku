@@ -48,6 +48,7 @@ export const getFormData: FormDataHandler = {
       assetNominal: removeCurrencyFormat(formData.get("asset-nominal") as string),
       assetCategory: formData.get("asset-category") as string,
       newAssetCategory: formData.get("new-asset-category") as string,
+      assetColor: formData.get("asset-color") as string,
       assetDescription: encodeURIComponent(
         formData.get("asset-description") as string
       ),

@@ -15,3 +15,17 @@ export const rupiahConvert = (
   const formattedValue = `Rp. ${formatCurrency(value)}`;
   setNominal(formattedValue);
 };
+
+/**
+ * Menghasilkan hex color number secara random
+ * @returns {string} Hex Color Number
+ */
+export function getRandomHexColor(): string {
+  const hexCharacters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * hexCharacters.length);
+    color += hexCharacters[randomIndex];
+  }
+  return color;
+}

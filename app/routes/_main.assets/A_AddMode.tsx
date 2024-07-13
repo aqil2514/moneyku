@@ -4,6 +4,7 @@ import { BasicHTTPResponse } from "~/@types/General";
 import Button from "components/Inputs/Button";
 import { AssetsData } from "~/@types/Assets";
 import {
+  AssetColor,
   AssetDescription,
   AssetNameInput,
   AssetNominalInputs,
@@ -31,6 +32,7 @@ export default function PopupAdd({ setAddMode }: PopupAddProps) {
           <h3 className="font-ubuntu-bold text-center">Tambah Aset Baru</h3>
           <fetcher.Form method="POST" action="/api/asset" id="asset-form">
             <AssetNameInput />
+            <AssetColor />
             <AssetNominalInputs />
             <AssetSelectCategory />
             <AssetDescription />

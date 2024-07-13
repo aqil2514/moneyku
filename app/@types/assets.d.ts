@@ -16,7 +16,7 @@ export interface AssetsData {
   amount: number;
   description: string;
   name: string;
-  themeColor: string;
+  color: string;
 }
 
 export interface FormAddState {
@@ -35,6 +35,7 @@ export interface AssetFormValues {
   assetCategory: string;
   newAssetCategory?: string;
   assetDescription: string;
+  assetColor: string;
 }
 
 export interface AssetResponse {

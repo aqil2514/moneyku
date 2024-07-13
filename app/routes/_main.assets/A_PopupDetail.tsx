@@ -41,7 +41,10 @@ export default function PopupDetail({
 
   return (
     <>
-      <h3 className="font-ubuntu-bold text-center">Aset {data?.name}</h3>
+    <div className="flex gap-2 justify-center">
+      <div className={`w-6 rounded-sm`} style={{backgroundColor: data.color}} />
+      <h3 className="font-ubuntu-bold text-center my-auto">Aset {data?.name}</h3>
+    </div>
       <div id="asset-detail">
         <p>
           <strong>Nama Aset</strong> : {data?.name}
