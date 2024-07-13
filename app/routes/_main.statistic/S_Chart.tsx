@@ -1,21 +1,22 @@
-import { TrendingUp } from "lucide-react";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "components/ui/card";
 import {
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "components/ui/chart";
 import { LabelList, Pie, PieChart } from "recharts";
 import { useStatisticData } from "./route";
 import { getChartConfig, getChartData } from "./utils";
+import { toCapitalizeWords } from "utils/general";
 
 export default function StatisticChart() {
   const { data } = useStatisticData();
@@ -35,10 +36,21 @@ export default function StatisticChart() {
         >
           <PieChart>
             <ChartTooltip
+              formatter={(value, name) => {
+                const capitalName = toCapitalizeWords(name as string);
+                return `${capitalName} : ${value}%`;
+              }}
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Pie data={chartData} dataKey="percent" nameKey="name" stroke="0">
+            <ChartLegend content={<ChartLegendContent />} />
+            <Pie
+              data={chartData}
+              label={false}
+              dataKey="percent"
+              nameKey="name"
+              stroke="0"
+            >
               <LabelList
                 dataKey="percent"
                 stroke="none"
@@ -51,14 +63,14 @@ export default function StatisticChart() {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
+      {/* <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total visitors for the last 6 months
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }
