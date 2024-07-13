@@ -9,8 +9,8 @@ import {
   AssetNameInput,
   AssetNominalInputs,
   AssetSelectCategory,
-} from "./components";
-import AddModeProvider from "./Providers/AddMode";
+} from "./Components/AddModeComponents";
+import AddModeProvider from "./Providers/AddModeProvider";
 
 interface PopupAddProps {
   setAddMode: React.Dispatch<SetStateAction<boolean>>;
