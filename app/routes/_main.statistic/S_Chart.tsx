@@ -13,9 +13,9 @@ import {
   ChartTooltipContent,
 } from "components/ui/chart";
 import { LabelList, Pie, PieChart } from "recharts";
-import { useStatisticData } from "./route";
 import { getChartConfig, getChartData } from "./utils";
 import { toCapitalizeWords } from "utils/general";
+import { useStatisticData } from "./Providers/StatisticProvider";
 
 export default function StatisticChart() {
   const { data } = useStatisticData();
