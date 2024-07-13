@@ -16,6 +16,7 @@ export interface AssetsData {
   amount: number;
   description: string;
   name: string;
+  themeColor: string;
 }
 
 export interface FormAddState {
