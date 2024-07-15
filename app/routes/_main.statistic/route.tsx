@@ -31,7 +31,6 @@ export default function StatisticRoute() {
         {(data) => (
           <StatisticProvider data={data}>
             <ClientOnly>{() => <StatisticMain />}</ClientOnly>
-            {/* <ClientOnly>{() => <Skeleton />}</ClientOnly> */}
           </StatisticProvider>
         )}
       </Await>

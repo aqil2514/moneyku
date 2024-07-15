@@ -16,6 +16,7 @@ import { LabelList, Pie, PieChart } from "recharts";
 import { getChartConfig, getChartData } from "./utils";
 import { toCapitalizeWords } from "utils/general";
 import { useStatisticData } from "./Providers/StatisticProvider";
+import StatisticNavigation from "./S_Navigation";
 
 export default function StatisticChart() {
   const { data } = useStatisticData();
@@ -24,9 +25,12 @@ export default function StatisticChart() {
 
   return (
     <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Statistik keuangan</CardTitle>
-        <CardDescription>Bulan Juni</CardDescription>
+      <CardHeader>
+        <div className="flex flex-col items-center pb-0">
+          <CardTitle>Statistik keuangan</CardTitle>
+          <CardDescription>Bulan Juni</CardDescription>
+        </div>
+        <StatisticNavigation />
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
