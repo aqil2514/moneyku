@@ -3,6 +3,7 @@ import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/account";
+import { BasicHTTPResponse } from "~/@types/General";
 import { TransactionFormData } from "~/@types/Transaction";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -42,7 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const id = formData.get("main-id");
 
     try {
-      const res = await axios.delete(`${endpoint}/transaction`, {
+      const res = await axios.delete<BasicHTTPResponse>(`${endpoint}/transaction`, {
         data: { uid, id },
         headers: {
           "User-ID": String(user.uid),

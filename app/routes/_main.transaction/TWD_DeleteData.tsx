@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { IoIosWarning } from "react-icons/io";
-import axios, { isAxiosError } from "axios";
 import { useFetcher } from "@remix-run/react";
 import Button from "components/Inputs/Button";
 import { TransactionBodyType, TransactionType } from "~/@types/Transaction";
@@ -61,21 +60,6 @@ export default function DeletePopup({
     getData(header);
   }, [header, globalData, selectedData, getData]);
 
-  const deleteHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    try {
-      const res = await axios.delete(`/api/transaction`, { data: formData });
-
-      console.info(res);
-      location.reload();
-    } catch (error) {
-      if (isAxiosError(error)) {
-        console.error(error);
-      }
-    }
-  };
-
   return (
     <div className="popup">
       <div className="popup-delete">
@@ -108,7 +92,7 @@ export default function DeletePopup({
             >
               Batal
             </Button>
-            <fetcher.Form method="DELETE" onSubmit={deleteHandler}>
+            <fetcher.Form method="DELETE" action={"/api/transaction"}>
               <input type="hidden" name="main-id" id="main-id" value={globalData?.id} />
               <input
                 type="hidden"

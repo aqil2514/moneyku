@@ -119,7 +119,7 @@ export async function action({ request }: ActionFunctionArgs) {
       } as BasicHTTPResponse,
       "Terjadi kesalahan pada server."
     );
-  }
+  } 
 }
 
 export default function AddTransaction() {
