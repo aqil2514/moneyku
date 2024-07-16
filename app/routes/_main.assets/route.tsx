@@ -7,29 +7,34 @@ import Assets from "./Assets";
 import AssetsSkeleton from "./A_Skeleton";
 
 export const meta: MetaFunction = () => [
-    {
-      title: "Asset | Moneyku",
-    },
-  ];
+  {
+    title: "Asset | Moneyku",
+  },
+];
 
-  export async function loader({ request }: LoaderFunctionArgs) {
-    await authenticator.isAuthenticated(request, {
-      failureRedirect: "/login",
-    });
+export async function loader({ request }: LoaderFunctionArgs) {
+  await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
 
-    const data = getAssetsPromise(request);
-  
-    return defer({ data });
-  }
+  const data = getAssetsPromise(request);
 
-export default function AssetsPromise(){
-    const {data} = useLoaderData<typeof loader>();
+  return defer({ data });
+}
 
-    return(
-        <Suspense fallback={<AssetsSkeleton />}>
-            <Await resolve={data}>
-                {(data) => <Assets assetData={data.assetData} transactionData={data.transactionData} /> }
-            </Await>
-        </Suspense>
-    )
+export default function AssetsPromise() {
+  const { data } = useLoaderData<typeof loader>();
+
+  return (
+    <Suspense fallback={<AssetsSkeleton />}>
+      <Await resolve={data}>
+        {(data) => (
+          <Assets
+            assetData={data.assetData}
+            transactionData={data.transactionData}
+          />
+        )}
+      </Await>
+    </Suspense>
+  );
 }

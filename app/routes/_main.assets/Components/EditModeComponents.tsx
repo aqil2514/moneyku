@@ -5,7 +5,8 @@ import Typography from "components/General/Typography";
 import { Input } from "components/ui/input";
 import { Badge } from "components/ui/badge";
 import { HexColorPicker } from "react-colorful";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { formatCurrency } from "utils/general";
 
 export const AssetCategory = () => {
   const { selectValue, setSelectValue, fetcher } = useEditData();
@@ -135,6 +136,11 @@ export const AssetNominal = () => {
   const { data, fetcher, assetNominal, setAssetNominal } = useEditData();
   const isSubmitting = fetcher.state === "submitting";
 
+useEffect(() => {
+  const value = String(data?.amount);
+  return setAssetNominal(`Rp. ${formatCurrency(value)}`)
+}, [setAssetNominal, data?.amount])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     return rupiahConvert(e, setAssetNominal);
   };
@@ -150,7 +156,6 @@ export const AssetNominal = () => {
         placeholder="Masukkan nominal awal aset"
         id="asset-nominal"
         required
-        defaultValue={data?.amount}
         onChange={handleChange}
         value={assetNominal}
         className="font-poppins-reguler"
