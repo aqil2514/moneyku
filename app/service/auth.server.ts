@@ -5,7 +5,7 @@ import axios, { isAxiosError } from "axios";
 import serverEndpoint, { endpoint } from "lib/server";
 import { GoogleStrategy } from "remix-auth-google";
 import clientEndpoint from "lib/client-endpoint";
-import { AccountUser } from "~/@types/account";
+import { AccountUser } from "~/@types/Account";
 import { LoginResult } from "~/@types/General";
 
 const sessionSecret = process.env.SESSION_SECRET;

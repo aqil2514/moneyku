@@ -9,6 +9,8 @@ module.exports = {
   root: true,
   rules: {
     "jsx-a11y/label-has-associated-control": "off",
+     "import/no-unresolved": "error",
+     "import/no-useless-path-segments": "error"
   },
   parserOptions: {
     ecmaVersion: "latest",
@@ -37,6 +39,8 @@ module.exports = {
         "plugin:react/jsx-runtime",
         "plugin:react-hooks/recommended",
         "plugin:jsx-a11y/recommended",
+        "plugin:import/errors", 
+        "plugin:import/warnings",
       ],
       settings: {
         react: {
