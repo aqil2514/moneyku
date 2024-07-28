@@ -1,5 +1,6 @@
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { useTransactionData } from "../Transactions";
+import YearDropDown from "./Years";
 
 export const months = [
   "Januari",
@@ -27,6 +28,7 @@ export default function TransactionFilter() {
     }
   };
   return (
+    <>
     <div className="container-filter font-poppins-medium" style={{ margin: "1rem" }}>
       <button onClick={() => clickHandler("prev")}>
         <FaArrowAltCircleLeft />
@@ -36,5 +38,7 @@ export default function TransactionFilter() {
         <FaArrowAltCircleRight />
       </button>
     </div>
+    <YearDropDown />
+    </>
   );
 }
