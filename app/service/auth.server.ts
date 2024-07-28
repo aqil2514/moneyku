@@ -3,9 +3,9 @@ import { sessionStore } from "./session.server";
 import { FormStrategy } from "remix-auth-form";
 import axios, { isAxiosError } from "axios";
 import serverEndpoint, { endpoint } from "lib/server";
-import { AccountUser } from "~/@types/Account";
 import { GoogleStrategy } from "remix-auth-google";
 import clientEndpoint from "lib/client-endpoint";
+import { AccountUser } from "~/@types/account";
 import { LoginResult } from "~/@types/General";
 
 const sessionSecret = process.env.SESSION_SECRET;
