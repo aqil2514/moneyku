@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "components/ui/dropdown-menu";
 import Button from "components/Inputs/Button";
-import { useState } from "react";
+import { useTransactionData } from "../Transactions";
 
 const startYear = 2001;
 const endYear = 2040;
@@ -20,19 +18,18 @@ export default function YearDropDown() {
   for (let year = startYear; year <= endYear; year++) {
     years.push(year);
   }
-  const currentYear = String(dayjs().year());
 
-  const [position, setPosition] = useState<string>(currentYear);
+  const { year, setYear } = useTransactionData();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button color="primary">{position} </Button>
+        <Button color="primary">{year} </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 max-h-56 overflow-y-scroll">
         <DropdownMenuLabel>Pilih Tahun</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+        <DropdownMenuRadioGroup value={year} onValueChange={setYear}>
           {years.map((year, index) => (
             <DropdownMenuRadioItem
               key={`year-${index + 1}`}

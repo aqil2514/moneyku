@@ -5,18 +5,21 @@ import TransactionDataHeader from "./TWD_Header";
 import TransactionDataBody from "./TWD_Body";
 
 export default function TransactionData() {
-  const { data, month, setMonth } = useTransactionData();
+  const { data, month, setMonth, year } = useTransactionData();
   const dataRef = useRef<null | HTMLDivElement>(null);
-  const filteredData = data.filter((d) => {
-    const dataMonth = d.header;
-    const dataFormat = Number(dataMonth.split(":")[0].split("-")[1]) - 1;
 
-    return month === dataFormat;
-  }).sort((a,b) => {
+  const filteredData = data
+  .filter((d) => {
+    const [dataYear, dataMonth] = d.header.split(":")[0].split("-").map(Number);
+    const dataMonthIndex = dataMonth - 1;
+
+    return month === dataMonthIndex && Number(year) === dataYear;
+  })
+  .sort((a, b) => {
     const dateA = new Date(a.header);
     const dateB = new Date(b.header);
 
-    return dateA.getTime() - dateB.getTime()
+    return dateA.getTime() - dateB.getTime();
   });
 
 
@@ -38,8 +41,9 @@ export default function TransactionData() {
     
   }, [dataRef, month, setMonth]);
 
+
   if (!filteredData || filteredData.length === 0) {
-    return <div>Tidak ada data transaksi di bulan {months[month]}</div>;
+    return <div>Tidak ada data transaksi di bulan {months[month]} tahun {year}</div>;
   }
   
 

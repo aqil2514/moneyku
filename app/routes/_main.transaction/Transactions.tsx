@@ -6,18 +6,19 @@ import { ContextMenu, ContextMenuContent } from "components/ui/context-menu";
 import { ContextMenuTrigger } from "@radix-ui/react-context-menu";
 import T_ContextMenuItem from "./T_ContextMenuItem";
 import { useNavigate } from "@remix-run/react";
+import dayjs from "dayjs";
 
 interface TransactionContextType {
   editMode: boolean;
   deleteMode: boolean;
   menuActive: boolean;
   month: number;
-  year: number;
+  year: string;
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
   setDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   setMenuActive: React.Dispatch<React.SetStateAction<boolean>>;
   setMonth: React.Dispatch<React.SetStateAction<number>>;
-  setYear: React.Dispatch<React.SetStateAction<number>>;
+  setYear: React.Dispatch<React.SetStateAction<string>>;
   data: TransactionType[];
 }
 
@@ -25,12 +26,15 @@ const TransactionContext = createContext<TransactionContextType>(
   {} as TransactionContextType
 );
 
+const currentYear = String(dayjs().year());
+const currentMonth = dayjs().month();
+
 export default function Transactions({ data }: { data: TransactionType[] }) {
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [menuActive, setMenuActive] = useState<boolean>(false);
-  const [month, setMonth] = useState<number>(new Date().getMonth());
-  const [year, setYear] = useState<number>(new Date().getFullYear());
+  const [month, setMonth] = useState<number>(currentMonth);
+  const [year, setYear] = useState<string>(currentYear);
 
   const navigate = useNavigate();
 

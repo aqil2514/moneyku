@@ -5,11 +5,15 @@ import TransactionFilter from "./TFilter";
 import TransactionData from "./TWD_Data";
 import TransactionMenu from "./TMenu";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import dayjs from "dayjs";
 
 export default function TransactionWithData() {
-  const { data, month } = useTransactionData();
+  const { data, month, year } = useTransactionData();
   const selectedData = data.filter(
-    (d) => new Date(d.header).getMonth() === month
+    (d) => {
+      const date = dayjs(d.header);
+      return date.month() === month && String(date.year()) === year;
+    }
   );
 
   const allBody = selectedData.map((d) => d.body);
