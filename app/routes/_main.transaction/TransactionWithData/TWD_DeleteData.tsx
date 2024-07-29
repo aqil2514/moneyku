@@ -3,7 +3,7 @@ import { IoIosWarning } from "react-icons/io";
 import { useFetcher } from "@remix-run/react";
 import Button from "components/Inputs/Button";
 import { TransactionBodyType, TransactionType } from "~/@types/Transaction";
-import { useTransactionData } from "./Transactions";
+import { useTransactionData } from "../Transactions";
 
 const SelectedData = ({ data }: { data: TransactionBodyType }) => {
   return (

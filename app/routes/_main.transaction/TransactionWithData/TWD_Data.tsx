@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { useTransactionData } from "./Transactions";
-import { months } from "./TFilter";
+import { useTransactionData } from "../Transactions";
+import { months } from "../TFilter";
 import TransactionDataHeader from "./TWD_Header";
 import TransactionDataBody from "./TWD_Body";
 

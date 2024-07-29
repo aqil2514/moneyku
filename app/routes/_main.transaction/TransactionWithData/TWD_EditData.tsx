@@ -4,7 +4,7 @@ import { useRevalidator } from "@remix-run/react";
 import { ErrorValidationResponse } from "~/@types/General";
 import { TransactionBodyType, TransactionErrors, TransactionType } from "~/@types/Transaction";
 import Button from "components/Inputs/Button";
-import { useTransactionData } from "./Transactions";
+import { useTransactionData } from "../Transactions";
 
 interface EditPopupProps {
   index: number;

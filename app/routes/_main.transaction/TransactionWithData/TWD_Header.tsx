@@ -1,5 +1,5 @@
 import { TransactionBodyType, TransactionType } from "~/@types/Transaction";
-import { useTransactionData } from "./Transactions";
+import { useTransactionData } from "../Transactions";
 import { currencyFormat } from "utils/general";
 
   

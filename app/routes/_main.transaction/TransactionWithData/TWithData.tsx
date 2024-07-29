@@ -1,9 +1,9 @@
 import Typography from "components/General/Typography";
-import { useTransactionData } from "./Transactions";
-import TransactionNavbar from "./TNavbar";
-import TransactionFilter from "./TFilter";
+import { useTransactionData } from "../Transactions";
+import TransactionNavbar from "../TNavbar";
+import TransactionFilter from "../TFilter";
 import TransactionData from "./TWD_Data";
-import TransactionMenu from "./TMenu";
+import TransactionMenu from "../TMenu";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import dayjs from "dayjs";
 

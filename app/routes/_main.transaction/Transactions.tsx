@@ -1,6 +1,6 @@
 import { TransactionType } from "~/@types/Transaction";
 import TransactionNoData from "./TNoData";
-import TransactionWithData from "./TWithData";
+import TransactionWithData from "./TransactionWithData/TWithData";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { ContextMenu, ContextMenuContent } from "components/ui/context-menu";
 import { ContextMenuTrigger } from "@radix-ui/react-context-menu";
