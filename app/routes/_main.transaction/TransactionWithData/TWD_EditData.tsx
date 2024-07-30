@@ -1,9 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import { useRevalidator } from "@remix-run/react";
-import { ErrorValidationResponse } from "~/@types/General";
-import { TransactionBodyType, TransactionType } from "~/@types/Transaction";
-import { useTransactionData } from "../Transactions";
+import React, { useState } from "react";
+import { useFetcher } from "@remix-run/react";
+import { BasicHTTPResponse, ErrorValidationResponse } from "~/@types/General";
 import EditDataProvider from "../Providers/EditDataProvider";
 import {
   AssetTransaction,
@@ -17,6 +14,7 @@ import {
   TransactionId,
 } from "../Components/EditDataComponents";
 import { getErrors } from "../utils-client";
+import Typography from "components/General/Typography";
 
 interface EditPopupProps {
   index: number;
@@ -29,15 +27,8 @@ export default function EditPopup({
   header,
   setEditPopup,
 }: EditPopupProps) {
-  const { data } = useTransactionData();
-  const [globalData, setGlobalData] = useState<TransactionType>();
-  const [selectedData, setSelectedData] = useState<TransactionBodyType>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [priceChecked, setPriceChecked] = useState<
-    "Pemasukan" | "Pengeluaran" | string
-  >("");
-  const [errors, setErrors] = useState<ErrorValidationResponse[]>([]);
-  const revalidator = useRevalidator();
+  const [errors, setErrors] = useState<ErrorValidationResponse[]>([]); // Ini fix nanti
   const {
     dateTransaction,
     noteTransaction,
@@ -45,43 +36,9 @@ export default function EditPopup({
     categoryTransaction,
     assetsTransaction,
     totalTransaction,
-  } = getErrors(errors);
-
-  const getData = useCallback(
-    (header: string) => {
-      const sameGlobal = data.find((d) => d.header === header);
-      if (!sameGlobal)
-        throw new Error("Terjadi kesalahan saat pengambilan data");
-      setGlobalData(sameGlobal);
-      setSelectedData(globalData?.body[index]);
-      if (selectedData) {
-        const category = selectedData.price > 0 ? "Pemasukan" : "Pengeluaran";
-
-        setPriceChecked(category);
-      }
-    },
-    [index, data, globalData, selectedData]
-  );
-
-  useEffect(() => {
-    getData(header);
-  }, [header, globalData, selectedData, getData]);
-
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-
-    const res = await axios.putForm("/api/transaction", formData);
-    const data = res.data.response;
-
-    if (!data.success) {
-      revalidator.revalidate();
-      setErrors(data.data);
-    } else {
-      revalidator.revalidate();
-      setEditPopup(false);
-    }
-  };
+  } = getErrors(errors); // Ini fix juga nanti
+  const fetcher = useFetcher<BasicHTTPResponse>();
+  const isSubmitting = fetcher.state !== "idle";
 
   return (
     <EditDataProvider header={header} index={index}>
@@ -91,8 +48,8 @@ export default function EditPopup({
             <h3>Edit Data</h3>
           </div>
 
-          <div className="popup-edit-body">
-            <form onSubmit={submitHandler}>
+          <div className="popup-edit-body relative">
+            <fetcher.Form method="PUT" action="/api/transaction">
               <MainId />
               <TransactionId />
               <DateTransaction errorMessage={dateTransaction} header={header} />
@@ -103,7 +60,19 @@ export default function EditPopup({
               <NoteTransaction errorMessage={noteTransaction} />
 
               <FooterButtons setEditPopup={setEditPopup} />
-            </form>
+            </fetcher.Form>
+            {/* UI Loading nanti ajah */}
+            {isSubmitting && (
+              <div className="w-full h-full absolute top-0 left-0 opacity-45 bg-black rounded-xl flex justify-center items-center">
+                <Typography
+                  family="merriweather-bold"
+                  variant="h3"
+                  className="text-white"
+                >
+                  Editing...
+                </Typography>
+              </div>
+            )}
           </div>
         </div>
       </div>

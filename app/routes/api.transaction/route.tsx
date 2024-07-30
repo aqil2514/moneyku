@@ -3,6 +3,7 @@ import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/account";
+import { removeCurrencyFormat } from "utils/general";
 import { BasicHTTPResponse } from "~/@types/General";
 import { TransactionFormData } from "~/@types/Transaction";
 
@@ -64,7 +65,7 @@ function getFormData(formData: FormData) {
     idTransaction: String(formData.get("main-id")),
     uidTransaction: String(formData.get("transaction-uid")),
     dateTransaction: new Date(String(formData.get("transaction-date"))),
-    totalTransaction: Number(formData.get("transaction-total")),
+    totalTransaction: removeCurrencyFormat(String(formData.get("transaction-total"))),
     categoryTransaction: String(formData.get("transaction-category")),
     assetsTransaction: String(formData.get("transaction-assets")),
     noteTransaction: String(formData.get("transaction-note")),
@@ -72,5 +73,6 @@ function getFormData(formData: FormData) {
       formData.get("transaction-type")
     ) as TransactionFormData["typeTransaction"],
   };
+
   return result;
 }

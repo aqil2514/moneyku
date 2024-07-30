@@ -77,7 +77,7 @@ export const FooterButtons = ({
         <Button color="success">Edit Data</Button>
 
         <Button color="error" type="button" onClick={() => setEditPopup(false)}>
-          Batal
+          Tutup
         </Button>
       </div>
     </div>

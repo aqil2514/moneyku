@@ -26,14 +26,16 @@ export const formatCurrency = (value: string) => {
   if (thousands) {
     const separator = remainder ? "." : "";
     const formattedCurrency = currency + separator + thousands.join(".");
-    return split[1] != undefined ? formattedCurrency + "," + split[1] : formattedCurrency;
+    return split[1] != undefined
+      ? formattedCurrency + "," + split[1]
+      : formattedCurrency;
   }
 
   return currency;
 };
 
-export const removeCurrencyFormat = (value:string) => {
-  return Number(value.replace(/[Rp. ]/g, ""));
+export const removeCurrencyFormat = (value: string) => {
+  return Number(value.replace(/[Rp. ]/g, "").replace(",", "."));
 };
 
 export const delay = (ms: number) =>
@@ -41,11 +43,12 @@ export const delay = (ms: number) =>
 
 export const getFormData: FormDataHandler = {
   asset(formData) {
-
     const formValues: AssetFormValues = {
       oldAssetName: formData.get("old-asset-name") as string,
       assetName: formData.get("asset-name") as string,
-      assetNominal: removeCurrencyFormat(formData.get("asset-nominal") as string),
+      assetNominal: removeCurrencyFormat(
+        formData.get("asset-nominal") as string
+      ),
       assetCategory: formData.get("asset-category") as string,
       newAssetCategory: formData.get("new-asset-category") as string,
       assetColor: formData.get("asset-color") as string,
@@ -59,19 +62,27 @@ export const getFormData: FormDataHandler = {
   transaction(formData) {
     const userId = String(formData.get("us"));
     const typeTransaction = String(formData.get("type-data"));
-    const totalTransaction = removeCurrencyFormat(formData.get("transaction-total") as string);
+    const totalTransaction = removeCurrencyFormat(
+      formData.get("transaction-total") as string
+    );
     // const billTransaction = removeCurrencyFormat(formData.get("bill") as string);
-    const billTransaction = formData.get("bill") ? removeCurrencyFormat(formData.get("bill") as string) : undefined;
+    const billTransaction = formData.get("bill")
+      ? removeCurrencyFormat(formData.get("bill") as string)
+      : undefined;
     const dateTransaction = new Date(String(formData.get("transaction-date")));
     const categoryTransaction = String(formData.get("transaction-category"));
     const assetsTransaction = String(formData.get("transaction-assets"));
     const fromAsset = String(formData.get("from-asset"));
     const toAsset = String(formData.get("to-asset"));
     const noteTransaction = String(formData.get("transaction-note"));
-    const descriptionTransaction = String(formData.get("transaction-description"));
+    const descriptionTransaction = String(
+      formData.get("transaction-description")
+    );
     const price =
-      typeTransaction === "Pemasukan" ? totalTransaction : totalTransaction * -1;
-  
+      typeTransaction === "Pemasukan"
+        ? totalTransaction
+        : totalTransaction * -1;
+
     const result: TransactionAddFormData = {
       typeTransaction,
       totalTransaction,
@@ -84,7 +95,7 @@ export const getFormData: FormDataHandler = {
       userId,
       toAsset,
       descriptionTransaction,
-      fromAsset
+      fromAsset,
     };
 
     return result;
