@@ -6,6 +6,8 @@ import { endpoint } from "lib/server";
 import { AccountUser } from "~/@types/Account";
 import { BasicHTTPResponse } from "~/@types/General";
 import { makeHttpResponse } from "utils/server/http";
+import clientEndpoint from "lib/client-endpoint";
+import { GoogleStrategy } from "remix-auth-google";
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -76,46 +78,38 @@ const formStrategy = new FormStrategy<BasicHTTPResponse<User>>(
   }
 );
 
+const googleStrategy = new GoogleStrategy<BasicHTTPResponse<User>>(
+  {
+    clientID: String(process.env.OAUTH_GOOGLE_CLIENT_ID),
+    clientSecret: String(process.env.OAUTH_GOOGLE_CLIENT_SECRET),
+    callbackURL: clientEndpoint,
+  },
+  async ({ profile }) => {
+    try {
+      // Pastikan endpoint dan parameter sudah benar
+      const res = await axios.get<User>(`${endpoint}/auth/google-login`, {
+        params: {
+          email: profile.emails[0].value,
+        },
+      });
+
+      const user = res.data;
+
+      const response = makeHttpResponse.success<User>(
+        "Login dengan email berhasil",
+        user
+      );
+
+      return response;
+    } catch (error) {
+      const response = makeHttpResponse.error<User>("Login gagal", {} as User)
+      console.error("Error fetching user:", error);
+      return response;
+    }
+  }
+);
+
+authenticator.use(googleStrategy, "google");
 authenticator.use(formStrategy, "form");
-
-// const googleStrategy = new GoogleStrategy(
-//   {
-//     clientID: String(process.env.OAUTH_GOOGLE_CLIENT_ID),
-//     clientSecret: String(process.env.OAUTH_GOOGLE_CLIENT_SECRET),
-//     callbackURL: clientEndpoint,
-//   },
-//   async ({ profile }) => {
-//     try {
-//       // Pastikan endpoint dan parameter sudah benar
-//       const res = await axios.get(`${endpoint}/account/getUser`, {
-//         params: {
-//           email: profile.emails[0].value,
-//         },
-//       });
-
-//       const user = res.data.user;
-
-//       const result: LoginResult = {
-//         success: true,
-//         user,
-//         message: "Login berhasil",
-//       };
-
-//       // Cek apakah user data dikembalikan
-
-//       return result;
-//     } catch (error) {
-//       const result: LoginResult = {
-//         success: true,
-//         user: {} as User,
-//         message: "Login gagal",
-//       };
-//       console.error("Error fetching user:", error);
-//       return result;
-//     }
-//   }
-// );
-
-// authenticator.use(googleStrategy, "google");
 
 export { authenticator };

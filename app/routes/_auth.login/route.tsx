@@ -22,8 +22,6 @@ export async function action({ request }: ActionFunctionArgs) {
       throwOnError: true,
     });
 
-    console.log(authenticator.sessionKey);
-
     if (auth.status === "error") {
       return redirectWithError("/login", auth.message);
     }
