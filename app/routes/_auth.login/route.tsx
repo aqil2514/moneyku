@@ -45,6 +45,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (error instanceof AuthorizationError) {
         console.error(error);
       }
+      console.error(error)
     }
   } else if (methodLogin === "oauth") {
     return await authenticator.authenticate("google", request);

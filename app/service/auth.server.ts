@@ -6,7 +6,16 @@ import serverEndpoint, { endpoint } from "lib/server";
 import { GoogleStrategy } from "remix-auth-google";
 import clientEndpoint from "lib/client-endpoint";
 import { AccountUser } from "~/@types/Account";
-import { LoginResult } from "~/@types/General";
+import { BasicHTTPResponse } from "~/@types/General";
+import { makeHttpResponse } from "utils/server/http";
+
+/**
+ * TODO:
+ * 1. Buat validasi kalo email dan password kosong. Pastiin juga error handlingnya bagus
+ * 2. Refactoring! Ada beberapa response yang berulang-ulang
+ * 3. Typescript masih belum rapih
+ * 4. Yang lain-lain juga deh gituain
+ */
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -16,27 +25,35 @@ if (!sessionSecret) {
 
 type User = AccountUser;
 
-async function login(email: string, password: string): Promise<LoginResult> {
-  const isLocal = process.env.NODE_ENV === "development";
-  const endpoint = isLocal ? serverEndpoint.local : serverEndpoint.production;
+async function login(
+  email: string,
+  password: string
+): Promise<BasicHTTPResponse<User | unknown>> {
+  if (!email) return makeHttpResponse.error("Email belum diisi", null);
+  if (!password) return makeHttpResponse.error("Password belum diisi", null);
 
   try {
-    const res = await axios.post(`${endpoint}/account/login`, {
-      email,
-      password,
-    });
+    const res = await axios.post<BasicHTTPResponse<User>>(
+      `${endpoint}/auth/login`,
+      {
+        email,
+        password,
+      }
+    );
 
-    const data: User = res.data.user;
+    const data: User = res.data.data!;
+    const response = makeHttpResponse.success("Login Berhasil", data);
 
-    return { user: data, success: true, message: "Login berhasil" };
+    return response;
   } catch (error) {
     if (isAxiosError(error)) {
-      const success = error.response?.data.success;
       const message = error.response?.data.message;
-      return { user: {} as User, success, message };
+      const response = makeHttpResponse.error(message, null)
+      return response;
     }
 
-    return { user: {} as User, success: false, message: "Terjadi kesalahan" };
+    const response: BasicHTTPResponse<typeof error> = makeHttpResponse.error("Terjadi kesalahan pada server", null, 500)
+    return response;
   }
 }
 

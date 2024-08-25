@@ -1,5 +1,3 @@
-import { AccountUser } from "./Account";
-
 /**
  * Response standar dari semua response http
  */
@@ -7,7 +5,7 @@ export interface BasicResponse {
   success: boolean;
 }
 
-export interface BasicHTTPResponse<T = unknown>{
+export interface BasicHTTPResponse<T = unknown> {
   status: "success" | "error" | "idle";
   statusCode?: number;
   message: string;
@@ -24,7 +22,7 @@ export interface ErrorValidationResponse extends ErrorResponse {
 }
 
 /** Interface untuk api getFormData */
-export interface FormDataHandler{
+export interface FormDataHandler {
   /**
    * Mengambil semua data yang ada di Form Aset
    * @param formData Form data dari yang bersangkutan
@@ -37,6 +35,11 @@ export interface FormDataHandler{
    * @returns Data dengan bentuk TransactionAddFormData
    */
   transaction: (formData: FormData) => TransactionAddFormData;
+}
+
+export interface HttpResponseBuilder<T = unknown> {
+  success: (message: string, data: unknown, statusCode?: number) => BasicHTTPResponse<T>;
+  error: (message: string, data: unknown, statusCode?: number) => BasicHTTPResponse<T>;
 }
 
 export interface LoginResult {
