@@ -1,18 +1,21 @@
-import { styled } from "styled-components";
+import clsx from "clsx";
+import React from "react";
 
-/**
- * Komponen ini digunakan untuk styling main page
- */
-export const MainWrapper = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background-color: #d5dff1;
-  overflow-y: scroll;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-`;
+export default function MainWrapper({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={clsx(
+        "w-full min-h-screen bg-sky-200 overflow-y-scroll",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}

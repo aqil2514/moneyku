@@ -7,7 +7,7 @@ import { redirectWithError, redirectWithSuccess } from "remix-toast";
 import { authenticator } from "~/service/auth.server";
 import { commitSession, getSession } from "~/service/session.server";
 import { LoginContainer, Title } from "./components";
-import { MainWrapper } from "components/General/Container";
+import MainWrapper from "components/General/Container";
 
 export const meta: MetaFunction = () => [{ title: "Login | Moneyku " }];
 
@@ -51,7 +51,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function LoginForm() {
   return (
-    <MainWrapper id="login-form">
+    <MainWrapper className="flex flex-col gap-8">
       <Title />
       <LoginContainer />
     </MainWrapper>
