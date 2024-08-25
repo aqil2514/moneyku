@@ -38,14 +38,27 @@ export interface FormDataHandler {
 }
 
 export interface HttpResponseBuilder {
-  success: <T>(message: string, data: T, statusCode?: number) => BasicHTTPResponse<T>;
-  error: <T>(message: string, data: T, statusCode?: number) => BasicHTTPResponse<T>;
+  success: <T>(
+    message: string,
+    data: T,
+    statusCode?: number
+  ) => BasicHTTPResponse<T>;
+  error: <T>(
+    message: string,
+    data: T,
+    statusCode?: number
+  ) => BasicHTTPResponse<T>;
 }
 
 export interface LoginResult {
   user: AccountUser;
   success: boolean;
   message: string;
+}
+
+export interface MiscData {
+  readonly securityQuestionsData: string[];
+  readonly currenciesData: string[];
 }
 
 export interface ValidationResponse extends BasicResponse {

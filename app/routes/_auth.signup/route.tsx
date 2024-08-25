@@ -10,10 +10,11 @@ import { endpoint } from "lib/server";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import { AccountResponse } from "~/@types/Account";
 import { authenticator } from "~/service/auth.server";
-import { currencyData, securityQuestionsData } from "./data";
+import { currencyData } from "./data";
 import Button from "components/Inputs/Button";
 import { getFormData } from "./utils";
 import { BasicHTTPResponse } from "~/@types/General";
+import { ErrorMessage, InputEmail, InputPassword, InputPasswordConfirm, InputSecurityQuestion, InputUsername } from "./components";
 
 export const meta: MetaFunction = () => [{ title: "Signup | Moneyku" }];
 
@@ -22,6 +23,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     successRedirect: "/transaction",
   });
   return null;
+  
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -30,7 +32,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   try {
     const res = await axios.post<BasicHTTPResponse<AccountResponse[]>>(
-      `${endpoint}/account/register`,
+      `${endpoint}/auth/register`,
       data
     );
 
@@ -76,10 +78,6 @@ export async function action({ request }: ActionFunctionArgs) {
   } as BasicHTTPResponse<AccountResponse[]>);
 }
 
-const ErrorMessage = ({message}:{message:string | null | undefined}) => {
-  return message && typeof message === "string" ? <em className="text-red-500">{message}</em> : <></>
-}
-
 export default function Register() {
   const error = useActionData<typeof action>();
   const {
@@ -96,48 +94,12 @@ export default function Register() {
   return (
     <div id="signup-page">
       <h2>Form Pendaftaran</h2>
-      <Form method="POST" action="/signup">
-        <div>
-          <label>
-            Nama Pengguna:
-            <input type="text" name="username" required />
-            <ErrorMessage message={usernameError} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Alamat Email:
-            <input type="email" name="email" required />
-            <ErrorMessage message={emailError} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Kata Sandi:
-            <input type="password" name="password" required />
-            <ErrorMessage message={passwordError} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Konfirmasi Kata Sandi:
-            <input type="password" name="confirmPassword" required />
-          </label>
-          <ErrorMessage message={confirmPasswordError} />
-          </div>
-        <div>
-          <label>
-            Pertanyaan Keamanan:
-            <select name="securityQuestion">
-              <option value="no-question">Pertanyaan kemanan</option>
-              {securityQuestionsData.sort().map((d, i) => (
-                <option key={`security-question-${i++}`} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+      <Form method="POST" action="/signup" className="w-1/2">
+        <InputUsername message={usernameError as string} />
+        <InputEmail message={emailError as string}/>
+        <InputPassword message={passwordError as string} />
+        <InputPasswordConfirm message={confirmPasswordError as string} />
+        <InputSecurityQuestion />
         <div>
           <label>
             Jawaban Pertanyaan Keamanan:
@@ -157,7 +119,7 @@ export default function Register() {
             </select>
           </label>
           <ErrorMessage message={currencyError} />
-          </div>
+        </div>
         <div>
           <label>
             Preferensi Bahasa:
@@ -168,7 +130,7 @@ export default function Register() {
             </select>
           </label>
           <ErrorMessage message={languageError} />
-          </div>
+        </div>
         <div>
           <label>
             Tujuan Penggunaan:
@@ -179,10 +141,10 @@ export default function Register() {
             </select>
           </label>
           <ErrorMessage message={purposeUsageError} />
-          </div>
+        </div>
 
-          <ErrorMessage message={accountFoundError} />
-          <div>
+        <ErrorMessage message={accountFoundError} />
+        <div>
           <Button color="success" type="submit">
             Daftar
           </Button>
@@ -205,7 +167,7 @@ export function getErrors(errors: AccountResponse[] | undefined) {
       accountFoundError: null,
     };
   }
-  
+
   // Membuat Map dari errors
   const errorsMap = new Map(errors.map((d) => [d.path, d.message]));
 

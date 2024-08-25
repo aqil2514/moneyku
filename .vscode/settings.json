@@ -14,5 +14,19 @@
       "url": "./classnames.json"
     }
   ],
-  "editor.suggest.showSnippets": false
+  "editor.suggest.showSnippets": false,
+  "css.validate": false,
+  "editor.inlineSuggest.enabled": true,
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+    "html": "html",
+    "javascript": "javascript",
+    "css": "css"
+  },
+  "scss.validate": false,
+  "tailwindCSS.experimental.classRegex": [
+    ["className\\s*=\\s*\"([^\"]*)\"", 1],
+    ["className\\s*=\\s*'([^']*)'", 1],
+    ["className\\s*=\\s*`([^`]*)`", 1]
+  ]
 }
