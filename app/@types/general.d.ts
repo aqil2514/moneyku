@@ -37,9 +37,9 @@ export interface FormDataHandler {
   transaction: (formData: FormData) => TransactionAddFormData;
 }
 
-export interface HttpResponseBuilder<T = unknown> {
-  success: (message: string, data: unknown, statusCode?: number) => BasicHTTPResponse<T>;
-  error: (message: string, data: unknown, statusCode?: number) => BasicHTTPResponse<T>;
+export interface HttpResponseBuilder {
+  success: <T>(message: string, data: T, statusCode?: number) => BasicHTTPResponse<T>;
+  error: <T>(message: string, data: T, statusCode?: number) => BasicHTTPResponse<T>;
 }
 
 export interface LoginResult {

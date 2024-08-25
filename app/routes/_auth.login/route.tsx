@@ -3,7 +3,6 @@ import {
   LoaderFunctionArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { AuthorizationError } from "remix-auth";
 import { redirectWithError, redirectWithSuccess } from "remix-toast";
 import { authenticator } from "~/service/auth.server";
 import { commitSession, getSession } from "~/service/session.server";
@@ -19,34 +18,28 @@ export async function action({ request }: ActionFunctionArgs) {
   const methodLogin = searchParams.get("method-login") as MethodLoginState;
 
   if (methodLogin === "form") {
-    try {
-      const auth = await authenticator.authenticate("form", request, {
-        throwOnError: true,
-      });
+    const auth = await authenticator.authenticate("form", request, {
+      throwOnError: true,
+    });
 
-      if (!auth.success || !auth.user) {
-        return redirectWithError("/login", auth.message);
-      }
+    console.log(authenticator.sessionKey);
 
-      const session = await getSession(request.headers.get("cookie"));
-      session.set(authenticator.sessionKey, auth);
-
-      const headers = new Headers({
-        "Set-Cookie": await commitSession(session),
-      });
-
-      return redirectWithSuccess(
-        "/transaction",
-        `Selamat datang ${auth.user.username}`,
-        { headers }
-      );
-    } catch (error) {
-      if (error instanceof Response) return error;
-      if (error instanceof AuthorizationError) {
-        console.error(error);
-      }
-      console.error(error)
+    if (auth.status === "error") {
+      return redirectWithError("/login", auth.message);
     }
+
+    const session = await getSession(request.headers.get("cookie"));
+    session.set(authenticator.sessionKey, auth.data);
+
+    const headers = new Headers({
+      "Set-Cookie": await commitSession(session),
+    });
+
+    return redirectWithSuccess(
+      "/transaction",
+      `Selamat datang ${auth.data?.username}`,
+      { headers }
+    );
   } else if (methodLogin === "oauth") {
     return await authenticator.authenticate("google", request);
   }
