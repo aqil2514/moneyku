@@ -3,7 +3,7 @@ import LoginImage from "./LoginImage";
 
 export const Title = () => {
   return (
-    <h1 className="text-4xl font-bold text-center text-white bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 bg-clip-text text-transparent hover:scale-105 transition duration-300">
+    <h1 className="text-4xl font-libre-baskerville font-bold text-center text-lime-600 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 bg-clip-text text-transparent hover:scale-105 transition duration-300 underline">
       Moneyku
     </h1>
   );

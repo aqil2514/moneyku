@@ -16,6 +16,9 @@ const config = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      "libre-baskerville": ["Libre Baskerville", "sans serif"]
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

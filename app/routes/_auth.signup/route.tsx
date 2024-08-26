@@ -10,11 +10,11 @@ import { endpoint } from "lib/server";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
 import { AccountResponse } from "~/@types/Account";
 import { authenticator } from "~/service/auth.server";
-import { currencyData } from "./data";
 import Button from "components/Inputs/Button";
-import { getFormData } from "./utils";
+import { getErrors, getFormData } from "./utils";
 import { BasicHTTPResponse } from "~/@types/General";
-import { ErrorMessage, InputEmail, InputPassword, InputPasswordConfirm, InputSecurityQuestion, InputUsername } from "./components";
+import { ErrorMessage, InputCurrency, InputEmail, InputLanguage, InputPassword, InputPasswordConfirm, InputSecurityAnswer, InputSecurityQuestion, InputUsage, InputUsername } from "./components";
+import MainWrapper from "components/General/Container";
 
 export const meta: MetaFunction = () => [{ title: "Signup | Moneyku" }];
 
@@ -92,56 +92,21 @@ export default function Register() {
   } = getErrors(error?.data);
 
   return (
-    <div id="signup-page">
-      <h2>Form Pendaftaran</h2>
-      <Form method="POST" action="/signup" className="w-1/2">
+    // Nanti dibiki multiform step gitu 
+    // Referensi https://codepen.io/atakan/pen/nPOZZR
+    <MainWrapper className="p-4">
+      <h2 className="font-libre-baskerville text-center font-bold my-2">Form Pendaftaran</h2>
+      <div className="bg-white rounded-xl w-1/2 mx-auto p-4">
+      <Form method="POST" action="/signup">
         <InputUsername message={usernameError as string} />
         <InputEmail message={emailError as string}/>
         <InputPassword message={passwordError as string} />
         <InputPasswordConfirm message={confirmPasswordError as string} />
         <InputSecurityQuestion />
-        <div>
-          <label>
-            Jawaban Pertanyaan Keamanan:
-            <input type="text" name="securityAnswer" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Preferensi Mata Uang:
-            <select name="currencyPreference" required>
-              <option value="">Pilih Mata Uang</option>
-              {currencyData.map((d) => (
-                <option value={d} key={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </label>
-          <ErrorMessage message={currencyError} />
-        </div>
-        <div>
-          <label>
-            Preferensi Bahasa:
-            <select name="languagePreference" required>
-              <option value="">Pilih Bahasa</option>
-              <option value="EN">English</option>
-              <option value="ID">Bahasa Indonesia</option>
-            </select>
-          </label>
-          <ErrorMessage message={languageError} />
-        </div>
-        <div>
-          <label>
-            Tujuan Penggunaan:
-            <select name="purposeUsage" required>
-              <option value="">Pilih Tujuan</option>
-              <option value="Individu">Individu</option>
-              <option value="Organization">Kelompok</option>
-            </select>
-          </label>
-          <ErrorMessage message={purposeUsageError} />
-        </div>
+        <InputSecurityAnswer />
+        <InputCurrency message={currencyError as string} />
+        <InputLanguage message={languageError as string} />
+        <InputUsage message={purposeUsageError as string} />
 
         <ErrorMessage message={accountFoundError} />
         <div>
@@ -150,38 +115,7 @@ export default function Register() {
           </Button>
         </div>
       </Form>
-    </div>
+      </div>
+    </MainWrapper>
   );
-}
-
-export function getErrors(errors: AccountResponse[] | undefined) {
-  if (!errors) {
-    return {
-      usernameError: null,
-      emailError: null,
-      passwordError: null,
-      confirmPasswordError: null,
-      currencyError: null,
-      languageError: null,
-      purposeUsageError: null,
-      accountFoundError: null,
-    };
-  }
-
-  // Membuat Map dari errors
-  const errorsMap = new Map(errors.map((d) => [d.path, d.message]));
-
-  // Mengambil nilai error dari Map
-  const getError = (field: string) => errorsMap.get(field);
-
-  return {
-    usernameError: getError("username"),
-    emailError: getError("email"),
-    passwordError: getError("password"),
-    confirmPasswordError: getError("confirmPassword"),
-    currencyError: getError("currency"),
-    languageError: getError("language"),
-    purposeUsageError: getError("purposeUsage"),
-    accountFoundError: getError("account-found"),
-  };
 }

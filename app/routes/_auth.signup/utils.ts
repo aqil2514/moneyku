@@ -1,4 +1,4 @@
-import { AccountRegister } from "~/@types/Account";
+import { AccountRegister, AccountResponse } from "~/@types/Account";
 
 export function getFormData(formData: FormData):AccountRegister{
     const data: AccountRegister = {
@@ -16,4 +16,36 @@ export function getFormData(formData: FormData):AccountRegister{
       };
 
       return data;
+}
+
+export function getErrors(errors: AccountResponse[] | undefined) {
+  if (!errors) {
+    return {
+      usernameError: null,
+      emailError: null,
+      passwordError: null,
+      confirmPasswordError: null,
+      currencyError: null,
+      languageError: null,
+      purposeUsageError: null,
+      accountFoundError: null,
+    };
+  }
+
+  // Membuat Map dari errors
+  const errorsMap = new Map(errors.map((d) => [d.path, d.message]));
+
+  // Mengambil nilai error dari Map
+  const getError = (field: string) => errorsMap.get(field);
+
+  return {
+    usernameError: getError("username"),
+    emailError: getError("email"),
+    passwordError: getError("password"),
+    confirmPasswordError: getError("confirmPassword"),
+    currencyError: getError("currency"),
+    languageError: getError("language"),
+    purposeUsageError: getError("purposeUsage"),
+    accountFoundError: getError("account-found"),
+  };
 }
