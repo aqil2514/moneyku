@@ -10,6 +10,9 @@ import { SiPlangrid } from "react-icons/si";
 import { TbMoneybag } from "react-icons/tb";
 import { TfiStatsUp } from "react-icons/tfi";
 import { AccountUser } from "~/@types/Account";
+import SidebarHeader from "./SidebarHeader";
+import SidebarProvider from "./SidebarProvider";
+import SidebarAccount from "./SidebarAccount";
 
 const Profile = ({
   user,
@@ -101,34 +104,11 @@ const Profile = ({
 export default function PCSidebar({ user }: { user: AccountUser | null }) {
   const [seeProfile, setSeeProfile] = useState<boolean>(false);
   return (
-    <>
-      <div id="sidebar">
-        <div id="sidebar-header">
-          <h1 id="sidebar-header-title" className="font-playfair-bold">
-            Moneyku
-          </h1>
-          {/* <img
-            id="sidebar-header-image"
-            src="/images/icon-money.png"
-            alt="icon-money"
-          /> */}
-        </div>
-        <div id="account">
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                setSeeProfile(true);
-              }
-            }}
-            onClick={() => setSeeProfile(true)}
-          >
-            <p className="font-poppins-bold">
-              {user && user.username ? user.username : "Belum buat"}
-            </p>
-          </div>
-        </div>
+    <SidebarProvider user={user}>
+      <div className="bg-blue-500 min-h-screen p-4">
+        <SidebarHeader />
+        <SidebarAccount />
+        
         <div id="sidebar-menu">
           <h2>Menu</h2>
           <NavLink
@@ -205,6 +185,6 @@ export default function PCSidebar({ user }: { user: AccountUser | null }) {
         </div>
       </div>
       {seeProfile && <Profile user={user} setSeeProfile={setSeeProfile} />}
-    </>
+    </SidebarProvider>
   );
 }

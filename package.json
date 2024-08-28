@@ -12,9 +12,12 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@fontsource-variable/playfair-display": "^5.0.26",
     "@fontsource/libre-baskerville": "^5.0.14",
+    "@fontsource/playfair-display": "^5.0.25",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-context-menu": "^2.2.1",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-scroll-area": "^1.1.0",

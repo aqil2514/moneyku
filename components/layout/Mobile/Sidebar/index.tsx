@@ -7,7 +7,7 @@ export default function MobileSidebar({ user }: { user: AccountUser | null }) {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="block md:hidden">
       <div id="mobile-header">
         <h1 id="mobile-header-title" className="font-playfair-bold">
           Moneyku | {user?.username}
@@ -39,6 +39,6 @@ export default function MobileSidebar({ user }: { user: AccountUser | null }) {
           </NavLink>
         ))}
       </div>
-    </>
+    </div>
   );
 }
