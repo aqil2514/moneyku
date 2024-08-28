@@ -5,7 +5,7 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "components/ui/dialog";
-import { useSidebarData } from "./SidebarProvider";
+import { useSidebarData } from "../SidebarProvider";
 import { Profile } from "./Account";
 import Button from "components/Inputs/Button";
 import { useNavigate } from "@remix-run/react";

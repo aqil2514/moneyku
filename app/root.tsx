@@ -17,6 +17,7 @@ import toastStyles from "react-toastify/dist/ReactToastify.css?url";
 /** Fonts */
 import "@fontsource/libre-baskerville"
 import "@fontsource/playfair-display"
+import "@fontsource/poppins"
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: style },

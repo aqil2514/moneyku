@@ -18,7 +18,8 @@ const config = {
     },
     fontFamily: {
       "libre-baskerville": ["Libre Baskerville", "sans serif"],
-      "playfair-display": ["Playfair Display", "sans serif"]
+      "playfair-display": ["Playfair Display", "sans serif"],
+      "poppins": ["Poppins", "sans serif"],
     },
     extend: {
       colors: {
