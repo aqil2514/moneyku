@@ -1,10 +1,10 @@
 import { MdEdit } from "react-icons/md";
 import { TransactionBodyType } from "~/@types/Transaction";
-import { useTransactionData } from "../Transactions";
+import { useTransactionData } from "../main";
 import { useState } from "react";
 import { currencyFormat } from "utils/general";
-import DeletePopup from "./TWD_DeleteData";
-import EditPopup from "./TWD_EditData";
+import DeletePopup from "./DeleteData";
+import EditPopup from "./EditData";
 
 export default function TransactionDataBody({
   body,

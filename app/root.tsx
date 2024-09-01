@@ -15,9 +15,10 @@ import { ToastContainer, toast as notify } from "react-toastify";
 import toastStyles from "react-toastify/dist/ReactToastify.css?url";
 
 /** Fonts */
-import "@fontsource/libre-baskerville"
-import "@fontsource/playfair-display"
-import "@fontsource/poppins"
+import "@fontsource/libre-baskerville";
+import "@fontsource/playfair-display";
+import "@fontsource/poppins";
+import "@fontsource/ubuntu";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: style },

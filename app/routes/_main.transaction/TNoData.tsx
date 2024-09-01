@@ -1,30 +1,32 @@
-import Typography from "components/General/Typography";
-import TransactionNavbar from "./TNavbar";
 import { ClientOnly } from "remix-utils/client-only";
-import TransactionMenu from "./TMenu";
+import AddDataDialog from "./Dialog/AddData";
+import TransactionNavbar from "./TNavbar";
+import MainWrapper from "components/General/Container";
 
 export default function TransactionNoData() {
   const noPrice = [0];
 
   return (
-    <div id="transaction" className="main-page">
-      <div className="flex justify-center border-double">
-        <Typography family="playfair-bold" variant="h1">
-          Transaksi
-        </Typography>
-      </div>
+    <ClientOnly>
+      {() => (
+        <MainWrapper className="p-4">
+          <div className="flex justify-center border-double border-8 rounded-xl border-black">
+            <h1 className="font-playfair-display text-center text-3xl font-bold">
+              Transaksi
+            </h1>
+          </div>
 
+          <TransactionNavbar price={noPrice} />
 
-      <TransactionNavbar price={noPrice} />
-      
-      <ClientOnly>
-        {() => <TransactionMenu />}
-      </ClientOnly>
-      <main>
-        <p style={{ textAlign: "center" }}>
-          Belum ada transaksi. Ayo tambahkan
-        </p>
-      </main>
-    </div>
+          <AddDataDialog />
+
+          <main className="bg-white p-4 rounded-md mt-4">
+            <p className="text-center font-ubuntu font-bold">
+              Belum ada transaksi. Ayo tambahkan!
+            </p>
+          </main>
+        </MainWrapper>
+      )}
+    </ClientOnly>
   );
 }

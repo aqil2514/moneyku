@@ -1,10 +1,16 @@
 import { TransactionType } from "~/@types/Transaction";
 import TransactionNoData from "./TNoData";
-import TransactionWithData from "./TransactionWithData/TWithData";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import TransactionWithData from "./TransactionWithData";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { ContextMenu, ContextMenuContent } from "components/ui/context-menu";
 import { ContextMenuTrigger } from "@radix-ui/react-context-menu";
-import T_ContextMenuItem from "./T_ContextMenuItem";
+import T_ContextMenuItem from "./ContextMenu/Item";
 import { useNavigate } from "@remix-run/react";
 import dayjs from "dayjs";
 
@@ -44,10 +50,9 @@ export default function Transactions({ data }: { data: TransactionType[] }) {
 
   useEffect(() => {
     const keyboardEvents = (e: KeyboardEvent) => {
-
       if (e.ctrlKey && e.key === "b") {
         e.preventDefault();
-        e.stopImmediatePropagation(); 
+        e.stopImmediatePropagation();
         addTransaction();
       }
     };
@@ -58,28 +63,28 @@ export default function Transactions({ data }: { data: TransactionType[] }) {
       window.removeEventListener("keydown", keyboardEvents);
     };
   }, [addTransaction]);
+
+  const value: TransactionContextType = {
+    data,
+    editMode,
+    setEditMode,
+    deleteMode,
+    setDeleteMode,
+    month,
+    setMonth,
+    year,
+    setYear,
+    menuActive,
+    setMenuActive,
+  };
   return (
-    <TransactionContext.Provider
-      value={{
-        data,
-        editMode,
-        setEditMode,
-        deleteMode,
-        setDeleteMode,
-        month,
-        setMonth,
-        year,
-        setYear,
-        menuActive,
-        setMenuActive,
-      }}
-    >
+    <TransactionContext.Provider value={value}>
       <ContextMenu>
         <ContextMenuTrigger>
           {data.length === 0 ? <TransactionNoData /> : <TransactionWithData />}
         </ContextMenuTrigger>
         <ContextMenuContent className="w-64">
-        <T_ContextMenuItem />
+          <T_ContextMenuItem />
         </ContextMenuContent>
       </ContextMenu>
     </TransactionContext.Provider>

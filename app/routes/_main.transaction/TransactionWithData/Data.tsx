@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import { useTransactionData } from "../Transactions";
+import { useTransactionData } from "../main";
 import { months } from "../TFilter";
-import TransactionDataHeader from "./TWD_Header";
-import TransactionDataBody from "./TWD_Body";
+import TransactionDataHeader from "./Header";
+import TransactionDataBody from "./Body";
 
 export default function TransactionData() {
   const { data, month, setMonth, year } = useTransactionData();

@@ -3,7 +3,7 @@ import { FaEdit, FaPlusCircle, FaTrashAlt } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { useEffect } from "react";
-import { useTransactionData } from "./Transactions";
+import { useTransactionData } from "./main";
 
 export default function TransactionMenu() {
   const navigation = useNavigate();

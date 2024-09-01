@@ -20,6 +20,7 @@ const config = {
       "libre-baskerville": ["Libre Baskerville", "sans serif"],
       "playfair-display": ["Playfair Display", "sans serif"],
       "poppins": ["Poppins", "sans serif"],
+      "ubuntu" : ["Ubuntu", "sans serif"]
     },
     extend: {
       colors: {
