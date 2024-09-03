@@ -8,19 +8,19 @@ export default function TransactionData() {
   const { data, month, setMonth, year } = useTransactionData();
   const dataRef = useRef<null | HTMLDivElement>(null);
 
+  console.log(data)
+
   const filteredData = data
   .filter((d) => {
-    const [dataYear, dataMonth] = d.header.split(":")[0].split("-").map(Number);
-    const dataMonthIndex = dataMonth - 1;
+    const dataYear = d.updated_at.getFullYear();
+    const dataMonthIndex = d.updated_at.getMonth(); // getMonth() sudah mengembalikan nilai 0-11
 
     return month === dataMonthIndex && Number(year) === dataYear;
   })
   .sort((a, b) => {
-    const dateA = new Date(a.header);
-    const dateB = new Date(b.header);
-
-    return dateA.getTime() - dateB.getTime();
+    return a.updated_at.getTime() - b.updated_at.getTime();
   });
+
 
 
   useEffect(() => {

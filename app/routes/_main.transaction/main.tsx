@@ -1,6 +1,4 @@
-import { TransactionType } from "~/@types/Transaction";
 import TransactionNoData from "./TNoData";
-import TransactionWithData from "./TransactionWithData";
 import {
   createContext,
   useCallback,
@@ -13,6 +11,8 @@ import { ContextMenuTrigger } from "@radix-ui/react-context-menu";
 import T_ContextMenuItem from "./ContextMenu/Item";
 import { useNavigate } from "@remix-run/react";
 import dayjs from "dayjs";
+import { Transaction } from "~/@types/Transaction-Experimental";
+import TransactionWithData from "./TWD";
 
 interface TransactionContextType {
   editMode: boolean;
@@ -25,7 +25,13 @@ interface TransactionContextType {
   setMenuActive: React.Dispatch<React.SetStateAction<boolean>>;
   setMonth: React.Dispatch<React.SetStateAction<number>>;
   setYear: React.Dispatch<React.SetStateAction<string>>;
-  data: TransactionType[];
+  sortOrder: "asc" | "desc";
+  setSortOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
+  filterType: "all" | "Income" | "Outcome" | "Transfer";
+  setFilterType: React.Dispatch<
+    React.SetStateAction<"all" | "Income" | "Outcome" | "Transfer">
+  >;
+  data: Transaction[];
 }
 
 const TransactionContext = createContext<TransactionContextType>(
@@ -35,12 +41,19 @@ const TransactionContext = createContext<TransactionContextType>(
 const currentYear = String(dayjs().year());
 const currentMonth = dayjs().month();
 
-export default function Transactions({ data }: { data: TransactionType[] }) {
+/** Coba visualisasiin lagi bentuk dummy datanya */
+
+export default function Transactions({ data }: { data: Transaction[] }) {
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [menuActive, setMenuActive] = useState<boolean>(false);
   const [month, setMonth] = useState<number>(currentMonth);
   const [year, setYear] = useState<string>(currentYear);
+
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [filterType, setFilterType] = useState<
+    "all" | "Income" | "Outcome" | "Transfer"
+  >("all");
 
   const navigate = useNavigate();
 
@@ -76,6 +89,10 @@ export default function Transactions({ data }: { data: TransactionType[] }) {
     setYear,
     menuActive,
     setMenuActive,
+    filterType,
+    setFilterType,
+    setSortOrder,
+    sortOrder,
   };
   return (
     <TransactionContext.Provider value={value}>

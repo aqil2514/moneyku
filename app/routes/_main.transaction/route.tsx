@@ -28,7 +28,7 @@ export default function TransactionRoute() {
   return (
     <Suspense fallback={<TransactionSkeleton />}>
       <Await resolve={data}>
-        {(data) => <Transactions data={data.data} />}
+        {(data) => <Transactions data={data.data!} />}
       </Await>
     </Suspense>
   );

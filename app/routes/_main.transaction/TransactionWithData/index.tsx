@@ -11,15 +11,13 @@ export default function TransactionWithData() {
   const { data, month, year } = useTransactionData();
   const selectedData = data.filter(
     (d) => {
-      const date = dayjs(d.header);
+      const date = dayjs(d.updated_at);
       return date.month() === month && String(date.year()) === year;
     }
   );
 
-  const allBody = selectedData.map((d) => d.body);
-
-  const allPrices = allBody
-    .map((d) => d.map((x) => x.price))
+  const allPrices = selectedData
+    .map((d) => d.nominal.amount)
     .join(",")
     .split(",")
     .map((d) => parseInt(d));

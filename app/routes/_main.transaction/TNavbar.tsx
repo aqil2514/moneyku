@@ -1,6 +1,10 @@
 import { SummaryTransaction } from "./Components/Navbar";
+import { useTransactionData } from "./main";
 
-export default function TransactionNavbar({ price }: { price: number[] }) {
+export default function TransactionNavbar() {
+  const { data } = useTransactionData();
+  const price: number[] = data.length > 0 ? data.map((d) => d.nominal.amount) : [0];
+
   const sumIncome = price.reduce((acc, curr) => acc + (curr > 0 ? curr : 0), 0);
   const sumOutcome = price.reduce(
     (acc, curr) => acc + (curr < 0 ? Math.abs(curr) : 0),
