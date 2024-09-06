@@ -19,7 +19,7 @@ export function TransactionConfig() {
       <SheetTrigger asChild>
         <Button variant="outline" className="flex gap-1 items-center">
           <CiSettings />
-          <p>Open</p>
+          <p>Konfigurasi</p>
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="h-1/2">

@@ -1,5 +1,7 @@
 export type TransactionId = `tr-${string}`;
 
+export type TypeTransaction = 'Income' | 'Outcome' | 'Transfer'
+
 /** Interface untuk transaksi */
 export interface Transaction {
   /** ID Transaksi */
@@ -15,7 +17,7 @@ export interface Transaction {
   /** Penjelasan transaksi */
   description?: string;
   /** Tipe transaksi */
-  type_transaction: 'Income' | 'Outcome' | 'Transfer';
+  type_transaction: TypeTransaction;
   /** Kategori ID */
   category_id: `trc-${string}`;
   /** Tag Transaksi */
