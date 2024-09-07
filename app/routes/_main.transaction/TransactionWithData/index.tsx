@@ -4,8 +4,8 @@ import TransactionNavbar from "../TNavbar";
 import TransactionFilter from "../TFilter";
 import TransactionData from "./Data";
 import TransactionMenu from "../TMenu";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import dayjs from "dayjs";
+import { ScrollArea } from "components/ui/scroll-area";
 
 export default function TransactionWithData() {
   const { data, month, year } = useTransactionData();

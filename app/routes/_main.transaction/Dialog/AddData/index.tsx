@@ -19,7 +19,7 @@ export default function AddDataDialog() {
         <DialogTrigger>
           <Button color="success">Tambah Data</Button>
         </DialogTrigger>
-        <DialogContent className="max-w-5xl max-h-[600px] overflow-y-scroll">
+        <DialogContent className="max-w-5xl max-h-[600px] scrollbar-hide overflow-y-scroll">
           <DialogHeader>
             <DialogTitle>Tambah Data</DialogTitle>
             <DialogDescription>Tambahkan data transaksi</DialogDescription>

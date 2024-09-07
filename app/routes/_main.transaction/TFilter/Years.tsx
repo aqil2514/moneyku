@@ -26,7 +26,7 @@ export default function YearDropDown() {
       <DropdownMenuTrigger>
         <Button color="primary">{year} </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 max-h-56 overflow-y-scroll">
+      <DropdownMenuContent className="w-56 max-h-56">
         <DropdownMenuLabel>Pilih Tahun</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={year} onValueChange={setYear}>

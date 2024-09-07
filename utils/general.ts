@@ -11,6 +11,23 @@ export const toCapitalizeWords = (str: string): string => {
   return str.replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
+export function dateFormat(date: string | Date) {
+  const oldDate = typeof date === "string" ? new Date(date) : date;
+
+  if(isNaN(oldDate.getTime())){
+    return "Data tidak sesuai yang diminta";
+  }
+
+  const formattedDate = oldDate.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  return formattedDate;
+}
+
 export const currencyFormat = new Intl.NumberFormat("id-ID", {
   style: "currency",
   currency: "IDR",

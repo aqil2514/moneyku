@@ -53,6 +53,7 @@
     "remix-utils": "^7.6.0",
     "styled-components": "^6.1.11",
     "tailwind-merge": "^2.3.0",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
     "vercel": "^35.2.1",
     "zod": "^3.23.8"

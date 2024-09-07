@@ -15,7 +15,7 @@ export async function loader({request}:LoaderFunctionArgs){
 export default function MainLayout(){
     const {user} = useLoaderData<typeof loader>();
     return(
-        <div className="grid grid-cols-[15%_auto]">
+        <div className="grid grid-cols-[15%_auto] scrollbar-hide">
             <Sidebar user={user}/>
             <Outlet />
         </div>

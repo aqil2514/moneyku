@@ -11,7 +11,7 @@ export default function MainWrapper({
   return (
     <div
       className={clsx(
-        "w-full min-h-screen bg-sky-200 overflow-y-scroll",
+        "w-full min-h-screen bg-sky-200",
         className
       )}
     >
