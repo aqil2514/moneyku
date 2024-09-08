@@ -3,7 +3,7 @@ import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { getAssetsPromise } from "utils/server/assets";
 import { authenticator } from "~/service/auth.server";
-import Assets from "./Assets";
+import Assets from "./AssetsProvider";
 import AssetsSkeleton from "./A_Skeleton";
 
 export const meta: MetaFunction = () => [
@@ -30,8 +30,9 @@ export default function AssetsPromise() {
       <Await errorElement={<p>Terjadi kesalahan</p>} resolve={data}>
         {(data) => (
           <Assets
-            assetData={data.assetData}
-            transactionData={data.transactionData}
+            accountsData={data.accounts}
+            transactionsData={data.transactions}
+            categoriesData={data.categories}
           />
         )}
       </Await>

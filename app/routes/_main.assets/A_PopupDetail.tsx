@@ -2,7 +2,7 @@ import { Form } from "@remix-run/react";
 import { toast } from "react-toastify";
 import Button from "components/Inputs/Button";
 import { PopupProps } from "./A_Detail";
-import { useAssetContext } from "./Assets";
+import { useAssetContext } from "./AssetsProvider";
 import { currencyFormat } from "utils/general";
 import { filterTransPerAsset } from "utils/client/assets";
 

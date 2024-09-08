@@ -1,5 +1,5 @@
 import { IoIosWarning } from "react-icons/io";
-import { useAssetContext } from "../Assets";
+import { useAssetContext } from "../AssetsProvider";
 import { useDeleteData } from "../Providers/DeleteModeProvider";
 import Button from "components/Inputs/Button";
 import React from "react";

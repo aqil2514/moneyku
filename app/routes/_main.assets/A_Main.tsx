@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Button from "components/Inputs/Button";
-import { useAssetContext } from "./Assets";
+import { useAssetContext } from "./AssetsProvider";
 import { currencyFormat } from "utils/general";
 import PopupAdd from "./A_AddMode";
 import DetailPopup from "./A_Detail";
 
 export default function MainPage() {
-  const { assetData } = useAssetContext();
+  const { accountsData } = useAssetContext();
   const [assetName, setAssetName] = useState<string>("");
   const [addMode, setAddMode] = useState<boolean>(false);
 
@@ -17,6 +17,8 @@ export default function MainPage() {
       setAssetName(name);
     }
   };
+
+  // Referensi UI : https://cdn.dribbble.com/users/525024/screenshots/14013552/media/00656440173bbdc071276d9c3aba8cb9.png?resize=400x0
   return (
     <>
       <div className="main-page">
@@ -27,7 +29,7 @@ export default function MainPage() {
           </Button>
         </div>
         <div id="asset-container">
-          {assetData.map((d) => (
+          {accountsData.map((d) => (
             <button
               key={d.name}
               data-value={d.name}
