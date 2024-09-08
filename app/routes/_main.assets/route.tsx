@@ -27,7 +27,7 @@ export default function AssetsPromise() {
 
   return (
     <Suspense fallback={<AssetsSkeleton />}>
-      <Await resolve={data}>
+      <Await errorElement={<p>Terjadi kesalahan</p>} resolve={data}>
         {(data) => (
           <Assets
             assetData={data.assetData}

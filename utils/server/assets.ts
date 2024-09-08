@@ -23,6 +23,8 @@ export async function getAssetsPromise(
     }
   );
 
+  console.log(res.data)
+
   if (!res.data.data)
     throw new Error("Terjadi kesalahan saat pengambilan data");
 
