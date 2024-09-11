@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import MainPage from "./A_Main";
+import MainPage from "./Main";
 import { Accounts, Category } from "~/@types/Assets-Experimental";
 import { Transaction } from "~/@types/Transaction-Experimental";
 
@@ -23,6 +23,6 @@ export default function AssetsProvider({ accountsData, transactionsData, categor
   );
 }
 
-export function useAssetContext(){
+export function useAssetData(){
     return useContext(AssetContext);
 }
