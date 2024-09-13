@@ -1,6 +1,6 @@
 import React from "react";
 
-export type SectionState = "Aset" | "Category";
+export type SectionState = "asset" | "category";
 
 export interface ButtonHeaderProps{
     section : SectionState;
