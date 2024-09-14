@@ -8,6 +8,8 @@ import { Accounts, Category } from "~/@types/Assets-Experimental";
 import { useSearchParams } from "@remix-run/react";
 import { currencyFormat } from "utils/general";
 import Button from "components/Inputs/Button";
+import { Dialog, DialogContent, DialogTrigger } from "components/ui/dialog";
+import AssetDetail from "../Detail";
 
 const buttonLabels: ButtonHeaderProps[] = [
   {
@@ -59,6 +61,29 @@ const AccountIcon: React.FC<{ account: Accounts | Category }> = ({
   );
 };
 
+const AssetList: React.FC<{ account: Accounts }> = ({ account }) => {
+  const { isHiding } = useMainAssetData();
+  return (
+    <button
+      key={account.account_id}
+      data-account-id={account.account_id}
+      className="border-slate-300 border-2 rounded duration-200 hover:border-sky-600 hover:bg-slate-200 p-2 flex w-full"
+    >
+      <div className="flex justify-between w-full items-center">
+        <div className="flex gap-2 items-center">
+          <AccountIcon account={account} />
+          <p className="font-poppins font-semibold">{account.name}</p>
+        </div>
+        <div>
+          <p className="font-ubuntu font-semibold">
+            {isHiding ? "****" : currencyFormat.format(account.amount)}
+          </p>
+        </div>
+      </div>
+    </button>
+  );
+};
+
 export const MainBody = () => {
   const { section, setSection, isHiding, setIsHiding } = useMainAssetData();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -97,28 +122,18 @@ export const MainBody = () => {
 
 const MainBody_Asset = () => {
   const { accountsData } = useAssetData();
-  const { isHiding } = useMainAssetData();
 
   return (
     <div className="grid grid-cols-2 gap-4">
       {accountsData.map((account) => (
-        <button
-          key={account.account_id}
-          data-account-id={account.account_id}
-          className="border-slate-300 border-2 rounded duration-200 hover:border-sky-600 hover:bg-slate-200 p-2 flex"
-        >
-          <div className="flex justify-between w-full items-center">
-            <div className="flex gap-2 items-center">
-              <AccountIcon account={account} />
-              <p className="font-poppins font-semibold">{account.name}</p>
-            </div>
-            <div>
-              <p className="font-ubuntu font-semibold">
-                {isHiding ? "****" : currencyFormat.format(account.amount)}
-              </p>
-            </div>
-          </div>
-        </button>
+        <Dialog key={account.account_id}>
+          <DialogTrigger>
+            <AssetList account={account} />
+          </DialogTrigger>
+          <DialogContent>
+          <AssetDetail account={account} />
+          </DialogContent>
+        </Dialog>
       ))}
     </div>
   );
