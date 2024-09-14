@@ -8,11 +8,14 @@ export default function MainProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [section, setSection] = useState<SectionState>("Aset");
+  const [section, setSection] = useState<SectionState>("asset");
+  const [isHiding, setIsHiding] = useState<boolean>(false);
 
   const value: MainAssetContext = {
     section,
     setSection,
+    isHiding,
+    setIsHiding
   };
   return <MainContext.Provider value={value}>{children}</MainContext.Provider>;
 }

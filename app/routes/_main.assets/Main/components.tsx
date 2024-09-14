@@ -1,11 +1,13 @@
 import { ButtonHeaderProps, SectionState } from "./interface";
-import { FaLayerGroup, FaMoneyBill } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaLayerGroup, FaMoneyBill } from "react-icons/fa";
 import { useMainAssetData } from "./MainProvider";
 import { ScrollArea } from "components/ui/scroll-area";
 import { useAssetData } from "../AssetsProvider";
 import React, { useEffect, useState } from "react";
 import { Accounts, Category } from "~/@types/Assets-Experimental";
 import { useSearchParams } from "@remix-run/react";
+import { currencyFormat } from "utils/general";
+import Button from "components/Inputs/Button";
 
 const buttonLabels: ButtonHeaderProps[] = [
   {
@@ -57,22 +59,36 @@ const AccountIcon: React.FC<{ account: Accounts | Category }> = ({
   );
 };
 
-
 export const MainBody = () => {
-  const { section, setSection } = useMainAssetData();
-  const [searchParams] = useSearchParams(); // Mengambil query parameter
-  
+  const { section, setSection, isHiding, setIsHiding } = useMainAssetData();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
-    const sectionParam = searchParams.get("section") as SectionState; // Ambil nilai dari query parameter "section"
-    if (sectionParam) {
-      setSection(sectionParam); // Setel section berdasarkan query params
+    const sectionParam = searchParams.get("section") as SectionState;
+    if (
+      sectionParam &&
+      (sectionParam === "asset" || sectionParam === "category")
+    ) {
+      setSection(sectionParam);
     } else {
-      setSection("asset"); // Setel default section jika tidak ada query param "section"
+      setSearchParams({ section: "asset" }, { replace: true });
+      setSection("asset");
     }
-  }, [searchParams, setSection]);
+  }, [searchParams, setSection, setSearchParams]);
 
   return (
     <ScrollArea className="h-3/4 w-full p-2">
+      <div className="my-2 flex gap-2 font-ubuntu">
+        {section === "asset" && (
+          <Button
+            color="info"
+            startIcon={isHiding ? <FaEyeSlash /> : <FaEye />}
+            onClick={() => setIsHiding(!isHiding)}
+          >
+            {isHiding ? "Tampilkan" : "Sembunyikan"}
+          </Button>
+        )}
+      </div>
       {section === "asset" && <MainBody_Asset />}
       {section === "category" && <MainBody_Category />}
     </ScrollArea>
@@ -81,6 +97,8 @@ export const MainBody = () => {
 
 const MainBody_Asset = () => {
   const { accountsData } = useAssetData();
+  const { isHiding } = useMainAssetData();
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {accountsData.map((account) => (
@@ -89,9 +107,16 @@ const MainBody_Asset = () => {
           data-account-id={account.account_id}
           className="border-slate-300 border-2 rounded duration-200 hover:border-sky-600 hover:bg-slate-200 p-2 flex"
         >
-          <div className="flex gap-2 items-center">
-            <AccountIcon account={account} />
-            <p className="font-poppins font-semibold">{account.name}</p>
+          <div className="flex justify-between w-full items-center">
+            <div className="flex gap-2 items-center">
+              <AccountIcon account={account} />
+              <p className="font-poppins font-semibold">{account.name}</p>
+            </div>
+            <div>
+              <p className="font-ubuntu font-semibold">
+                {isHiding ? "****" : currencyFormat.format(account.amount)}
+              </p>
+            </div>
           </div>
         </button>
       ))}
@@ -125,7 +150,7 @@ export const MainHeader = () => {
     asset: "Asset",
     category: "Kategori Aset",
   };
-  
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -135,7 +160,7 @@ export const MainHeader = () => {
         {buttonLabels.map((value, i) => {
           const isActive = value.section === section;
           const label = sectionMapped[value.section as SectionState];
-          
+
           return (
             <button
               className={`w-full duration-200 border-2 py-2 font-bold font-playfair-display rounded-sm flex gap-2 justify-center items-center ${
@@ -146,7 +171,7 @@ export const MainHeader = () => {
               key={i}
               onClick={() => {
                 setSection(value.section);
-                setSearchParams({ section: value.section }, {replace: true});
+                setSearchParams({ section: value.section }, { replace: true });
               }}
             >
               {value.icons}
