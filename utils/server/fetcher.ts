@@ -1,15 +1,21 @@
-import { getUser } from "./account";
 import { endpoint } from "lib/server";
 import axios from "axios";
 import { BasicHTTPResponse, GeneralDataResponse } from "~/@types/General";
-import { makeHttpResponse } from "./server/http";
+import { getUser } from "utils/account";
+import { makeHttpResponse } from "./http";
 
-export async function getTransactionPromise(request: Request) {
+type GeneralEndpointParameter = "all" | "transaction" | "asset";
+
+// Ini nanti ubah agar jadi general promise
+export async function getDataPromise(
+  request: Request,
+  parameter: GeneralEndpointParameter = "all"
+) {
   const user = await getUser(request);
 
   try {
     const { data } = await axios.get<BasicHTTPResponse<GeneralDataResponse>>(
-      `${endpoint}/get-data/all`,
+      `${endpoint}/get-data/${parameter}`,
       {
         headers: { "User-ID": String(user.uid) },
       }
@@ -27,6 +33,6 @@ export async function getTransactionPromise(request: Request) {
 
     return response;
   } catch (error) {
-    throw new Error("Terjadi Kesalahan")
+    throw new Error("Terjadi Kesalahan");
   }
 }

@@ -1,6 +1,6 @@
 import { currencyFormat } from "utils/general";
 import { Transaction, TypeTransaction } from "~/@types/Transaction-Experimental";
-import { useTransactionData } from "../../main";
+import { useTransactionData } from "../../Provider";
 
 export default function TransactionDataBody({ data }: { data: Transaction }) {
   const { data: generalData } = useTransactionData();

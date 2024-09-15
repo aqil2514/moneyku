@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useTransactionData } from "../../main";
+import { useTransactionData } from "../../Provider";
 import { ScrollArea } from "components/ui/scroll-area";
 import TransactionDetail from "../Detail";
 

@@ -4,8 +4,6 @@ import TransactionNavbar from "./TNavbar";
 import MainWrapper from "components/General/Container";
 
 export default function TransactionNoData() {
-  const noPrice = [0];
-
   return (
     <ClientOnly>
       {() => (
@@ -16,7 +14,7 @@ export default function TransactionNoData() {
             </h1>
           </div>
 
-          <TransactionNavbar price={noPrice} />
+          <TransactionNavbar />
 
           <AddDataDialog />
 

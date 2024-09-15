@@ -1,5 +1,5 @@
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
-import { useTransactionData } from "../main";
+import { useTransactionData } from "../Provider";
 import YearDropDown from "./Years";
 
 export const months = [

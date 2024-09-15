@@ -48,13 +48,3 @@ export interface TransactionBodyType {
   item: string;
   price: number;
 }
-
-/**
- * Interface untuk tipe data yang dikembalikan oleh fungsi getTransactionData.
- */
-export interface TransactionDataResponse {
-  data: TransactionType[];
-  user: AccountUser;
-  success: boolean;
-  status?: number;
-}

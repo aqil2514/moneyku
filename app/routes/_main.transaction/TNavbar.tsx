@@ -1,15 +1,22 @@
 import { SummaryTransaction } from "./Components/Navbar";
-import { useTransactionData } from "./main";
+import { useTransactionData } from "./Provider";
 
 export default function TransactionNavbar() {
-  const { data } = useTransactionData();
-  const price: number[] = data.length > 0 ? data.map((d) => d.nominal.amount) : [0];
+  const { data: generalData } = useTransactionData();
+  const data = generalData.transaction;
 
-  const sumIncome = price.reduce((acc, curr) => acc + (curr > 0 ? curr : 0), 0);
-  const sumOutcome = price.reduce(
-    (acc, curr) => acc + (curr < 0 ? Math.abs(curr) : 0),
-    0
-  );
+  // Pisahkan antara data pemasukan dan data pengeluaran
+  const incomeData = data.filter((d) => d.type_transaction === "Income");
+  const outcomeData = data.filter((d) => d.type_transaction === "Outcome");
+
+  // Ambil hanya ke data harga dari kedua data yang telah difilter tersebut
+  const incomeAmount = incomeData.map((d) => d.nominal.amount);
+  const outcomeAmount = outcomeData.map((d) => d.nominal.amount);
+
+  // Jumlahkan semua datanya
+  const sumIncome = incomeAmount.reduce((acc, curr) => acc + (curr > 0 ? curr : 0), 0);
+  const sumOutcome = outcomeAmount.reduce((acc, curr) => acc + (curr > 0 ? curr : 0), 0);
+
   const total = sumIncome - sumOutcome;
 
   return (

@@ -18,7 +18,7 @@ import Button from "components/Inputs/Button";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import { useTransactionData } from "../../main";
+import { useTransactionData } from "../../Provider";
 
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (

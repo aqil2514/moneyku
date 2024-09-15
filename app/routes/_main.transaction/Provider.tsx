@@ -15,14 +15,8 @@ import TransactionWithData from "./TWD";
 import { GeneralDataResponse } from "~/@types/General";
 
 interface TransactionContextType {
-  editMode: boolean;
-  deleteMode: boolean;
-  menuActive: boolean;
   month: number;
   year: string;
-  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setMenuActive: React.Dispatch<React.SetStateAction<boolean>>;
   setMonth: React.Dispatch<React.SetStateAction<number>>;
   setYear: React.Dispatch<React.SetStateAction<string>>;
   sortOrder: "asc" | "desc";
@@ -41,13 +35,11 @@ const TransactionContext = createContext<TransactionContextType>(
 const currentYear = String(dayjs().year());
 const currentMonth = dayjs().month();
 
-/** Coba visualisasiin lagi bentuk dummy datanya */
-
-export default function Transactions({ data }: { data: GeneralDataResponse }) {
-
-  const [deleteMode, setDeleteMode] = useState<boolean>(false);
-  const [editMode, setEditMode] = useState<boolean>(false);
-  const [menuActive, setMenuActive] = useState<boolean>(false);
+export default function TransactionProvider({
+  data,
+}: {
+  data: GeneralDataResponse;
+}) {
   const [month, setMonth] = useState<number>(currentMonth);
   const [year, setYear] = useState<string>(currentYear);
 
@@ -80,16 +72,10 @@ export default function Transactions({ data }: { data: GeneralDataResponse }) {
 
   const value: TransactionContextType = {
     data,
-    editMode,
-    setEditMode,
-    deleteMode,
-    setDeleteMode,
     month,
     setMonth,
     year,
     setYear,
-    menuActive,
-    setMenuActive,
     filterType,
     setFilterType,
     setSortOrder,
@@ -99,7 +85,11 @@ export default function Transactions({ data }: { data: GeneralDataResponse }) {
     <TransactionContext.Provider value={value}>
       <ContextMenu>
         <ContextMenuTrigger>
-          {data.transaction.length === 0 ? <TransactionNoData /> : <TransactionWithData />}
+          {data.transaction.length === 0 ? (
+            <TransactionNoData />
+          ) : (
+            <TransactionWithData />
+          )}
         </ContextMenuTrigger>
         <ContextMenuContent className="w-64">
           <T_ContextMenuItem />

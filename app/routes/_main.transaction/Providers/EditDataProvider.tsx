@@ -11,7 +11,7 @@ import React, {
     TransactionFormData,
     TransactionType,
   } from "~/@types/Transaction";
-  import { useTransactionData } from "../main";
+  import { useTransactionData } from "../Provider";
   
   interface EditDataState {
     globalData: TransactionType;

@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "components/ui/dropdown-menu";
 import Button from "components/Inputs/Button";
-import { useTransactionData } from "../main";
+import { useTransactionData } from "../Provider";
 
 const startYear = 2001;
 const endYear = 2040;
