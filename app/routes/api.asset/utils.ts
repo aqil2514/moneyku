@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import { getFormData } from "utils/general";
 import { AssetApiHandler, AssetApiPut, AssetsData } from "~/@types/Assets";
 import { BasicHTTPResponse } from "~/@types/General";

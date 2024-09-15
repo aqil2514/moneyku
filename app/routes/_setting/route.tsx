@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import Typography from "components/General/Typography";
 import Button from "components/Inputs/Button";
 import { BiLogOut } from "react-icons/bi";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import { createContext, useContext } from "react";
 import { AccountUser } from "~/@types/Account";
 import { settingNavLink } from "../_setting.setting/setting-navlinks";

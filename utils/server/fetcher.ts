@@ -1,7 +1,7 @@
 import { endpoint } from "lib/server";
 import axios from "axios";
 import { BasicHTTPResponse, GeneralDataResponse } from "~/@types/General";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import { makeHttpResponse } from "./http";
 
 type GeneralEndpointParameter = "all" | "transaction" | "asset";

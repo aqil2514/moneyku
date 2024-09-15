@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import Sidebar from "components/layout/Core/Sidebar";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import { authenticator } from "~/service/auth.server";
 
 export async function loader({request}:LoaderFunctionArgs){

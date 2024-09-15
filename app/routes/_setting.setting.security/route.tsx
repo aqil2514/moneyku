@@ -11,7 +11,7 @@ import {
   jsonWithSuccess,
   redirectWithSuccess,
 } from "remix-toast";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { BasicHTTPResponse } from "~/@types/General";

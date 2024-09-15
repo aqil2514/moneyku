@@ -1,6 +1,6 @@
 import axios from "axios";
 import { endpoint } from "lib/server";
-import { getUser } from "../account";
+import { getUser } from "./account";
 import { BasicHTTPResponse } from "~/@types/General";
 import { Accounts, Category } from "~/@types/Assets-Experimental";
 import { Transaction } from "~/@types/Transaction-Experimental";

@@ -1,6 +1,6 @@
 import { ActionFunctionArgs } from "@remix-run/node";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import { getDataForm } from "./security-utils";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";

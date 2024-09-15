@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { redirectWithError, redirectWithSuccess } from "remix-toast";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await getUser(request);

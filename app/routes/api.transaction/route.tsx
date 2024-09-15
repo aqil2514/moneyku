@@ -2,7 +2,7 @@ import { ActionFunctionArgs } from "@remix-run/node";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import { removeCurrencyFormat } from "utils/general";
 import { BasicHTTPResponse } from "~/@types/General";
 import { TransactionFormData } from "~/@types/Transaction";

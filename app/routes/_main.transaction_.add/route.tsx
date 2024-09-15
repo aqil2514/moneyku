@@ -11,7 +11,7 @@ import { endpoint } from "lib/server";
 import { authenticator } from "~/service/auth.server";
 import { Suspense } from "react";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
-import { getUser } from "utils/account";
+import { getUser } from "utils/server/account";
 import { getAssetsPromise } from "utils/server/assets";
 import TransactionAddSkeleton from "./TA_Skeleton";
 import axios, { isAxiosError } from "axios";
