@@ -5,7 +5,7 @@ import { authenticator } from "~/service/auth.server";
 import TransactionSkeleton from "./Skeleton";
 import { GeneralDataResponse } from "~/@types/General";
 import { getDataPromise } from "utils/server/fetcher";
-import TransactionProvider from "./Provider";
+import TransactionProvider from "./core/MainProvider";
 
 export const meta: MetaFunction = () => [
   {

@@ -1,4 +1,3 @@
-import TransactionNoData from "./TNoData";
 import {
   createContext,
   useCallback,
@@ -6,13 +5,11 @@ import {
   useEffect,
   useState,
 } from "react";
-import { ContextMenu, ContextMenuContent } from "components/ui/context-menu";
-import { ContextMenuTrigger } from "@radix-ui/react-context-menu";
-import T_ContextMenuItem from "./ContextMenu/Item";
 import { useNavigate } from "@remix-run/react";
 import dayjs from "dayjs";
-import TransactionWithData from "./TWD";
 import { GeneralDataResponse } from "~/@types/General";
+import TransactionNoData from "../TNoData";
+import TransactionWithData from "../TWD";
 
 interface TransactionContextType {
   month: number;
@@ -83,18 +80,11 @@ export default function TransactionProvider({
   };
   return (
     <TransactionContext.Provider value={value}>
-      <ContextMenu>
-        <ContextMenuTrigger>
           {data.transaction.length === 0 ? (
             <TransactionNoData />
           ) : (
             <TransactionWithData />
           )}
-        </ContextMenuTrigger>
-        <ContextMenuContent className="w-64">
-          <T_ContextMenuItem />
-        </ContextMenuContent>
-      </ContextMenu>
     </TransactionContext.Provider>
   );
 }

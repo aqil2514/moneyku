@@ -1,5 +1,5 @@
 import { SummaryTransaction } from "./Components/Navbar";
-import { useTransactionData } from "./Provider";
+import { useTransactionData } from "./core/MainProvider";
 
 export default function TransactionNavbar() {
   const { data: generalData } = useTransactionData();
