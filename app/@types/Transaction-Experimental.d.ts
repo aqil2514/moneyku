@@ -34,3 +34,7 @@ export interface Transaction {
     currency: string;
   };
 }
+
+export interface TransactionResponse{
+  transaction: Transaction[]
+}

@@ -18,6 +18,7 @@ import Button from "components/Inputs/Button";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
+import { useTransactionData } from "../../main";
 
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
@@ -29,6 +30,11 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 }
 
 export default function TransactionDetail({ data }: { data: Transaction }) {
+  const { data: generalData } = useTransactionData();
+  const assetName = generalData.accounts.find(
+    (account) => account.account_id === data.nominal.account_id
+  )?.name;
+  const categoryName = generalData.categories.find((category) => category.category_id === data.category_id)?.name
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -52,9 +58,9 @@ export default function TransactionDetail({ data }: { data: Transaction }) {
             <p className="text-white font-playfair-display">I</p>
           </div>
           <div className="flex justify-center gap-2 mt-2">
-            <Badge>Nama Aset</Badge>
+            <Badge>{assetName ? assetName : "Nama Aset"}</Badge>
             <Badge>{data.type_transaction}</Badge>
-            <Badge>Kategori</Badge>
+            <Badge>{categoryName ? categoryName : "Nama Kategori"}</Badge>
           </div>
         </DialogHeader>
         <div className="flex flex-col gap-2">

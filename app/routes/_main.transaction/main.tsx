@@ -11,8 +11,8 @@ import { ContextMenuTrigger } from "@radix-ui/react-context-menu";
 import T_ContextMenuItem from "./ContextMenu/Item";
 import { useNavigate } from "@remix-run/react";
 import dayjs from "dayjs";
-import { Transaction } from "~/@types/Transaction-Experimental";
 import TransactionWithData from "./TWD";
+import { GeneralDataResponse } from "~/@types/General";
 
 interface TransactionContextType {
   editMode: boolean;
@@ -31,7 +31,7 @@ interface TransactionContextType {
   setFilterType: React.Dispatch<
     React.SetStateAction<"all" | "Income" | "Outcome" | "Transfer">
   >;
-  data: Transaction[];
+  data: GeneralDataResponse;
 }
 
 const TransactionContext = createContext<TransactionContextType>(
@@ -43,7 +43,8 @@ const currentMonth = dayjs().month();
 
 /** Coba visualisasiin lagi bentuk dummy datanya */
 
-export default function Transactions({ data }: { data: Transaction[] }) {
+export default function Transactions({ data }: { data: GeneralDataResponse }) {
+
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [menuActive, setMenuActive] = useState<boolean>(false);
@@ -98,7 +99,7 @@ export default function Transactions({ data }: { data: Transaction[] }) {
     <TransactionContext.Provider value={value}>
       <ContextMenu>
         <ContextMenuTrigger>
-          {data.length === 0 ? <TransactionNoData /> : <TransactionWithData />}
+          {data.transaction.length === 0 ? <TransactionNoData /> : <TransactionWithData />}
         </ContextMenuTrigger>
         <ContextMenuContent className="w-64">
           <T_ContextMenuItem />

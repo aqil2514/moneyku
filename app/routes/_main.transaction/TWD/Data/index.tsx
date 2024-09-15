@@ -5,7 +5,7 @@ import TransactionDetail from "../Detail";
 
 export default function TransactionData() {
   const { data } = useTransactionData();
-  const sortedData = data.sort((a, b) => {
+  const sortedData = data.transaction.sort((a, b) => {
     const dateA = dayjs(a.transaction_at);
     const dateB = dayjs(b.transaction_at);
     return dateA.diff(dateB);

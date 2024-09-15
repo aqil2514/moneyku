@@ -5,6 +5,7 @@ import { authenticator } from "~/service/auth.server";
 import Transactions from "./main";
 import { getTransactionPromise } from "utils/transaction";
 import TransactionSkeleton from "./Skeleton";
+import { GeneralDataResponse } from "~/@types/General";
 
 export const meta: MetaFunction = () => [
   {
@@ -18,19 +19,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const transactionPromise = getTransactionPromise(request);
 
   return defer({
-    data: transactionPromise,
+    transactionPromise,
   });
 }
 
 export default function TransactionRoute() {
-  const { data } = useLoaderData<typeof loader>();
-  
+  const { transactionPromise: data } = useLoaderData<typeof loader>();
+
   return (
     <Suspense fallback={<TransactionSkeleton />}>
       <Await resolve={data}>
-        {(data) => <Transactions data={data.data!} />}
+        {(resData) => {
+          return <Transactions data={resData.data as GeneralDataResponse} />;
+        }}
       </Await>
     </Suspense>
   );
 }
-

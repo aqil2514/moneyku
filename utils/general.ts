@@ -10,11 +10,16 @@ import { TransactionAddFormData } from "~/@types/Transaction";
 export const toCapitalizeWords = (str: string): string => {
   return str.replace(/\b\w/g, (char) => char.toUpperCase());
 };
-
-export function dateFormat(date: string | Date) {
+/**
+ * Memformat tanggal ke dalam format lokal Indonesia.
+ *
+ * @param {string | Date} date - Tanggal yang akan diformat, bisa dalam bentuk string atau objek Date.
+ * @returns {string} Tanggal yang diformat dalam bahasa Indonesia, atau pesan kesalahan jika tanggal tidak valid.
+ */
+export function dateFormat(date: string | Date): string {
   const oldDate = typeof date === "string" ? new Date(date) : date;
 
-  if(isNaN(oldDate.getTime())){
+  if (isNaN(oldDate.getTime())) {
     return "Data tidak sesuai yang diminta";
   }
 
@@ -28,12 +33,21 @@ export function dateFormat(date: string | Date) {
   return formattedDate;
 }
 
+/**
+ * Formatter untuk memformat angka menjadi format mata uang Rupiah (IDR).
+ */
 export const currencyFormat = new Intl.NumberFormat("id-ID", {
   style: "currency",
   currency: "IDR",
 });
 
-export const formatCurrency = (value: string) => {
+/**
+ * Memformat nilai string menjadi format mata uang.
+ *
+ * @param {string} value - Nilai string yang akan diformat menjadi mata uang.
+ * @returns {string} Nilai yang sudah diformat dengan titik sebagai pemisah ribuan.
+ */
+export const formatCurrency = (value: string): string => {
   const numberString = value.replace(/[^,\d]/g, "").toString();
   const split = numberString.split(",");
   const remainder = split[0].length % 3;
@@ -51,11 +65,23 @@ export const formatCurrency = (value: string) => {
   return currency;
 };
 
-export const removeCurrencyFormat = (value: string) => {
+/**
+ * Menghapus format mata uang dari string dan mengubahnya menjadi angka.
+ *
+ * @param {string} value - Nilai string yang memiliki format mata uang.
+ * @returns {number} Nilai numerik setelah format mata uang dihapus.
+ */
+export const removeCurrencyFormat = (value: string): number => {
   return Number(value.replace(/[Rp. ]/g, "").replace(",", "."));
 };
 
-export const delay = (ms: number) =>
+/**
+ * Fungsi untuk menunda eksekusi dengan waktu tertentu.
+ *
+ * @param {number} ms - Waktu tunda dalam milidetik.
+ * @returns {Promise<void>} Sebuah promise yang selesai setelah waktu tunda habis.
+ */
+export const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getFormData: FormDataHandler = {
