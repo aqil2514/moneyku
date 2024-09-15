@@ -2,7 +2,7 @@ import { Badge } from "components/ui/badge";
 import { DialogDescription, DialogTitle } from "components/ui/dialog";
 import { formatDate } from "utils";
 import { Accounts } from "~/@types/Assets-Experimental";
-import { useAssetData } from "../AssetsProvider";
+import { useAssetData } from "../core/MainProvider";
 
 export default function AssetDetail({ account }: { account: Accounts }) {
     const {transactionsData} = useAssetData();

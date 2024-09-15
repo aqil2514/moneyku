@@ -2,7 +2,7 @@ import { ButtonHeaderProps, SectionState } from "./interface";
 import { FaEye, FaEyeSlash, FaLayerGroup, FaMoneyBill } from "react-icons/fa";
 import { useMainAssetData } from "./MainProvider";
 import { ScrollArea } from "components/ui/scroll-area";
-import { useAssetData } from "../AssetsProvider";
+import { useAssetData } from "../core/MainProvider";
 import React, { useEffect, useState } from "react";
 import { Accounts, Category } from "~/@types/Assets-Experimental";
 import { useSearchParams } from "@remix-run/react";
@@ -64,7 +64,7 @@ const AccountIcon: React.FC<{ account: Accounts | Category }> = ({
 const AssetList: React.FC<{ account: Accounts }> = ({ account }) => {
   const { isHiding } = useMainAssetData();
   return (
-    <button
+    <div
       key={account.account_id}
       data-account-id={account.account_id}
       className="border-slate-300 border-2 rounded duration-200 hover:border-sky-600 hover:bg-slate-200 p-2 flex w-full"
@@ -80,7 +80,7 @@ const AssetList: React.FC<{ account: Accounts }> = ({ account }) => {
           </p>
         </div>
       </div>
-    </button>
+    </div>
   );
 };
 

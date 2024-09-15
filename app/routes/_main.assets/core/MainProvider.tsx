@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import MainPage from "./Main";
+import MainPage from "../Main";
 import { Accounts, Category } from "~/@types/Assets-Experimental";
 import { Transaction } from "~/@types/Transaction-Experimental";
 

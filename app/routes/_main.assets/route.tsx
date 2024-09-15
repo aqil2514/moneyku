@@ -2,8 +2,8 @@ import { LoaderFunctionArgs, MetaFunction, defer } from "@remix-run/node";
 import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { authenticator } from "~/service/auth.server";
-import Assets from "./AssetsProvider";
-import AssetsSkeleton from "./Sekeleton";
+import Assets from "./core/MainProvider";
+import AssetsSkeleton from "./core/Sekeleton";
 import { getDataPromise } from "utils/server/fetcher";
 
 export const meta: MetaFunction = () => [
