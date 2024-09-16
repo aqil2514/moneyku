@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { ScrollArea } from "components/ui/scroll-area";
 import TransactionDetail from "../Detail";
-import { useTransactionData } from "../../core/MainProvider";
+import { useTransactionData } from "../../../Core/MainProvider";
 
 export default function TransactionData() {
   const { data } = useTransactionData();

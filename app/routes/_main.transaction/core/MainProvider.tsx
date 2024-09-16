@@ -8,22 +8,9 @@ import {
 import { useNavigate } from "@remix-run/react";
 import dayjs from "dayjs";
 import { GeneralDataResponse } from "~/@types/General";
-import TransactionNoData from "../TNoData";
-import TransactionWithData from "../TWD";
-
-interface TransactionContextType {
-  month: number;
-  year: string;
-  setMonth: React.Dispatch<React.SetStateAction<number>>;
-  setYear: React.Dispatch<React.SetStateAction<string>>;
-  sortOrder: "asc" | "desc";
-  setSortOrder: React.Dispatch<React.SetStateAction<"asc" | "desc">>;
-  filterType: "all" | "Income" | "Outcome" | "Transfer";
-  setFilterType: React.Dispatch<
-    React.SetStateAction<"all" | "Income" | "Outcome" | "Transfer">
-  >;
-  data: GeneralDataResponse;
-}
+import TransactionWithData from "../Components/TransactionWithData";
+import { TransactionContextType } from "./interface";
+import TransactionNoData from "../Components/TransactionNoData";
 
 const TransactionContext = createContext<TransactionContextType>(
   {} as TransactionContextType

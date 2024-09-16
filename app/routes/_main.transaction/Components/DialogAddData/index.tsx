@@ -9,8 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "components/ui/dialog";
-import AddDataForm from "./Form";
-import AddDataProvider from "./AddDataProvider";
+import AddDataProvider from "../../Providers/AddDataProvider";
+import AddDataForm from "./components";
 
 export default function AddDataDialog() {
   return (

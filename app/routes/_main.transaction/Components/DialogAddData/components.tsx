@@ -1,7 +1,7 @@
 import Button from "components/Inputs/Button";
 import React from "react";
 import { TypeTransaction } from "~/@types/Transaction";
-import { useFormData } from "../Dialog/AddData/AddDataProvider";
+import { useFormData } from "../../Providers/AddDataProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "components/ui/popover";
 import { FaRegCalendar } from "react-icons/fa";
 import { formatDate } from "utils";
@@ -11,10 +11,45 @@ import { Input } from "components/ui/input";
 import { rupiahConvert } from "utils/client/general";
 import { Checkbox } from "components/ui/checkbox";
 import { Textarea } from "components/ui/textarea";
+import { useFetcher } from "@remix-run/react";
 
 interface TransactionTypeSelectProps {
   label: TypeTransaction;
 }
+
+export default function AddDataForm() {
+  const fetcher = useFetcher();
+  const { category, date } = useFormData();
+
+  return (
+    <fetcher.Form>
+      <TransactionType />
+      <Input type="hidden" value={category} name="typeTransaction" readOnly />
+      <Input
+        type="hidden"
+        value={date?.toISOString()}
+        name="dateTransaction"
+        readOnly
+      />
+
+      <FormTitle />
+      <FormCalendar />
+      <FormName />
+      <FormNominal />
+
+      {category === "Transfer" && <FormBill />}
+
+      <FormCategory />
+
+      <FormFromAsset />
+
+      {category === "Transfer" && <FormToAsset />}
+
+      <FormDescription />
+    </fetcher.Form>
+  );
+}
+
 
 export const TypeTransactionSelect: React.FC<TransactionTypeSelectProps> = ({
   label,

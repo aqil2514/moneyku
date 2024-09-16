@@ -1,9 +1,11 @@
 import { ClientOnly } from "remix-utils/client-only";
-import AddDataDialog from "./Dialog/AddData";
-import TransactionNavbar from "./TNavbar";
 import MainWrapper from "components/General/Container";
+import TransactionNavbar from "../Navbar";
+import AddDataDialog from "../DialogAddData";
+import TransactionData from "./Data";
+import { TransactionConfig } from "./Config";
 
-export default function TransactionNoData() {
+export default function TransactionWithData() {
   return (
     <ClientOnly>
       {() => (
@@ -16,13 +18,12 @@ export default function TransactionNoData() {
 
           <TransactionNavbar />
 
-          <AddDataDialog />
+          <div className="flex gap-4">
+            <AddDataDialog />
+            <TransactionConfig />
+          </div>
 
-          <main className="bg-white p-4 rounded-md mt-4">
-            <p className="text-center font-ubuntu font-bold">
-              Belum ada transaksi. Ayo tambahkan!
-            </p>
-          </main>
+          <TransactionData />
         </MainWrapper>
       )}
     </ClientOnly>
