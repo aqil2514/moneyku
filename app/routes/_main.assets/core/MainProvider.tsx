@@ -1,28 +1,36 @@
-import { createContext, useContext } from "react";
-import MainPage from "../Main";
-import { Accounts, Category } from "~/@types/Assets-Experimental";
-import { Transaction } from "~/@types/Transaction-Experimental";
+import { createContext, useContext, useState } from "react";
+import MainPage from "../Components/Main";
+import { MainAssetContext, SectionState } from "./interface";
 
-interface AssetsProps{
-  accountsData : Accounts[];
-  categoriesData: Category[];
-  transactionsData :Transaction[];
-}
+const AssetContext = createContext<MainAssetContext>({} as MainAssetContext);
 
-interface AssetsContextState extends AssetsProps {}
+export default function AssetsProvider({
+  accountsData,
+  transactionsData,
+  categoriesData,
+}: Pick<
+  MainAssetContext,
+  "accountsData" | "categoriesData" | "transactionsData"
+>) {
+  const [section, setSection] = useState<SectionState>("asset");
+  const [isHiding, setIsHiding] = useState<boolean>(false);
 
-const AssetContext = createContext<AssetsContextState>(
-  {} as AssetsContextState
-);
-
-export default function AssetsProvider({ accountsData, transactionsData, categoriesData }: AssetsProps) {
+  const value: MainAssetContext = {
+    accountsData,
+    categoriesData,
+    isHiding,
+    section,
+    setIsHiding,
+    setSection,
+    transactionsData,
+  };
   return (
-    <AssetContext.Provider value={{ accountsData, transactionsData, categoriesData }}>
+    <AssetContext.Provider value={value}>
       <MainPage />
     </AssetContext.Provider>
   );
 }
 
-export function useAssetData(){
-    return useContext(AssetContext);
+export function useAssetData() {
+  return useContext(AssetContext);
 }

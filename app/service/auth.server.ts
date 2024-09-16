@@ -3,7 +3,7 @@ import { sessionStore } from "./session.server";
 import { FormStrategy } from "remix-auth-form";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
-import { AccountUser } from "~/@types/Account";
+import { AccountUser } from "~/@types/Auth";
 import { BasicHTTPResponse } from "~/@types/General";
 import { makeHttpResponse } from "utils/server/http";
 import clientEndpoint from "lib/client-endpoint";

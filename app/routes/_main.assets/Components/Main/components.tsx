@@ -1,8 +1,7 @@
-import { ButtonHeaderProps, SectionState } from "./interface";
+import { ButtonHeaderProps, SectionState } from "../../Core/interface";
 import { FaEye, FaEyeSlash, FaLayerGroup, FaMoneyBill } from "react-icons/fa";
-import { useMainAssetData } from "./MainProvider";
 import { ScrollArea } from "components/ui/scroll-area";
-import { useAssetData } from "../core/MainProvider";
+import { useAssetData } from "../../Core/MainProvider";
 import React, { useEffect, useState } from "react";
 import { Accounts, Category } from "~/@types/Assets-Experimental";
 import { useSearchParams } from "@remix-run/react";
@@ -62,7 +61,7 @@ const AccountIcon: React.FC<{ account: Accounts | Category }> = ({
 };
 
 const AssetList: React.FC<{ account: Accounts }> = ({ account }) => {
-  const { isHiding } = useMainAssetData();
+  const { isHiding } = useAssetData();
   return (
     <div
       key={account.account_id}
@@ -85,7 +84,7 @@ const AssetList: React.FC<{ account: Accounts }> = ({ account }) => {
 };
 
 export const MainBody = () => {
-  const { section, setSection, isHiding, setIsHiding } = useMainAssetData();
+  const { section, setSection, isHiding, setIsHiding } = useAssetData();
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -160,7 +159,7 @@ const MainBody_Category = () => {
 };
 
 export const MainHeader = () => {
-  const { section, setSection } = useMainAssetData();
+  const { section, setSection } = useAssetData();
   const sectionMapped: Record<SectionState, string> = {
     asset: "Asset",
     category: "Kategori Aset",

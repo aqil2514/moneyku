@@ -1,4 +1,4 @@
-import { AccountConfig, AccountUser } from "~/@types/Account";
+import { AccountConfig, AccountUser } from "~/@types/Auth";
 
 
 interface ProfileDataArray {

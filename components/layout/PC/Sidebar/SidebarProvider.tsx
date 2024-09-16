@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { AccountUser } from "~/@types/Account";
+import { AccountUser } from "~/@types/Auth";
 
 interface SidebarProviderProps {
   user: AccountUser | null;

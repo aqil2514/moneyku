@@ -1,8 +1,9 @@
 import { Badge } from "components/ui/badge";
-import { DialogDescription, DialogTitle } from "components/ui/dialog";
+import { DialogTitle } from "components/ui/dialog";
 import { formatDate } from "utils";
 import { Accounts } from "~/@types/Assets-Experimental";
-import { useAssetData } from "../core/MainProvider";
+import { useAssetData } from "../../Core/MainProvider";
+import { HeaderAsset } from "./components";
 
 export default function AssetDetail({ account }: { account: Accounts }) {
     const {transactionsData} = useAssetData();
@@ -10,24 +11,7 @@ export default function AssetDetail({ account }: { account: Accounts }) {
   return (
     <>
       <DialogTitle>
-        <figure className="w-full flex gap-2 items-center">
-          <img
-            src="/images/no-image.png"
-            style={{ backgroundColor: account.color }}
-            alt="Icon aset belum ditambahkan"
-            className="w-16 h-16 rounded-xl"
-          />
-
-          <div>
-            <figcaption
-              style={{ color: account.color }}
-              className="font-playfair-display font-bold"
-            >
-              {account.name}
-            </figcaption>
-            <DialogDescription>{account.description}</DialogDescription>
-          </div>
-        </figure>
+        <HeaderAsset account={account} />
       </DialogTitle>
       {/* Group ditampilkan di sini */}
       <div className="flex gap-2">

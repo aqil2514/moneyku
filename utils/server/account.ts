@@ -1,4 +1,4 @@
-import { AccountUser } from "~/@types/Account";
+import { AccountUser } from "~/@types/Auth";
 import { BasicHTTPResponse } from "~/@types/General";
 import { authenticator } from "~/service/auth.server";
 import { getSession } from "~/service/session.server";

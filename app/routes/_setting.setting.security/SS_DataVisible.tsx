@@ -8,7 +8,7 @@ import Button from "components/Inputs/Button";
 import { useFetcher, useNavigate } from "@remix-run/react";
 import { securityQuestionsData } from "../_auth.signup/data";
 import { CD_SettingSecurityCore } from "~/@types/Setting";
-import { AccountPrivacy } from "~/@types/Account";
+import { AccountPrivacy } from "~/@types/Auth";
 
 interface DataVisibleProps {
   privacy: AccountPrivacy;

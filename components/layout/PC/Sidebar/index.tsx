@@ -1,4 +1,4 @@
-import { AccountUser } from "~/@types/Account";
+import { AccountUser } from "~/@types/Auth";
 import SidebarHeader from "./SidebarHeader";
 import SidebarProvider from "./SidebarProvider";
 import SidebarAccount from "./SidebarAccount";

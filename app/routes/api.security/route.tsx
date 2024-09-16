@@ -5,7 +5,7 @@ import { getDataForm } from "./security-utils";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { BasicHTTPResponse, LoginResult } from "~/@types/General";
-import { AccountDB, AccountUser } from "~/@types/Account";
+import { AccountDB, AccountUser } from "~/@types/Auth";
 import { commitSession, getSession } from "~/service/session.server";
 import { authenticator } from "~/service/auth.server";
 

@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, jsonWithSuccess } from "remix-toast";
-import { AccountUser } from "~/@types/Account";
+import { AccountUser } from "~/@types/Auth";
 import { AccountSecurityProps, CD_SettingSecurityCore } from "~/@types/Setting";
 
 interface SecurityProps {

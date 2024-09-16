@@ -1,4 +1,4 @@
-import { AccountRegister, AccountResponse } from "~/@types/Account";
+import { AccountRegister, AccountResponse } from "~/@types/Auth";
 
 export function getFormData(formData: FormData):AccountRegister{
     const data: AccountRegister = {

@@ -1,28 +1,20 @@
-import { FetcherWithComponents } from "@remix-run/react";
 import React from "react";
-import { AssetsData } from "~/@types/Assets";
+import { Accounts, Category } from "~/@types/Assets-Experimental";
+import { Transaction } from "~/@types/Transaction-Experimental";
 
-export type DeleteOption = "delete-transaction" | "move-transaction" | "";
+export type SectionState = "asset" | "category";
 
-export interface AddModeContextProps {
-  selectValue: string;
-  setSelectValue: React.Dispatch<React.SetStateAction<string>>;
-  assetNominal: string;
-  setAssetNominal: React.Dispatch<React.SetStateAction<string>>;
-  fetcher: FetcherWithComponents<unknown>;
+export interface ButtonHeaderProps {
+  section: SectionState;
+  icons: React.ReactNode;
 }
 
-export interface DeleteModeContextProps {
-  data: AssetsData | undefined;
-  deleteOption: DeleteOption;
-  setDeleteOption: React.Dispatch<React.SetStateAction<DeleteOption>>;
-  assetName: string;
-  setAssetName: React.Dispatch<React.SetStateAction<string>>;
-  fetcher: AddModeContextProps["fetcher"];
-}
-
-export interface EditModeContextProps extends AddModeContextProps {
-  data: AssetsData | undefined;
-  selectValue: string;
-  setSelectValue: React.Dispatch<React.SetStateAction<string>>;
+export interface MainAssetContext {
+  section: SectionState;
+  setSection: React.Dispatch<React.SetStateAction<SectionState>>;
+  isHiding: boolean;
+  setIsHiding: React.Dispatch<React.SetStateAction<boolean>>;
+  accountsData : Accounts[];
+  categoriesData: Category[];
+  transactionsData :Transaction[];
 }

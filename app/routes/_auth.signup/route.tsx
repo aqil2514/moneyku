@@ -8,7 +8,7 @@ import { Form, useActionData } from "@remix-run/react";
 import axios, { isAxiosError } from "axios";
 import { endpoint } from "lib/server";
 import { jsonWithError, redirectWithSuccess } from "remix-toast";
-import { AccountResponse } from "~/@types/Account";
+import { AccountResponse } from "~/@types/Auth";
 import { authenticator } from "~/service/auth.server";
 import Button from "components/Inputs/Button";
 import { getErrors, getFormData } from "./utils";
