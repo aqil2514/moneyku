@@ -14,3 +14,9 @@ export interface TransactionContextType {
     data: GeneralDataResponse;
   }
   
+
+  export interface DetailTransactionProps {
+    amount: number;
+    text: string;
+    color: "green" | "red" | "black";
+  }

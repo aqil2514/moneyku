@@ -1,9 +1,7 @@
 import React from "react";
 import {
   Transaction,
-  TypeTransaction,
 } from "~/@types/Transaction-Experimental";
-import { useTransactionData } from "../../Core/MainProvider";
 import { currencyFormat, dateFormat } from "utils/general";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -24,9 +22,19 @@ import Button from "components/Inputs/Button";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CiEdit, CiSettings } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "components/ui/sheet";
 import { RadioGroup, RadioGroupItem } from "components/ui/radio-group";
 import { Label } from "components/ui/label";
+import { Logic_Amount, Logic_HeaderDate, Logic_TransactionData, Logic_TransactionDataBody, Logic_TransactionDetail } from "./logics";
 
 dayjs.extend(localizedFormat);
 dayjs.locale("id");
@@ -46,12 +54,8 @@ const DetailRow: React.FC<{ label: string; value: string }> = ({
 };
 
 const HeaderDate: React.FC<{ data: Transaction }> = ({ data }) => {
-  const date = dayjs(data.transaction_at);
+  const { dayDate, dayMonth, dayName, dayYear } = Logic_HeaderDate(data);
 
-  const dayName = date.format("dddd");
-  const dayDate = date.format("DD");
-  const dayMonth = date.format("MM");
-  const dayYear = date.format("YYYY");
   return (
     <div className="flex gap-2 items-center">
       <p>{dayDate}</p>
@@ -64,7 +68,7 @@ const HeaderDate: React.FC<{ data: Transaction }> = ({ data }) => {
 };
 
 const HeaderIncome: React.FC<{ data: Transaction }> = ({ data }) => {
-  const amount = data.type_transaction === "Income" ? data.nominal.amount : 0;
+  const { amount } = Logic_Amount(data, "Income");
 
   return (
     <div className="text-blue-600 font-bold font-poppins">
@@ -74,7 +78,7 @@ const HeaderIncome: React.FC<{ data: Transaction }> = ({ data }) => {
 };
 
 const HeaderOutcome: React.FC<{ data: Transaction }> = ({ data }) => {
-  const amount = data.type_transaction === "Outcome" ? data.nominal.amount : 0;
+  const { amount } = Logic_Amount(data, "Outcome");
 
   return (
     <div className="text-red-600 font-bold font-poppins">
@@ -84,13 +88,8 @@ const HeaderOutcome: React.FC<{ data: Transaction }> = ({ data }) => {
 };
 
 const TransactionDetail: React.FC<{ data: Transaction }> = ({ data }) => {
-  const { data: generalData } = useTransactionData();
-  const assetName = generalData.accounts.find(
-    (account) => account.account_id === data.nominal.account_id
-  )?.name;
-  const categoryName = generalData.categories.find(
-    (category) => category.category_id === data.category_id
-  )?.name;
+  const { assetName, categoryName } = Logic_TransactionDetail(data);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -167,50 +166,46 @@ const TransactionDetail: React.FC<{ data: Transaction }> = ({ data }) => {
 
 // <<<<< Exports Components >>>>>
 
-export const TransactionConfig:React.FC = () => {
-    return (
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button color="info" className="flex gap-1 items-center">
-            <CiSettings />
-            <p>Konfigurasi</p>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="h-1/2">
-          <SheetHeader>
-            <SheetTitle>Pengaturan Transaksi</SheetTitle>
-            <SheetDescription>
-              Ubah pengaturan bagaimana data akan ditampilkan.
-            </SheetDescription>
-          </SheetHeader>
-          <div>
-            <h3>Urutkan data berdasatkan</h3>
-            <RadioGroup defaultValue="filter-all">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="filter-all" id="filter-all" />
-                <Label htmlFor="filter-all">Tampilkan semua</Label>
-              </div>
-            </RadioGroup>
-            Lanjutin nanti. Tampilin data aja dulu
-          </div>
-          <SheetFooter> 
-            <SheetClose asChild>
-              <Button color="success" type="submit">Terapkan perubahan</Button>
-            </SheetClose>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
-    );
-  }
-  
+export const TransactionConfig: React.FC = () => {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button color="info" className="flex gap-1 items-center">
+          <CiSettings />
+          <p>Konfigurasi</p>
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="bottom" className="h-1/2">
+        <SheetHeader>
+          <SheetTitle>Pengaturan Transaksi</SheetTitle>
+          <SheetDescription>
+            Ubah pengaturan bagaimana data akan ditampilkan.
+          </SheetDescription>
+        </SheetHeader>
+        <div>
+          <h3>Urutkan data berdasatkan</h3>
+          <RadioGroup defaultValue="filter-all">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="filter-all" id="filter-all" />
+              <Label htmlFor="filter-all">Tampilkan semua</Label>
+            </div>
+          </RadioGroup>
+          Lanjutin nanti. Tampilin data aja dulu
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button color="success" type="submit">
+              Terapkan perubahan
+            </Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+};
 
 export const TransactionData: React.FC = () => {
-  const { data } = useTransactionData();
-  const sortedData = data.transaction.sort((a, b) => {
-    const dateA = dayjs(a.transaction_at);
-    const dateB = dayjs(b.transaction_at);
-    return dateA.diff(dateB);
-  });
+  const { sortedData } = Logic_TransactionData();
 
   return (
     <ScrollArea className="w-full h-[480px] rounded-md mt-4">
@@ -240,19 +235,8 @@ export const TransactionDataHeader: React.FC<{ data: Transaction }> = ({
 export const TransactionDataBody: React.FC<{ data: Transaction }> = ({
   data,
 }) => {
-  const { data: generalData } = useTransactionData();
-  const assetName = generalData.accounts.find(
-    (account) => account.account_id === data.nominal.account_id
-  )?.name;
-  const categoryName = generalData.categories.find(
-    (category) => category.category_id === data.category_id
-  )?.name;
+  const { assetName, categoryName, colorMap } = Logic_TransactionDataBody(data);
 
-  const colorMap: Record<TypeTransaction, string> = {
-    Income: "text-blue-500",
-    Outcome: "text-red-500",
-    Transfer: "text-black",
-  };
   return (
     <div className="grid grid-cols-3">
       <div className="font-poppins font-semibold flex items-center">

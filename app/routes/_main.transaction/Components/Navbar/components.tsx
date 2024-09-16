@@ -1,9 +1,5 @@
 import { currencyFormat } from "utils/general";
-interface DetailTransactionProps {
-  amount: number;
-  text: string;
-  color: "green" | "red" | "black";
-}
+import { DetailTransactionProps } from "../../Core/interface";
 
 export function SummaryTransaction({
   amount,
