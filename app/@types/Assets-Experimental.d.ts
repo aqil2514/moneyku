@@ -8,7 +8,7 @@ export interface Accounts{
     /** Jenis mata uang pada akun ini */
     currency: string;
     /** Sumber icon dari akun ini */
-    icon: string | URL;
+    icon: string;
     /** Warna dari akun ini */
     color: `#${string}`;
     /** Deskripsi akun ini */

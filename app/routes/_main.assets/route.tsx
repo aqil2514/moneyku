@@ -27,7 +27,7 @@ export default function AssetsPromise() {
 
   return (
     <Suspense fallback={<AssetsSkeleton />}>
-      <Await errorElement={<p>Terjadi kesalahan</p>} resolve={data}>
+      <Await resolve={data}>
         {(data) => (
           <AssetsProvider
             accountsData={data.data!.accounts}

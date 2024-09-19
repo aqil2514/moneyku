@@ -89,16 +89,33 @@ export const MainBody = () => {
 
   useEffect(() => {
     const sectionParam = searchParams.get("section") as SectionState;
+    const hideAmountParam = searchParams.get("hideAmount");
+
+    // Membuat instans baru dari URLSearchParams
+    const newSearchParam = new URLSearchParams(searchParams);
+
+    // Logika default search param section
     if (
       sectionParam &&
       (sectionParam === "asset" || sectionParam === "category")
     ) {
       setSection(sectionParam);
     } else {
-      setSearchParams({ section: "asset" }, { replace: true });
+      newSearchParam.set("section", "asset");
       setSection("asset");
     }
-  }, [searchParams, setSection, setSearchParams]);
+
+    // Logika default search param hideAmount
+    if (hideAmountParam === "true") {
+      setIsHiding(true);
+    } else {
+      newSearchParam.set("hideAmount", "false");
+      setIsHiding(false);
+    }
+
+    // Mengupdate URL hanya sekali setelah kedua parameter sudah di-set
+    setSearchParams(newSearchParam, { replace: true });
+  }, [searchParams, setSection, setSearchParams, setIsHiding]);
 
   return (
     <ScrollArea className="h-3/4 w-full p-2">
@@ -107,7 +124,19 @@ export const MainBody = () => {
           <Button
             color="info"
             startIcon={isHiding ? <FaEyeSlash /> : <FaEye />}
-            onClick={() => setIsHiding(!isHiding)}
+            onClick={() => {
+              const newSearchParam = new URLSearchParams(searchParams);
+
+              if (!isHiding) {
+                setIsHiding(true);
+                newSearchParam.set("hideAmount", "true");
+              } else {
+                setIsHiding(false);
+                newSearchParam.set("hideAmount", "false");
+              }
+
+              setSearchParams(newSearchParam, { replace: true });
+            }}
           >
             {isHiding ? "Tampilkan" : "Sembunyikan"}
           </Button>
@@ -121,22 +150,45 @@ export const MainBody = () => {
 
 const MainBody_Asset = () => {
   const { accountsData } = useAssetData();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Handler untuk menangani pembukaan dialog dan mengatur account-id di URL
+  const openHandler = (account_id: Accounts["account_id"]) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("account-id", account_id);
+    setSearchParams(newSearchParams, { replace: true });
+  };
+
+  // Handler untuk menutup dialog dan menghapus account-id dari URL
+  const closeHandler = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete("account-id");
+    setSearchParams(newSearchParams, { replace: true });
+  };
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      {accountsData.map((account) => (
-        <Dialog key={account.account_id}>
+      {accountsData.map((account) => 
+      // Next akalin ini. Kepeningan UX
+      (
+        <Dialog
+          key={account.account_id}
+          onOpenChange={(isOpen) =>
+            isOpen ? openHandler(account.account_id) : closeHandler()
+          }
+        >
           <DialogTrigger>
             <AssetList account={account} />
           </DialogTrigger>
-          <DialogContent>
-          <AssetDetail account={account} />
+          <DialogContent className="max-w-[1024px]">
+            <AssetDetail account={account} />
           </DialogContent>
         </Dialog>
       ))}
     </div>
   );
 };
+
 
 const MainBody_Category = () => {
   const { categoriesData } = useAssetData();
