@@ -1,18 +1,84 @@
 import { DialogDescription } from "components/ui/dialog";
 import React from "react";
 import { Accounts } from "~/@types/Assets-Experimental";
-import { Logic_HeaderAssetDetail } from "./logics";
 import { Badge } from "components/ui/badge";
 import { formatDate } from "utils";
+import { useHeader } from "./logics";
+import Button from "components/Inputs/Button";
+import { BiEdit, BiTrash } from "react-icons/bi";
+import { MdCancel } from "react-icons/md";
+import { TransactionDataHeader } from "~/routes/_main.transaction/Components/TransactionWithData/components";
+import { ScrollArea } from "components/ui/scroll-area";
+import { useAssetData } from "../../Core/MainProvider";
+import { currencyFormat } from "utils/general";
+import { useAssetDetailData } from "../../Providers/AssetDetailProvider";
+
+export const DetailBodyFormEdit: React.FC<{ account: Accounts }> = ({
+  account,
+}) => {
+  return (
+    <ScrollArea className="max-h-[300px] h-[300px] animate-slide-left">
+      {/* Komponen Form Edit Data */}
+      <p>{account.name}</p>
+    </ScrollArea>
+  );
+};
+
+export const DetailBodyTransactions: React.FC<{ account: Accounts }> = ({
+  account,
+}) => {
+  const { transactionsData, categoriesData } = useAssetData();
+
+  const transactions = transactionsData.filter(
+    (transaction) => transaction.nominal.account_id === account.account_id
+  );
+
+  return (
+    <ScrollArea className="max-h-[300px] h-[300px] animate-slide-left">
+      <div className="flex flex-col gap-4">
+        {transactions.length === 0 ? (
+          <p className="text-center font-playfair-display font-semibold">
+            Belum ada transaksi pada aset {account.name}
+          </p>
+        ) : (
+          transactions.map((d) => {
+            const categoryName = categoriesData.find(
+              (category) => category.category_id === d.category_id
+            )?.name;
+
+            return (
+              <div key={d.id}>
+                <TransactionDataHeader data={d} />
+                <div className="flex justify-between">
+                  <p>{categoryName}</p>
+                  <p>{d.name_transaction}</p>
+                  <p>{currencyFormat.format(d.nominal.amount)}</p>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </ScrollArea>
+  );
+};
+
+export const DetailBody: React.FC<{ account: Accounts }> = ({ account }) => {
+  const { isEditing } = useAssetDetailData();
+  if (isEditing) return <DetailBodyFormEdit account={account} />;
+
+  return <DetailBodyTransactions account={account} />;
+};
 
 export const Header: React.FC<{ account: Accounts }> = ({ account }) => {
-  const { imageUrl, setImageUrl } = Logic_HeaderAssetDetail();
+  const { imageUrl, handleImageError, handleEditClick, isEditing } =
+    useHeader();
 
   return (
     <figure className="w-full flex gap-2 items-center">
       <img
         src={imageUrl}
-        onError={() => setImageUrl("/images/no-image.png")}
+        onError={handleImageError}
         style={{ backgroundColor: account.color }}
         alt="Icon aset belum ditambahkan"
         className="w-16 h-16 rounded-xl"
@@ -21,9 +87,17 @@ export const Header: React.FC<{ account: Accounts }> = ({ account }) => {
       <div>
         <figcaption
           style={{ color: account.color }}
-          className="font-playfair-display font-bold"
+          className="font-playfair-display font-bold flex gap-4 items-center"
         >
           {account.name}
+          <span className="flex gap-2">
+            <Button color="info" onClick={handleEditClick}>
+              {isEditing ? <MdCancel /> : <BiEdit />}
+            </Button>
+            <Button color="error">
+              <BiTrash />
+            </Button>
+          </span>
         </figcaption>
         <DialogDescription>{account.description}</DialogDescription>
       </div>

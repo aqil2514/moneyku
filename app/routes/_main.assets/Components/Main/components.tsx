@@ -2,13 +2,18 @@ import { ButtonHeaderProps, SectionState } from "../../Core/interface";
 import { FaEye, FaEyeSlash, FaLayerGroup, FaMoneyBill } from "react-icons/fa";
 import { ScrollArea } from "components/ui/scroll-area";
 import { useAssetData } from "../../Core/MainProvider";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Accounts, Category } from "~/@types/Assets-Experimental";
-import { useSearchParams } from "@remix-run/react";
 import { currencyFormat } from "utils/general";
 import Button from "components/Inputs/Button";
 import { Dialog, DialogContent, DialogTrigger } from "components/ui/dialog";
 import AssetDetail from "../Detail";
+import {
+  useAccountIcon,
+  useMainBody,
+  useMainBody_Asset,
+  useMainHeader,
+} from "./logics";
 
 const buttonLabels: ButtonHeaderProps[] = [
   {
@@ -24,16 +29,9 @@ const buttonLabels: ButtonHeaderProps[] = [
 const AccountIcon: React.FC<{ account: Accounts | Category }> = ({
   account,
 }) => {
-  const [isImageValid, setIsImageValid] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (typeof account.icon === "string") {
-      const img = new Image();
-      img.src = account.icon;
-      img.onload = () => setIsImageValid(true);
-      img.onerror = () => setIsImageValid(false);
-    }
-  }, [account.icon]);
+  const { isImageValid, setIsImageValid } = useAccountIcon(
+    typeof account.icon === "string" ? account.icon : undefined
+  );
 
   return (
     <div
@@ -84,38 +82,8 @@ const AssetList: React.FC<{ account: Accounts }> = ({ account }) => {
 };
 
 export const MainBody = () => {
-  const { section, setSection, isHiding, setIsHiding } = useAssetData();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    const sectionParam = searchParams.get("section") as SectionState;
-    const hideAmountParam = searchParams.get("hideAmount");
-
-    // Membuat instans baru dari URLSearchParams
-    const newSearchParam = new URLSearchParams(searchParams);
-
-    // Logika default search param section
-    if (
-      sectionParam &&
-      (sectionParam === "asset" || sectionParam === "category")
-    ) {
-      setSection(sectionParam);
-    } else {
-      newSearchParam.set("section", "asset");
-      setSection("asset");
-    }
-
-    // Logika default search param hideAmount
-    if (hideAmountParam === "true") {
-      setIsHiding(true);
-    } else {
-      newSearchParam.set("hideAmount", "false");
-      setIsHiding(false);
-    }
-
-    // Mengupdate URL hanya sekali setelah kedua parameter sudah di-set
-    setSearchParams(newSearchParam, { replace: true });
-  }, [searchParams, setSection, setSearchParams, setIsHiding]);
+  const { isHiding, section, searchParams, setIsHiding, setSearchParams } =
+    useMainBody();
 
   return (
     <ScrollArea className="h-3/4 w-full p-2">
@@ -149,30 +117,16 @@ export const MainBody = () => {
 };
 
 const MainBody_Asset = () => {
-  const { accountsData } = useAssetData();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  // Handler untuk menangani pembukaan dialog dan mengatur account-id di URL
-  const openHandler = (account_id: Accounts["account_id"]) => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("account-id", account_id);
-    setSearchParams(newSearchParams, { replace: true });
-  };
-
-  // Handler untuk menutup dialog dan menghapus account-id dari URL
-  const closeHandler = () => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.delete("account-id");
-    setSearchParams(newSearchParams, { replace: true });
-  };
+  const { accountsData, openAccountId, closeHandler, openHandler } =
+    useMainBody_Asset();
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      {accountsData.map((account) => 
-      // Next akalin ini. Kepeningan UX
-      (
+      {accountsData.map((account) => (
+        // Next akalin ini. Kepeningan UX. Periksa search param. Apabila search param nilainya sama dengan account_id, default open yang itu
         <Dialog
           key={account.account_id}
+          open={openAccountId === account.account_id}
           onOpenChange={(isOpen) =>
             isOpen ? openHandler(account.account_id) : closeHandler()
           }
@@ -188,7 +142,6 @@ const MainBody_Asset = () => {
     </div>
   );
 };
-
 
 const MainBody_Category = () => {
   const { categoriesData } = useAssetData();
@@ -211,14 +164,8 @@ const MainBody_Category = () => {
 };
 
 export const MainHeader = () => {
-  const { section, setSection } = useAssetData();
-  const sectionMapped: Record<SectionState, string> = {
-    asset: "Asset",
-    category: "Kategori Aset",
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { section, sectionMapped, setSection, setSearchParams } =
+    useMainHeader();
 
   return (
     <div className="border-blue-700 border-b-8 border-double py-2 grid grid-cols-[30%_auto]">

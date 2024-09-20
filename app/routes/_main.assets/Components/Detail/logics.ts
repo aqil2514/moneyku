@@ -1,7 +1,16 @@
 import { useState } from "react";
+import { useAssetDetailData } from "../../Providers/AssetDetailProvider";
 
-export const Logic_HeaderAssetDetail = () => {
+export const useHeader = () => {
+  const {isEditing, setIsEditing} = useAssetDetailData()
   const [imageUrl, setImageUrl] = useState<string>("");
 
-  return { imageUrl, setImageUrl };
+  const handleImageError = () => {
+    setImageUrl("/images/no-image.png")
+  }
+
+  const handleEditClick = () => {
+      setIsEditing(!isEditing);
+  }
+  return { imageUrl, handleImageError, isEditing, handleEditClick };
 };
