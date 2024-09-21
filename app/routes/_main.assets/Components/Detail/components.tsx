@@ -3,7 +3,7 @@ import React from "react";
 import { Accounts } from "~/@types/Assets-Experimental";
 import { Badge } from "components/ui/badge";
 import { formatDate } from "utils";
-import { useHeader } from "./logics";
+import { useDetailBodyFormEdit, useHeader } from "./logics";
 import Button from "components/Inputs/Button";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
@@ -12,15 +12,78 @@ import { ScrollArea } from "components/ui/scroll-area";
 import { useAssetData } from "../../Core/MainProvider";
 import { currencyFormat } from "utils/general";
 import { useAssetDetailData } from "../../Providers/AssetDetailProvider";
+import { Label } from "components/ui/label";
+import { Input } from "components/ui/input";
 
 export const DetailBodyFormEdit: React.FC<{ account: Accounts }> = ({
   account,
 }) => {
+  const { fetcher } = useDetailBodyFormEdit();
   return (
     <ScrollArea className="max-h-[300px] h-[300px] animate-slide-left">
-      {/* Komponen Form Edit Data */}
-      <p>{account.name}</p>
+      <h3 className="text-center font-ubuntu text-xl font-bold underline">
+        Edit Asset {account.name}
+      </h3>
+      <fetcher.Form className="flex flex-col gap-4">
+      <DBFE_GeneralInput account={account} fieldKey="created_at" disabled />
+
+        <DBFE_GeneralInput
+          account={account}
+          fieldKey="account_id"
+          type="hidden"
+        />
+        <DBFE_GeneralInput account={account} fieldKey="name" />
+        {/* Group modifikasi lagi */}
+        <DBFE_GeneralInput account={account} fieldKey="group" />
+        {/* Number modifikasi lagi */}
+        <DBFE_GeneralInput account={account} fieldKey="amount" type="number" />
+        {/* Color modifikasi lagi */}
+        <DBFE_GeneralInput account={account} fieldKey="color" />
+        {/* Currency modifikasi lagi */}
+        <DBFE_GeneralInput account={account} fieldKey="currency" />
+        {/* Icon modifikasi lagi */}
+        <DBFE_GeneralInput account={account} fieldKey="icon" />
+        <DBFE_GeneralInput account={account} fieldKey="description" />
+      </fetcher.Form>
     </ScrollArea>
+  );
+};
+
+const DBFE_GeneralInput: React.FC<{
+  account: Accounts;
+  fieldKey: keyof Accounts;
+  type?: React.HTMLInputTypeAttribute;
+  disabled?: boolean;
+}> = ({ account, fieldKey, type = "text", disabled }) => {
+  const labelMap: Record<keyof Accounts, string> = {
+    account_id: "",
+    amount: "Jumlah Aset",
+    color: "Warna Aset",
+    created_at: "Aset Dibuat Pada",
+    currency: "Mata Uang Aset",
+    description: "Deskripsi",
+    group: "Kategori Aset",
+    icon: "Icon Aset",
+    name: "Nama Aset",
+  };
+
+  const dateValue = formatDate(account.created_at);
+
+  return (
+    <div id={`container-${fieldKey}`} className="flex flex-col gap-2 px-4">
+      <Label htmlFor={fieldKey} className="font-poppins font-semibold">
+        {labelMap[fieldKey]}
+      </Label>
+      <Input
+        defaultValue={fieldKey === "created_at" ? dateValue : account[fieldKey]}
+        type={type}
+        required
+        name={fieldKey}
+        id={fieldKey}
+        placeholder={`Masukkan ${fieldKey} aset`}
+        disabled={disabled}
+      />
+    </div>
   );
 };
 

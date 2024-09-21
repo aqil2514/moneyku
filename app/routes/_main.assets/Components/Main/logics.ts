@@ -1,5 +1,5 @@
 import { useSearchParams } from "@remix-run/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAssetData } from "../../Core/MainProvider";
 import { SectionState } from "../../Core/interface";
 import { Accounts } from "~/@types/Assets-Experimental";
@@ -68,37 +68,65 @@ export const useMainBody_Asset = () => {
   const [openAccountId, setOpenAccountId] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const isValidAccountId = useCallback(
-    (account_id: string) => {
-      return accountsData.some((account) => account_id === account.account_id);
+  // Optimalisasi untuk mengecek validitas account_id dengan useMemo
+const isValidAccountId = useMemo(
+  () => (account_id: string) => {
+    return accountsData.some((account) => account_id === account.account_id);
+  },
+  [accountsData]
+);
+
+// Mengatur efek untuk mendeteksi perubahan account-id pada URL
+useEffect(() => {
+  const accountIdParam = searchParams.get("account-id");
+  
+  if (accountIdParam && isValidAccountId(accountIdParam)) {
+    setOpenAccountId(accountIdParam);
+  } else if (accountIdParam && !isValidAccountId(accountIdParam)) {
+    setOpenAccountId(null);
+    
+    // Hapus parameter "account-id" dari URL
+    setSearchParams((prevParam) => {
+      const newSearchParams = new URLSearchParams(prevParam);
+      newSearchParams.delete("account-id");
+      return newSearchParams;
+    }, { replace: true }); // Opsi replace true untuk menggantikan URL yang ada
+  }
+
+}, [searchParams, isValidAccountId, setSearchParams]);
+
+  // Handler untuk membuka dialog dan mengatur account-id di URL
+
+  const openHandler = useCallback(
+    (account_id: Accounts["account_id"]) => {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("account-id", account_id);
+      newSearchParams.set("action", "read");
+  
+      // Atur search params dan tunggu hingga URL diperbarui
+      setSearchParams(newSearchParams, { replace: true });
+  
+      // Gunakan useEffect untuk memantau pembaruan searchParams
+      setTimeout(() => {
+        setOpenAccountId(account_id);
+      }, 0); // Memastikan setOpenAccountId terjadi setelah URL di-update
     },
-    [accountsData]
+    [setSearchParams, searchParams]
   );
 
-  useEffect(() => {
-    const accountIdParam = searchParams.get("account-id");
-    if (accountIdParam && isValidAccountId(accountIdParam)) {
-      setOpenAccountId(accountIdParam);
-    } else {
-      setOpenAccountId(null);
-    }
-  }, [searchParams, isValidAccountId]);
-
-  // Handler untuk menangani pembukaan dialog dan mengatur account-id di URL
-  const openHandler = (account_id: Accounts["account_id"]) => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("account-id", account_id);
-    setSearchParams(newSearchParams, { replace: true });
-    setOpenAccountId(account_id);
-  };
-
   // Handler untuk menutup dialog dan menghapus account-id dari URL
-  const closeHandler = () => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.delete("account-id");
-    setSearchParams(newSearchParams, { replace: true });
+  const closeHandler = useCallback(() => {
+    setSearchParams(
+      (prevParams) => {
+        const newSearchParams = new URLSearchParams(prevParams);
+        newSearchParams.delete("account-id");
+        newSearchParams.delete("action");
+        return newSearchParams;
+      },
+      { replace: true }
+    );
     setOpenAccountId(null);
-  };
+  }, [setSearchParams]);
 
   return {
     accountsData,
