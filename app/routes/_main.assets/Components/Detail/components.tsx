@@ -3,7 +3,12 @@ import React from "react";
 import { Accounts } from "~/@types/Assets-Experimental";
 import { Badge } from "components/ui/badge";
 import { formatDate } from "utils";
-import { useDetailBodyFormEdit, useHeader } from "./logics";
+import {
+  useDBFE_AmountInput,
+  useDBFE_ColorInput,
+  useDetailBodyFormEdit,
+  useHeader,
+} from "./logics";
 import Button from "components/Inputs/Button";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import { MdCancel } from "react-icons/md";
@@ -14,18 +19,30 @@ import { currencyFormat } from "utils/general";
 import { useAssetDetailData } from "../../Providers/AssetDetailProvider";
 import { Label } from "components/ui/label";
 import { Input } from "components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "components/ui/select";
+import { defaultGroups } from "lib/default-db/accounts";
+import { GeneralInputComponents } from "./interface";
+import { HexColorPicker } from "react-colorful";
 
 export const DetailBodyFormEdit: React.FC<{ account: Accounts }> = ({
   account,
 }) => {
   const { fetcher } = useDetailBodyFormEdit();
   return (
-    <ScrollArea className="max-h-[300px] h-[300px] animate-slide-left">
+    <ScrollArea className="max-h-[450px] animate-slide-left">
       <h3 className="text-center font-ubuntu text-xl font-bold underline">
         Edit Asset {account.name}
       </h3>
       <fetcher.Form className="flex flex-col gap-4">
-      <DBFE_GeneralInput account={account} fieldKey="created_at" disabled />
+        <DBFE_GeneralInput account={account} fieldKey="created_at" disabled />
 
         <DBFE_GeneralInput
           account={account}
@@ -33,11 +50,8 @@ export const DetailBodyFormEdit: React.FC<{ account: Accounts }> = ({
           type="hidden"
         />
         <DBFE_GeneralInput account={account} fieldKey="name" />
-        {/* Group modifikasi lagi */}
         <DBFE_GeneralInput account={account} fieldKey="group" />
-        {/* Number modifikasi lagi */}
         <DBFE_GeneralInput account={account} fieldKey="amount" type="number" />
-        {/* Color modifikasi lagi */}
         <DBFE_GeneralInput account={account} fieldKey="color" />
         {/* Currency modifikasi lagi */}
         <DBFE_GeneralInput account={account} fieldKey="currency" />
@@ -49,12 +63,12 @@ export const DetailBodyFormEdit: React.FC<{ account: Accounts }> = ({
   );
 };
 
-const DBFE_GeneralInput: React.FC<{
-  account: Accounts;
-  fieldKey: keyof Accounts;
-  type?: React.HTMLInputTypeAttribute;
-  disabled?: boolean;
-}> = ({ account, fieldKey, type = "text", disabled }) => {
+const DBFE_GeneralInput: React.FC<GeneralInputComponents> = ({
+  account,
+  fieldKey,
+  type = "text",
+  disabled,
+}) => {
   const labelMap: Record<keyof Accounts, string> = {
     account_id: "",
     amount: "Jumlah Aset",
@@ -68,6 +82,13 @@ const DBFE_GeneralInput: React.FC<{
   };
 
   const dateValue = formatDate(account.created_at);
+
+  if (fieldKey === "group")
+    return <DBFE_GroupSelect account={account} fieldKey={fieldKey} />;
+  else if (fieldKey === "amount")
+    return <DBFE_AmountInput account={account} fieldKey={fieldKey} />;
+  else if (fieldKey === "color")
+    return <DBFE_ColorInput account={account} fieldKey={fieldKey} />;
 
   return (
     <div id={`container-${fieldKey}`} className="flex flex-col gap-2 px-4">
@@ -87,6 +108,99 @@ const DBFE_GeneralInput: React.FC<{
   );
 };
 
+const DBFE_AmountInput: React.FC<
+  Pick<GeneralInputComponents, "account" | "fieldKey">
+> = ({ account, fieldKey }) => {
+  const { value, changeHandler } = useDBFE_AmountInput(
+    String(account[fieldKey])
+  );
+  return (
+    <div id={`container-${fieldKey}`} className="flex flex-col gap-2 px-4">
+      <Label htmlFor={fieldKey} className="font-poppins font-semibold">
+        Jumlah Aset
+      </Label>
+      <Input
+        value={value}
+        onChange={changeHandler}
+        type="text"
+        required
+        name={fieldKey}
+        id={fieldKey}
+        placeholder={`Masukkan ${fieldKey} aset`}
+      />
+    </div>
+  );
+};
+
+const DBFE_GroupSelect: React.FC<
+  Pick<GeneralInputComponents, "account" | "fieldKey">
+> = ({ account, fieldKey }) => {
+  return (
+    <div id={`container-${fieldKey}`} className="flex flex-col gap-2 px-4">
+      <Label htmlFor={fieldKey} className="font-poppins font-semibold">
+        Kategori Aset
+      </Label>
+      <Select name={fieldKey}>
+        <SelectTrigger>
+          <SelectValue placeholder={account[fieldKey]} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Kategori Aset</SelectLabel>
+            {defaultGroups.map((group) => (
+              <SelectItem key={group} value={group}>
+                {group}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+};
+
+const DBFE_ColorInput: React.FC<
+  Pick<GeneralInputComponents, "account" | "fieldKey">
+> = ({ account, fieldKey }) => {
+  const { color, setColor, changeHandler, randomHandler } = useDBFE_ColorInput(
+    account["color"]
+  );
+  return (
+    <div id={`container-${fieldKey}`} className="flex flex-col gap-2 px-4">
+      <Label htmlFor={fieldKey} className="font-poppins font-semibold">
+        Warna Aset
+      </Label>
+      <div className="border rounded-md p-2 grid grid-cols-[25%_auto]">
+        <HexColorPicker color={color} onChange={setColor} />
+        <div className="flex flex-col gap-2 border rounded-sm px-2">
+          <h2 className="font-bold font-playfair-display">Sample</h2>
+          <div className="flex gap-2">
+            <div
+              style={{ backgroundColor: color }}
+              className="w-8 h-8 rounded"
+            />
+            <p style={{ color }} className="font-bold font-poppins my-auto">{account.name}</p>
+          </div>
+          <Input
+            value={color}
+            onChange={changeHandler}
+            type="text"
+            required
+            name={fieldKey}
+            id={fieldKey}
+            placeholder={`Masukkan warna aset`}
+          />
+          <div>
+            <Button color="info" type="button" onClick={randomHandler}>
+              Warna Acak
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const DetailBodyTransactions: React.FC<{ account: Accounts }> = ({
   account,
 }) => {
@@ -97,7 +211,7 @@ export const DetailBodyTransactions: React.FC<{ account: Accounts }> = ({
   );
 
   return (
-    <ScrollArea className="max-h-[300px] h-[300px] animate-slide-left">
+    <ScrollArea className="max-h-[450px] h-[450px] animate-slide-left">
       <div className="flex flex-col gap-4">
         {transactions.length === 0 ? (
           <p className="text-center font-playfair-display font-semibold">

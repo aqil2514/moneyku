@@ -1,0 +1,1 @@
+Direktori ini bertujuan untuk menyimpan data default dari database. Nantinya, inilah yang akan disimpan saat pertamakali client membuat akunnya.
