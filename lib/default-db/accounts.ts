@@ -9,6 +9,11 @@ export const defaultGroups: string[] = [
   "Bisnis",
 ];
 
+export const defaultCurrencies:string[] = [
+  "IDR",
+  "USD"
+]
+
 export const defaultAccounts: Accounts[] = [
   {
     account_id: "acc-001",

@@ -1,3 +1,4 @@
+import React from "react";
 import { Accounts, Category } from "./Assets-Experimental";
 import { Transaction } from "./Transaction-Experimental";
 
@@ -88,6 +89,11 @@ export interface HttpResponseBuilder {
     data: T,
     statusCode?: number
   ) => BasicHTTPResponse<T>;
+}
+
+export interface IconsPicker{
+  name: string;
+  icon: React.ReactNode
 }
 
 export interface LoginResult {

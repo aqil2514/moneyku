@@ -3,6 +3,7 @@ import { useAssetDetailData } from "../../Providers/AssetDetailProvider";
 import { useFetcher, useSearchParams } from "@remix-run/react";
 import { getRandomHexColor, rupiahConvert } from "utils/client/general";
 import { formatCurrency } from "utils/general";
+import { IconType } from "~/@types/Assets-Experimental";
 
 export const useDetailBodyFormEdit = () => {
   const fetcher = useFetcher();
@@ -24,17 +25,32 @@ export const useDBFE_AmountInput = (defaultValue: string) => {
 export const useDBFE_ColorInput = (defaultValue: string) => {
   const [color, setColor] = useState<string>(defaultValue);
 
-  const changeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColor(e.target.value);
-  }
+  };
 
   const randomHandler = () => {
     const color = getRandomHexColor();
 
-    setColor(color)
+    setColor(color);
+  };
+
+  return { color, setColor, changeHandler, randomHandler };
+};
+
+export const useDBFE_IconInput = () => {
+  const [typeIcon, setTypeIcon] = useState<IconType>("default-icon");
+  const [value, setValue] = useState<string>("");
+
+  const changeTypeIcon = (e:React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.currentTarget as HTMLButtonElement;
+    const iconType = target.dataset.typeicon as typeof typeIcon;
+
+    setTypeIcon(iconType);
+    setValue("")
   }
 
-  return {color, setColor, changeHandler, randomHandler};
+  return { value, setValue, typeIcon, changeTypeIcon };
 };
 
 export const useHeader = () => {
