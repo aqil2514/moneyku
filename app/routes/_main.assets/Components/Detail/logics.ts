@@ -8,7 +8,23 @@ import { IconType } from "~/@types/Assets-Experimental";
 export const useDetailBodyFormEdit = () => {
   const fetcher = useFetcher();
 
-  return { fetcher };
+  const lastValidationHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // TODO 25-9 => Buat handler ke halaman review
+    const target = e.currentTarget as HTMLButtonElement;
+    const formElement = target.closest("form");
+
+    if (!formElement) return;
+
+    const form = new FormData(formElement);
+
+    const formData: { [key: string]: FormDataEntryValue } = {};
+
+    form.forEach((value, key) => {
+      formData[key] = value
+    })
+  };
+
+  return { fetcher, lastValidationHandler };
 };
 
 export const useDBFE_AmountInput = (defaultValue: string) => {
@@ -42,13 +58,13 @@ export const useDBFE_IconInput = () => {
   const [typeIcon, setTypeIcon] = useState<IconType>("default-icon");
   const [value, setValue] = useState<string>("");
 
-  const changeTypeIcon = (e:React.MouseEvent<HTMLButtonElement>) => {
+  const changeTypeIcon = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget as HTMLButtonElement;
     const iconType = target.dataset.typeicon as typeof typeIcon;
 
     setTypeIcon(iconType);
-    setValue("")
-  }
+    setValue("");
+  };
 
   return { value, setValue, typeIcon, changeTypeIcon };
 };
@@ -62,7 +78,7 @@ export const useHeader = () => {
   useEffect(() => {
     const actionParam = urlSearchParams.get("action");
 
-    if (actionParam === "read") {
+    if (!actionParam || actionParam === "read") {
       setIsEditing(false);
     } else {
       setIsEditing(true);
@@ -81,7 +97,6 @@ export const useHeader = () => {
         (prevParams) => {
           const updatedSearchParams = new URLSearchParams(prevParams);
 
-          // Ubah nilai action sesuai state `isEditing` yang baru
           if (newIsEditing) {
             updatedSearchParams.set("action", "edit");
           } else {

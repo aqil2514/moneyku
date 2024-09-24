@@ -48,13 +48,22 @@ export const DetailBody: React.FC<{ account: Accounts }> = ({ account }) => {
 export const DetailBodyFormEdit: React.FC<{ account: Accounts }> = ({
   account,
 }) => {
-  const { fetcher } = useDetailBodyFormEdit();
+  const { fetcher, lastValidationHandler } = useDetailBodyFormEdit();
+  const isLoading = fetcher.state !== "idle";
+
+  // TODO 25-9 => Lihat Logics! Kalo dah selesai, buat UI Halaman Review
+  // Referensi UI https://cdn.prod.website-files.com/621d2ed207575c12272d3694/623a173abd927b57ee537b78_61f887cd739d48a0f5658fc8_1*aQBbPVz9OdFqC9KMQS3uJw.jpeg
+
   return (
     <ScrollArea className="max-h-[450px] animate-slide-left">
       <h3 className="text-center font-ubuntu text-xl font-bold underline">
         Edit Asset {account.name}
       </h3>
-      <fetcher.Form className="flex flex-col gap-4 pb-8">
+      <fetcher.Form
+        className="flex flex-col gap-4 pb-8"
+        method="PUT"
+        action="/api/asset/edit"
+      >
         <DBFE_GeneralInput account={account} fieldKey="created_at" disabled />
 
         <DBFE_GeneralInput
@@ -70,7 +79,14 @@ export const DetailBodyFormEdit: React.FC<{ account: Accounts }> = ({
         <DBFE_GeneralInput account={account} fieldKey="icon" />
         <DBFE_GeneralInput account={account} fieldKey="description" />
         <div>
-          <Button color="success">Ubah Data</Button>
+          <Button
+            onClick={lastValidationHandler}
+            color="success"
+            type="button"
+            disabled={isLoading}
+          >
+            {isLoading ? "Mengubah Data..." : "Ubah Data"}
+          </Button>
         </div>
       </fetcher.Form>
     </ScrollArea>
@@ -204,7 +220,7 @@ const DBFE_CurrencySelect: React.FC<
       <Label htmlFor={fieldKey} className="font-poppins font-semibold">
         Mata Uang Aset
       </Label>
-      <Select name={fieldKey}>
+      <Select name={fieldKey} defaultValue={account.currency}>
         <SelectTrigger>
           <SelectValue placeholder={account.currency} />
         </SelectTrigger>
@@ -248,7 +264,7 @@ const DBFE_GroupSelect: React.FC<
       <Label htmlFor={fieldKey} className="font-poppins font-semibold">
         Kategori Aset
       </Label>
-      <Select name={fieldKey}>
+      <Select name={fieldKey} defaultValue={account.group}>
         <SelectTrigger>
           <SelectValue placeholder={account.group} />
         </SelectTrigger>
@@ -284,6 +300,9 @@ const DBFE_IconInput: React.FC<
           type="button"
           variant={typeIcon === "default-icon" ? "outlined" : "contained"}
           data-typeIcon="default-icon"
+          className={
+            typeIcon === "default-icon" ? "cursor-default" : "cursor-pointer"
+          }
           color="primary"
           onClick={changeTypeIcon}
         >
@@ -293,6 +312,7 @@ const DBFE_IconInput: React.FC<
           type="button"
           variant={typeIcon === "url" ? "outlined" : "contained"}
           data-typeIcon="url"
+          className={typeIcon === "url" ? "cursor-default" : "cursor-pointer"}
           color="primary"
           onClick={changeTypeIcon}
         >
@@ -302,6 +322,9 @@ const DBFE_IconInput: React.FC<
           type="button"
           variant={typeIcon === "upload" ? "outlined" : "contained"}
           data-typeIcon="upload"
+          className={
+            typeIcon === "upload" ? "cursor-default" : "cursor-pointer"
+          }
           color="primary"
           onClick={changeTypeIcon}
         >

@@ -123,7 +123,6 @@ const MainBody_Asset = () => {
   return (
     <div className="grid grid-cols-2 gap-4">
       {accountsData.map((account) => (
-        // Next akalin ini. Kepeningan UX. Periksa search param. Apabila search param nilainya sama dengan account_id, default open yang itu
         <Dialog
           key={account.account_id}
           open={openAccountId === account.account_id}
