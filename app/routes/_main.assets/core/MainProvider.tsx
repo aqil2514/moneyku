@@ -14,6 +14,7 @@ export default function AssetsProvider({
 >) {
   const [section, setSection] = useState<SectionState>("asset");
   const [isHiding, setIsHiding] = useState<boolean>(false);
+  // const [page, setPage] = useState<PageSection>("idle")
 
   const value: MainAssetContext = {
     accountsData,
@@ -23,6 +24,8 @@ export default function AssetsProvider({
     setIsHiding,
     setSection,
     transactionsData,
+    // page,
+    // setPage
   };
   return (
     <AssetContext.Provider value={value}>

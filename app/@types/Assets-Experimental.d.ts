@@ -6,7 +6,7 @@ export interface Accounts {
   /** Nama akunnya */
   name: string;
   /** Jumlah nominal uang yang ada di akun ini */
-  amount: number;
+  amount: number | string;
   /** Jenis mata uang pada akun ini */
   currency: string;
   /** Sumber icon dari akun ini */
