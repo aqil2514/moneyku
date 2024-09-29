@@ -1,5 +1,5 @@
 import React from "react";
-import { Accounts } from "~/@types/Assets-Experimental";
+import { FormAccounts } from "~/@types/Assets-Experimental";
 import { useDBFE_Review } from "./logics";
 import Button from "components/Inputs/Button";
 import { DataMap } from "./components";
@@ -7,9 +7,11 @@ import { DataMap } from "./components";
 export default function FormEditReview({
   setReviewPage,
   oldData,
+  isLoading
 }: {
   setReviewPage: React.Dispatch<React.SetStateAction<boolean>>;
-  oldData: Accounts;
+  oldData: FormAccounts;
+  isLoading: boolean;
 }) {
   const { formData, backHandler } = useDBFE_Review(setReviewPage);
 
@@ -22,10 +24,11 @@ export default function FormEditReview({
         </div>
       )}
 
-      <div>
-        <Button color="info" onClick={backHandler}>
+      <div className="flex gap-4">
+        <Button color="info" onClick={backHandler} disabled={isLoading}>
           Kembali
         </Button>
+        <Button color="success" disabled={isLoading}>{isLoading ? "Mengubah Data..." : "Ubah Data"}</Button>
       </div>
     </div>
   );

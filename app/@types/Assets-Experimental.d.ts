@@ -24,6 +24,11 @@ export interface Accounts {
   created_at: string;
 }
 
+export type FormAccounts = Omit<Accounts, "icon"> & {
+  "icon-value": string;
+  "icon-type": IconType;
+};
+
 export interface Category {
   /** ID unik untuk kategori */
   category_id: `trc-${string}`;

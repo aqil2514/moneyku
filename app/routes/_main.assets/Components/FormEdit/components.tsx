@@ -50,11 +50,6 @@ export const DBFE_Edit: React.FC<{
       <DBFEC_GeneralInput account={account} fieldKey="description" />
       <DBFEC_GeneralInput account={account} fieldKey="group" />
       <DBFEC_GeneralInput account={account} fieldKey="icon" />
-      <DBFEC_GeneralInput
-        account={account}
-        fieldKey="created_at"
-        type="hidden"
-      />
       <div>
         <Button
           onClick={setFormData}
@@ -62,7 +57,7 @@ export const DBFE_Edit: React.FC<{
           type="button"
           disabled={isLoading}
         >
-          {isLoading ? "Mengubah Data..." : "Ubah Data"}
+          Pratinjau
         </Button>
       </div>
     </>
@@ -358,7 +353,7 @@ export const DBFEC_IconInputFile: React.FC<{
       // Generate a preview URL for the selected file
       const fileURL = URL.createObjectURL(file);
       setFilePreview(fileURL);
-      setValue(file.name); // Set file name or file path as the value
+      setValue(fileURL); // Set file name or file path as the value
     }
   };
 

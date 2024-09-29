@@ -1,13 +1,14 @@
+import { icons } from "lib/default-general/icons";
 import React from "react";
 import { formatCurrency } from "utils/general";
-import { Accounts } from "~/@types/Assets-Experimental";
+import { FormAccounts } from "~/@types/Assets-Experimental";
 
 export const DataMap: React.FC<{
-  account: Accounts;
+  account: FormAccounts;
   colorScheme: "yellow" | "cyan";
   title: string;
 }> = ({ account, colorScheme, title }) => {
-  const accountMapping: Record<keyof Accounts, string> = {
+  const accountMapping: Record<keyof FormAccounts, string> = {
     account_id: "Id Akun",
     name: "Nama Aset",
     group: "Kategori Aset",
@@ -16,10 +17,13 @@ export const DataMap: React.FC<{
     color: "Warna Aset",
     created_at: "Dibuat Pada",
     description: "Deskripsi Aset",
-    icon: "Icon Aset",
+    "icon-type": "",
+    "icon-value": "Icon Asset",
   };
 
-  const accountKeys = Object.keys(account).filter((key) => key !== "icon-type" && key !== "created_at");
+  const accountKeys = Object.keys(account).filter(
+    (key) => key !== "icon-type" && key !== "created_at"
+  );
 
   return (
     <div
@@ -30,13 +34,31 @@ export const DataMap: React.FC<{
       </h3>
       {accountKeys.map((key) => {
         // Diperlukan untuk memberikan tipe datanya
-        let keyMap = key as keyof Accounts;
-        if (key === "icon-value") keyMap = "icon";
+        const keyMap = key as keyof FormAccounts;
 
         // Diperlukan untuk penyesuain keseragaman data
         account.amount = "Rp. " + formatCurrency(String(account.amount));
 
         // Conditional Rendering
+        if (key === "icon-value") {
+          const accountType = account["icon-type"];
+          const accountValue = account["icon-value"];
+          return (
+            <div key={"icon"} className="flex gap-1 items-center conce">
+              <strong>{accountMapping[keyMap]} : </strong>
+              {accountType === "default-icon" &&
+                icons.find((icon) => icon.name === accountValue)?.icon}
+              {accountType === "url" && (
+                <img src={accountValue} alt={accountValue} className="w-16 h-16 block rounded-md" />
+              )}
+              {accountType === "upload" && (
+                <img src={accountValue} alt={accountValue} className="w-16 h-16 block rounded-md" />
+              )}
+              {!accountValue && <p>Icon belum dipilih</p> }
+            </div>
+          );
+        }
+
         if (key === "color")
           return (
             <div key={"color"} className="flex gap-1">
@@ -48,6 +70,7 @@ export const DataMap: React.FC<{
               />
             </div>
           );
+
         return (
           <p key={key}>
             <strong>{accountMapping[keyMap]} : </strong>

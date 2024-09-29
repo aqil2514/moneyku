@@ -1,10 +1,10 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Accounts } from "~/@types/Assets-Experimental";
+import { FormAccounts } from "~/@types/Assets-Experimental";
 import { useDetailBodyFormEdit } from "./logics";
 import { DBFE_Edit } from "./components";
 import FormEditReview from "../Review";
 
-export default function DetailBodyFormEdit({ account }: { account: Accounts }) {
+export default function DetailBodyFormEdit({ account }: { account: FormAccounts }) {
   const { fetcher, reviewPage, setFormData, setReviewPage } =
     useDetailBodyFormEdit();
   const isLoading = fetcher.state !== "idle";
@@ -26,7 +26,7 @@ export default function DetailBodyFormEdit({ account }: { account: Accounts }) {
             account={account}
           />
         ) : (
-          <FormEditReview setReviewPage={setReviewPage} oldData={account} />
+          <FormEditReview setReviewPage={setReviewPage} oldData={account} isLoading={isLoading} />
         )}
       </fetcher.Form>
     </ScrollArea>
