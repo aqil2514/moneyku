@@ -73,7 +73,7 @@ const AssetList: React.FC<{ account: Accounts }> = ({ account }) => {
         </div>
         <div>
           <p className="font-ubuntu font-semibold">
-            {isHiding ? "****" : currencyFormat.format(account.amount)}
+            {isHiding ? "****" : currencyFormat.format(Number(account.amount))}
           </p>
         </div>
       </div>

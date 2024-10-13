@@ -1,4 +1,1 @@
-1. Halaman Transaksi styling! DONE 
-2. Hubungin ke Back-endnnya DONE
-
-Desain Ulang Halaman Aset
+TODO : cacheData udah berhasil disimpan di localstorage. Tinggal terapin ajah di sekitar halaman [Form Edit](app\routes\_main.assets\Components\FormEdit\components.tsx#L38)

@@ -1,16 +1,29 @@
 import { useFetcher } from "@remix-run/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getRandomHexColor, rupiahConvert } from "utils/client/general";
 import { formatCurrency } from "utils/general";
-import { IconType } from "~/@types/Assets-Experimental";
+import { FormAccounts, IconType } from "~/@types/Assets-Experimental";
 
 export const useDetailBodyFormEdit = () => {
   const fetcher = useFetcher();
   const [reviewPage, setReviewPage] = useState<boolean>(false);
+  const [cacheData, setCacheData] = useState<FormAccounts>({} as FormAccounts);
+  const storedData = localStorage.getItem("moneyku-edit-asset");
+
+  useEffect(() => {
+    if (!storedData) return;
+
+    if (!reviewPage) {
+      const stored = JSON.parse(storedData);
+      setCacheData(stored);
+    }
+  }, [storedData, reviewPage]);
 
   const setFormData = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.currentTarget as HTMLButtonElement;
     const formElement = target.closest("form");
+
+    // TODO: LENGKAPIN LAGI UXNYA. INI VALUE HILANG KETIKA DIPENCET KEMBALI DARI HALAMAN REVIEW
 
     if (!formElement) return;
 
@@ -24,12 +37,12 @@ export const useDetailBodyFormEdit = () => {
 
     const jsonFormData = JSON.stringify(formData);
 
-    localStorage.setItem("edit-asset", jsonFormData);
+    localStorage.setItem("moneyku-edit-asset", jsonFormData);
 
     setReviewPage(true);
   };
 
-  return { fetcher, setFormData, reviewPage, setReviewPage };
+  return { fetcher, setFormData, reviewPage, setReviewPage, cacheData };
 };
 
 export const useDBFEC_AmountInput = (defaultValue: string) => {

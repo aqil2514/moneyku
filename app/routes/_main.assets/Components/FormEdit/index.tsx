@@ -4,8 +4,12 @@ import { useDetailBodyFormEdit } from "./logics";
 import { DBFE_Edit } from "./components";
 import FormEditReview from "../Review";
 
-export default function DetailBodyFormEdit({ account }: { account: FormAccounts }) {
-  const { fetcher, reviewPage, setFormData, setReviewPage } =
+export default function DetailBodyFormEdit({
+  account,
+}: {
+  account: FormAccounts;
+}) {
+  const { fetcher, reviewPage, setFormData, setReviewPage, cacheData } =
     useDetailBodyFormEdit();
   const isLoading = fetcher.state !== "idle";
 
@@ -21,12 +25,17 @@ export default function DetailBodyFormEdit({ account }: { account: FormAccounts 
       >
         {!reviewPage ? (
           <DBFE_Edit
+            cacheData={cacheData}
             isLoading={isLoading}
             setFormData={setFormData}
             account={account}
           />
         ) : (
-          <FormEditReview setReviewPage={setReviewPage} oldData={account} isLoading={isLoading} />
+          <FormEditReview
+            setReviewPage={setReviewPage}
+            oldData={account}
+            isLoading={isLoading}
+          />
         )}
       </fetcher.Form>
     </ScrollArea>

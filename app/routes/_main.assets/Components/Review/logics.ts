@@ -5,7 +5,7 @@ export const useDBFE_Review = (setReviewPage:React.Dispatch<React.SetStateAction
     const [formData, setFormData] = useState<FormAccounts | null>(null);
   
     useEffect(() => {
-      const jsonFormData = localStorage.getItem("edit-asset");
+      const jsonFormData = localStorage.getItem("moneyku-edit-asset");
       if (jsonFormData) {
         try {
           const parsedData = JSON.parse(jsonFormData) as FormAccounts;
@@ -17,10 +17,8 @@ export const useDBFE_Review = (setReviewPage:React.Dispatch<React.SetStateAction
     }, []);
   
     const backHandler = () => {
-      localStorage.removeItem("edit-asset");
   
-      setFormData(null)
-  
+      
       setReviewPage(false)
     }
   

@@ -69,31 +69,33 @@ export const useMainBody_Asset = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Optimalisasi untuk mengecek validitas account_id dengan useMemo
-const isValidAccountId = useMemo(
-  () => (account_id: string) => {
-    return accountsData.some((account) => account_id === account.account_id);
-  },
-  [accountsData]
-);
+  const isValidAccountId = useMemo(
+    () => (account_id: string) => {
+      return accountsData.some((account) => account_id === account.account_id);
+    },
+    [accountsData]
+  );
 
-// Mengatur efek untuk mendeteksi perubahan account-id pada URL
-useEffect(() => {
-  const accountIdParam = searchParams.get("account-id");
-  
-  if (accountIdParam && isValidAccountId(accountIdParam)) {
-    setOpenAccountId(accountIdParam);
-  } else if (accountIdParam && !isValidAccountId(accountIdParam)) {
-    setOpenAccountId(null);
-    
-    // Hapus parameter "account-id" dari URL
-    setSearchParams((prevParam) => {
-      const newSearchParams = new URLSearchParams(prevParam);
-      newSearchParams.delete("account-id");
-      return newSearchParams;
-    }, { replace: true }); // Opsi replace true untuk menggantikan URL yang ada
-  }
+  // Mengatur efek untuk mendeteksi perubahan account-id pada URL
+  useEffect(() => {
+    const accountIdParam = searchParams.get("account-id");
 
-}, [searchParams, isValidAccountId, setSearchParams]);
+    if (accountIdParam && isValidAccountId(accountIdParam)) {
+      setOpenAccountId(accountIdParam);
+    } else if (accountIdParam && !isValidAccountId(accountIdParam)) {
+      setOpenAccountId(null);
+
+      // Hapus parameter "account-id" dari URL
+      setSearchParams(
+        (prevParam) => {
+          const newSearchParams = new URLSearchParams(prevParam);
+          newSearchParams.delete("account-id");
+          return newSearchParams;
+        },
+        { replace: true }
+      ); // Opsi replace true untuk menggantikan URL yang ada
+    }
+  }, [searchParams, isValidAccountId, setSearchParams]);
 
   // Handler untuk membuka dialog dan mengatur account-id di URL
 
@@ -102,10 +104,10 @@ useEffect(() => {
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set("account-id", account_id);
       newSearchParams.set("action", "read");
-  
+
       // Atur search params dan tunggu hingga URL diperbarui
       setSearchParams(newSearchParams, { replace: true });
-  
+
       // Gunakan useEffect untuk memantau pembaruan searchParams
       setTimeout(() => {
         setOpenAccountId(account_id);
@@ -125,6 +127,7 @@ useEffect(() => {
       },
       { replace: true }
     );
+    localStorage.removeItem("moneyku-edit-asset")
     setOpenAccountId(null);
   }, [setSearchParams]);
 

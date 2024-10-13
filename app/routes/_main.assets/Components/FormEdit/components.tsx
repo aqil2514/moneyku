@@ -1,11 +1,11 @@
 import Button from "components/Inputs/Button";
-import { Accounts } from "~/@types/Assets-Experimental";
+import { Accounts, FormAccounts } from "~/@types/Assets-Experimental";
 import {
   useDBFEC_AmountInput,
   useDBFEC_ColorInput,
   useDBFEC_IconInput,
 } from "./logics";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { GeneralInputComponents } from "../Detail/interface";
 import { formatDate } from "utils";
 import { Label } from "components/ui/label";
@@ -32,24 +32,27 @@ export const DBFE_Edit: React.FC<{
   account: Accounts;
   isLoading: boolean;
   setFormData: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}> = ({ account, isLoading, setFormData }) => {
+  cacheData: FormAccounts;
+}> = ({ account, isLoading, setFormData, cacheData }) => {
+
+  // TODO : cacheData udah berhasil disimpan di localstorage. Tinggal terapin ajah di sekitar halaman sini
   return (
     <>
-      <DBFEC_GeneralInput account={account} fieldKey="created_at" disabled />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="created_at" disabled />
 
-      <DBFEC_GeneralInput
+      <DBFEC_GeneralInput cacheData={cacheData}
         account={account}
         fieldKey="account_id"
         type="hidden"
       />
 
-      <DBFEC_GeneralInput account={account} fieldKey="name" />
-      <DBFEC_GeneralInput account={account} fieldKey="amount" type="number" />
-      <DBFEC_GeneralInput account={account} fieldKey="currency" />
-      <DBFEC_GeneralInput account={account} fieldKey="color" />
-      <DBFEC_GeneralInput account={account} fieldKey="description" />
-      <DBFEC_GeneralInput account={account} fieldKey="group" />
-      <DBFEC_GeneralInput account={account} fieldKey="icon" />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="name" />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="amount" type="number" />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="currency" />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="color" />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="description" />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="group" />
+      <DBFEC_GeneralInput cacheData={cacheData} account={account} fieldKey="icon" />
       <div>
         <Button
           onClick={setFormData}
@@ -68,6 +71,7 @@ export const DBFEC_GeneralInput: React.FC<GeneralInputComponents> = ({
   account,
   fieldKey,
   type = "text",
+  cacheData,
   disabled,
 }) => {
   const labelMap: Record<keyof Accounts, string> = {
@@ -85,7 +89,7 @@ export const DBFEC_GeneralInput: React.FC<GeneralInputComponents> = ({
   const dateValue = formatDate(account.created_at);
 
   if (fieldKey === "group")
-    return <DBFEC_GroupSelect account={account} fieldKey={fieldKey} />;
+    return <DBFEC_GroupSelect cacheData={cacheData} account={account} fieldKey={fieldKey} />;
   else if (fieldKey === "amount")
     return <DBFEC_AmountInput account={account} fieldKey={fieldKey} />;
   else if (fieldKey === "color")
@@ -228,20 +232,33 @@ export const DBFEC_DescriptionTextarea: React.FC<
 };
 
 export const DBFEC_GroupSelect: React.FC<
-  Pick<GeneralInputComponents, "account" | "fieldKey">
-> = ({ account, fieldKey }) => {
+  Pick<GeneralInputComponents, "account" | "fieldKey" | "cacheData">
+> = ({ account, fieldKey, cacheData }) => {
+  const [selectedGroup, setSelectedGroup] = useState<string>(
+    cacheData.group || account.group
+  );
+
+  useEffect(() => {
+    setSelectedGroup(cacheData.group || account.group);
+  }, [cacheData.group, account.group]);
+
   return (
     <div id={`container-${fieldKey}`} className="flex flex-col gap-2 px-4">
       <Label htmlFor={fieldKey} className="font-poppins font-semibold">
         Kategori Aset
       </Label>
-      <Select name={fieldKey} defaultValue={account.group}>
+      <Select
+        name={fieldKey}
+        value={selectedGroup}
+        onValueChange={(value) => setSelectedGroup(value)}
+      >
         <SelectTrigger>
-          <SelectValue placeholder={account.group} />
+          <SelectValue placeholder={selectedGroup} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Kategori Aset</SelectLabel>
+            {/* Soon : Nanti ubah agar ambil arraynya dari database */}
             {defaultGroups.map((group) => (
               <SelectItem key={group} value={group}>
                 {group}
@@ -253,6 +270,7 @@ export const DBFEC_GroupSelect: React.FC<
     </div>
   );
 };
+
 
 export const DBFEC_IconInput: React.FC<
   Pick<GeneralInputComponents, "account" | "fieldKey">

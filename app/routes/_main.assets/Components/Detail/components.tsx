@@ -1,6 +1,6 @@
 import { DialogDescription } from "components/ui/dialog";
 import React from "react";
-import { Accounts } from "~/@types/Assets-Experimental";
+import { Accounts, FormAccounts } from "~/@types/Assets-Experimental";
 import { Badge } from "components/ui/badge";
 import { formatDate } from "utils";
 import {
@@ -16,7 +16,7 @@ import { currencyFormat } from "utils/general";
 import { useAssetDetailData } from "../../Providers/AssetDetailProvider";
 import DetailBodyFormEdit from "../FormEdit";
 
-export const DetailBody: React.FC<{ account: Accounts }> = ({ account }) => {
+export const DetailBody: React.FC<{ account: FormAccounts }> = ({ account }) => {
   const { isEditing } = useAssetDetailData();
   if (isEditing) return <DetailBodyFormEdit account={account} />;
 

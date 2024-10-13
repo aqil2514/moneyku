@@ -13,6 +13,7 @@ export const useHeader = () => {
 
     if (!actionParam || actionParam === "read") {
       setIsEditing(false);
+      localStorage.removeItem("moneyku-edit-asset")
     } else {
       setIsEditing(true);
     }
