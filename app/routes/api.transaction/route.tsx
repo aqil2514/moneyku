@@ -12,6 +12,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const data = getFormData(formData);
   const user = await getUser(request);
 
+  console.log(formData)
+
   if(!user) throw new Error("Data user tidak ditemukan")
 
   if (request.method === "PUT") {
@@ -57,6 +59,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         console.error(error);
       }
     }
+  } else if (request.method === "POST"){
+    console.log("OK")
+    return jsonWithSuccess({data:"OK"} , "OK")
   }
 };
 

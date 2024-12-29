@@ -23,8 +23,6 @@ export const useDetailBodyFormEdit = () => {
     const target = e.currentTarget as HTMLButtonElement;
     const formElement = target.closest("form");
 
-    // TODO: LENGKAPIN LAGI UXNYA. INI VALUE HILANG KETIKA DIPENCET KEMBALI DARI HALAMAN REVIEW
-
     if (!formElement) return;
 
     const form = new FormData(formElement);

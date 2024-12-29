@@ -79,10 +79,6 @@ export async function action({ request }: ActionFunctionArgs) {
       return jsonWithError({ data }, data.message);
     }
   }
-
-  // TODO : Lanjutin nanti
-  // TODO : Gimana kalo user loginnya pakek email? Kan awalnya ga ada password tuh
-  // TODO : Gimana kalo clientnnya lupa password?
 }
 
 export default function Security() {

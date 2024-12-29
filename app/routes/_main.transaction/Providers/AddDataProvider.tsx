@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 import { TypeTransaction } from "~/@types/Transaction";
 
 interface AddDataContextProps {
@@ -12,6 +12,7 @@ interface AddDataContextProps {
   setIsBill: React.Dispatch<React.SetStateAction<boolean>>;
   date: Date | undefined;
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  formRef: React.MutableRefObject<HTMLFormElement | null>;
 }
 
 const AddDataContext = createContext<AddDataContextProps>(
@@ -28,6 +29,7 @@ export default function AddDataProvider({
   const [nominalBill, setNominalBill] = useState<string>("Rp. 0");
   const [isBill, setIsBill] = useState<boolean>(false);
   const [date, setDate] = useState<Date | undefined>();
+  const formRef = useRef<null | HTMLFormElement>(null);
 
   const value: AddDataContextProps = {
     category,
@@ -40,6 +42,7 @@ export default function AddDataProvider({
     setIsBill,
     date,
     setDate,
+    formRef,
   };
   return (
     <AddDataContext.Provider value={value}>{children}</AddDataContext.Provider>

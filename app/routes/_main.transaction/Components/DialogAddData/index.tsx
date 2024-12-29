@@ -4,7 +4,6 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -24,14 +23,47 @@ export default function AddDataDialog() {
             <DialogTitle>Tambah Data</DialogTitle>
             <DialogDescription>Tambahkan data transaksi</DialogDescription>
           </DialogHeader>
-          <AddDataForm />
-          <DialogFooter>
-            <DialogClose>
-              <Button color="error">Kembali</Button>
-            </DialogClose>
-          </DialogFooter>
+
+          {/* FORM */}
+          <AddDataForm
+            AddButton={<AddData />}
+            AddMoreButton={<AddMoreData />}
+            CloseButton={<CloseForm />}
+          />
         </DialogContent>
       </Dialog>
     </AddDataProvider>
   );
 }
+
+// TODO : Buat logic ini
+const AddData = () => {
+  return (
+    <Button color="success" title="Menambahkan data catatan transaksi baru">
+      Tambah
+    </Button>
+  );
+};
+
+const AddMoreData = () => {
+  {
+    /* TODO : Buat logic ini */
+  }
+  return (
+    <Button
+      color="info"
+      title="Menambahkan data catatan transaksi baru dan membuat baru lagi"
+    >
+      Buat Lagi
+    </Button>
+  );
+};
+
+const CloseForm = () => (
+  <DialogClose
+    title="Batalkan penambahan data"
+    className="flex gap-1 items-center px-4 py-2 rounded transition duration-200 bg-red-600 text-white hover:bg-red-700"
+  >
+    Kembali
+  </DialogClose>
+);

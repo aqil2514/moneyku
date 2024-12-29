@@ -17,14 +17,30 @@ interface TransactionTypeSelectProps {
   label: TypeTransaction;
 }
 
-export default function AddDataForm() {
+interface AddDataFormProps {
+  AddButton: JSX.Element;
+  AddMoreButton: JSX.Element;
+  CloseButton: JSX.Element;
+}
+
+export default function AddDataForm({
+  AddButton,
+  AddMoreButton,
+  CloseButton,
+}: AddDataFormProps) {
   const fetcher = useFetcher();
-  const { category, date } = useFormData();
+  const { category, date, formRef } = useFormData();
 
   return (
-    <fetcher.Form>
+    // TODO : Pastiin ini ini. formRef beneran berguna apa enggak?
+    <fetcher.Form method="POST" action="/api/transaction" ref={formRef}>
+      {/* Tipe-tipe transaksi yang akan dibuat (Pemasukan, Pengeluaran, dan Transfer) */}
       <TransactionType />
+
+      {/* Tipe transaksi yang akan dipilih. Untuk keperluan server */}
       <Input type="hidden" value={category} name="typeTransaction" readOnly />
+
+      {/* Tanggal transaksi. Untuk keperluan server */}
       <Input
         type="hidden"
         value={date?.toISOString()}
@@ -32,24 +48,46 @@ export default function AddDataForm() {
         readOnly
       />
 
+      {/* Judul form transaksi */}
       <FormTitle />
+
+      {/* Waktu transaksi itu terjadi */}
       <FormCalendar />
+
+      {/* Nama transaksinya */}
       <FormName />
+
+      {/* Nominal transaksi */}
       <FormNominal />
 
+      {/* Biaya administrasi. Hanya aktif jika kategorinya adalah transfer */}
       {category === "Transfer" && <FormBill />}
 
+      {/* Kategori transaksi */}
       <FormCategory />
 
+      {/* Aset transaksi itu berasal */}
       <FormFromAsset />
 
+      {/* Tujuan aset. Hanya aktif jika kategorinya adalah transfer */}
       {category === "Transfer" && <FormToAsset />}
 
+      {/* Deskripsi transaksi */}
       <FormDescription />
+
+      <div className="flex gap-4 my-4">
+        {/* Tambahkan data transaksi */}
+        {AddButton}
+
+        {/* Tambahkan data transaksi dan langsung buat lagi */}
+        {AddMoreButton}
+
+        {/* Tutup dan batalkan transaksi */}
+        {CloseButton}
+      </div>
     </fetcher.Form>
   );
 }
-
 
 export const TypeTransactionSelect: React.FC<TransactionTypeSelectProps> = ({
   label,
@@ -58,6 +96,7 @@ export const TypeTransactionSelect: React.FC<TransactionTypeSelectProps> = ({
   return (
     <Button
       color="info"
+      type="button"
       variant={category === label ? "outlined" : "contained"}
       onClick={() => setCategory(label)}
     >
@@ -158,7 +197,7 @@ export const FormCategory = () => {
 };
 
 export const FormDescription = () => {
-  return(
+  return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="transaction-description">Deskripsi Transaksi</Label>
       <Textarea
@@ -167,11 +206,11 @@ export const FormDescription = () => {
         name="descriptionTransaction"
       />
     </div>
-  )
-}
+  );
+};
 
 export const FormFromAsset = () => {
-  return(
+  return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="from-asset">Dari Aset</Label>
       <Input
@@ -180,8 +219,8 @@ export const FormFromAsset = () => {
         placeholder="Misal : Dompet Transportasi"
       />
     </div>
-  )
-}
+  );
+};
 
 export const FormName = () => {
   return (
@@ -215,7 +254,7 @@ export const FormNominal = () => {
 };
 
 export const FormToAsset = () => {
-  return(
+  return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="to-asset">Ke Aset</Label>
       <Input
@@ -224,8 +263,8 @@ export const FormToAsset = () => {
         placeholder="Misal : Dompet Transportasi"
       />
     </div>
-  )
-}
+  );
+};
 
 export const FormTitle = () => {
   const { category } = useFormData();
