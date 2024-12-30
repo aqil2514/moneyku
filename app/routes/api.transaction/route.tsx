@@ -1,83 +1,100 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import axios, { isAxiosError } from "axios";
-import { endpoint } from "lib/server";
-import { jsonWithError, jsonWithSuccess } from "remix-toast";
+import { jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/server/account";
 import { removeCurrencyFormat } from "utils/general";
-import { BasicHTTPResponse } from "~/@types/General";
-import { TransactionFormData } from "~/@types/Transaction";
+import {
+  TransactionAddFormData,
+  TypeTransaction,
+} from "~/@types/Transaction";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-  const data = getFormData(formData);
+  // const formData = await request.formData();
+  // const data = getFormData(formData);
   const user = await getUser(request);
+  const method = request.method;
 
-  console.log(formData)
+  if (!user) throw new Error("Data user tidak ditemukan");
 
-  if(!user) throw new Error("Data user tidak ditemukan")
+  if (method === "POST") return apiHandler[method]({ request });
 
-  if (request.method === "PUT") {
-    try {
-      const res = await axios.put(`${endpoint}/transaction`, data, {
-        headers: {
-          "User-ID": String(user.uid),
-        },
-      });
+  // if (request.method === "PUT") {
+  //   try {
+  //     const res = await axios.put(`${endpoint}/transaction`, data, {
+  //       headers: {
+  //         "User-ID": String(user.uid),
+  //       },
+  //     });
 
-      const response = {
-        success: true,
-        data: res.data,
-      };
+  //     const response = {
+  //       success: true,
+  //       data: res.data,
+  //     };
 
-      return jsonWithSuccess({ response }, res.data.message);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        const errorValidation = error.response?.data.errors;
-        const response = {
-          success: false,
-          data: errorValidation,
-        };
+  //     return jsonWithSuccess({ response }, res.data.message);
+  //   } catch (error) {
+  //     if (isAxiosError(error)) {
+  //       const errorValidation = error.response?.data.errors;
+  //       const response = {
+  //         success: false,
+  //         data: errorValidation,
+  //       };
 
-        return jsonWithError({ response }, response.data[0].notifMessage);
-      }
-    }
-  } else if (request.method === "DELETE") {
-    const uid = formData.get("transaction-uid");
-    const id = formData.get("main-id");
+  //       return jsonWithError({ response }, response.data[0].notifMessage);
+  //     }
+  //   }
+  // } else if (request.method === "DELETE") {
+  //   const uid = formData.get("transaction-uid");
+  //   const id = formData.get("main-id");
 
-    try {
-      const res = await axios.delete<BasicHTTPResponse>(`${endpoint}/transaction`, {
-        data: { uid, id },
-        headers: {
-          "User-ID": String(user.uid),
-        },
-      });
+  //   try {
+  //     const res = await axios.delete<BasicHTTPResponse>(
+  //       `${endpoint}/transaction`,
+  //       {
+  //         data: { uid, id },
+  //         headers: {
+  //           "User-ID": String(user.uid),
+  //         },
+  //       }
+  //     );
 
-      return jsonWithSuccess({ data: res.data }, res.data.message);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        console.error(error);
-      }
-    }
-  } else if (request.method === "POST"){
-    console.log("OK")
-    return jsonWithSuccess({data:"OK"} , "OK")
-  }
+  //     return jsonWithSuccess({ data: res.data }, res.data.message);
+  //   } catch (error) {
+  //     if (isAxiosError(error)) {
+  //       console.error(error);
+  //     }
+  //   }
+  // }
 };
 
-function getFormData(formData: FormData) {
-  const result: TransactionFormData = {
-    idTransaction: String(formData.get("main-id")),
-    uidTransaction: String(formData.get("transaction-uid")),
-    dateTransaction: new Date(String(formData.get("transaction-date"))),
-    totalTransaction: removeCurrencyFormat(String(formData.get("transaction-total"))),
-    categoryTransaction: String(formData.get("transaction-category")),
-    assetsTransaction: String(formData.get("transaction-assets")),
-    noteTransaction: String(formData.get("transaction-note")),
-    typeTransaction: String(
-      formData.get("transaction-type")
-    ) as TransactionFormData["typeTransaction"],
+const apiHandler = {
+  POST: async ({ request }: { request: Request }) => postHandler({ request }),
+};
+
+async function postHandler({ request }: { request: Request }) {
+  const user = await getUser(request);
+  const formData = await request.formData();
+  const data = getFormData(formData, user.uid as string);
+
+  console.log(data);
+  return jsonWithSuccess({ data: "OK" }, "OK");
+}
+
+/* Ambil semua data yang telah diisi dari client side */
+const getFormData = (formData: FormData, userId: string) => {
+  const data: TransactionAddFormData = {
+    userId,
+    typeTransaction: formData.get("typeTransaction") as TypeTransaction,
+    dateTransaction: new Date(String(formData.get("dateTransaction"))),
+    billTransaction: Number(formData.get("billTransaction")),
+    categoryTransaction: String(formData.get("categoryTransaction")),
+    fromAsset: String(formData.get("fromAsset")),
+    toAsset: String(formData.get("toAsset")),
+    noteTransaction: String(formData.get("noteTransaction")),
+    totalTransaction: removeCurrencyFormat(
+      String(formData.get("totalTransaction"))
+    ),
+    descriptionTransaction: String(formData.get("descriptionTransaction")),
   };
 
-  return result;
-}
+  return data;
+};

@@ -52,6 +52,13 @@ export interface FormDataHandler {
   transaction: (formData: FormData) => TransactionAddFormData;
 }
 
+export interface FormValidationError {
+  /** Nama field yang terjadi error */
+  fieldName: string;
+  /** Pesan error */
+  message: string;
+}
+
 /**
  * Interface untuk membangun respons HTTP dengan metode standar untuk sukses dan error.
  *
@@ -91,9 +98,9 @@ export interface HttpResponseBuilder {
   ) => BasicHTTPResponse<T>;
 }
 
-export interface IconsPicker{
+export interface IconsPicker {
   name: string;
-  icon: React.ReactNode
+  icon: React.ReactNode;
 }
 
 export interface LoginResult {

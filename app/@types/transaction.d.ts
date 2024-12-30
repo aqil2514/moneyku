@@ -1,32 +1,20 @@
-export type TypeTransaction = "Pemasukan" | "Pengeluaran" | "Transfer"
+export type TypeTransaction = "Pemasukan" | "Pengeluaran" | "Transfer";
 
-export interface TransactionFormData {
-  idTransaction?: string;
-  uidTransaction?: string;
-  typeTransaction: TypeTransaction; // Tipe transaksi harus salah satu dari kedua nilai ini
-  totalTransaction: number | null; // Total transaksi, diasumsikan sebagai bilangan bulat
-  dateTransaction: Date | null; // Tanggal transaksi, bisa null jika tidak disertakan
-  categoryTransaction: string | null; // Kategori transaksi, diambil dari formulir
-  assetsTransaction: string | null; // Aset transaksi, diambil dari formulir
-  noteTransaction: string | null; // Catatan transaksi, diambil dari formulir
-}
-
+/** Interface untuk data form tambah transaksi */
 export interface TransactionAddFormData {
-  userId: string;
-  typeTransaction: string;
-  totalTransaction: number;
-  dateTransaction: Date;
-  billTransaction?: number;
-  categoryTransaction: string;
-  assetsTransaction: string;
-  noteTransaction: string;
-  price: number;
-  fromAsset: string;
-  toAsset: string;
-  descriptionTransaction: string;
+  userId: string; // ID pengguna yang membuat transaksi
+  typeTransaction: TypeTransaction; // Jenis transaksi
+  totalTransaction: number; // Total nominal transaksi (tidak boleh negatif)
+  dateTransaction: Date; // Tanggal transaksi
+  billTransaction: number; // Tagihan yang terkait dengan transaksi (opsional)
+  categoryTransaction: string; // Kategori transaksi
+  noteTransaction: string; // Catatan tambahan untuk transaksi
+  fromAsset: string; // Aset sumber (contoh: rekening bank, e-wallet)
+  toAsset: string; // Aset tujuan (contoh: rekening bank lain, e-wallet)
+  descriptionTransaction: string; // Deskripsi transaksi
 }
 
-export interface TransactionErrors{
+export interface TransactionErrors {
   typeTransaction?: string;
   totalTransaction?: string;
   dateTransaction?: string;

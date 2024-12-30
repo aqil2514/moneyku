@@ -10,11 +10,28 @@ import {
 } from "components/ui/dialog";
 import AddDataProvider from "../../Providers/AddDataProvider";
 import AddDataForm from "./components";
+import React, {
+  createContext,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
+
+interface DialogContextProps {
+  open: boolean;
+  setOpen: React.Dispatch<SetStateAction<boolean>>;
+}
+
+const DialogContext = createContext<DialogContextProps>(
+  {} as DialogContextProps
+);
 
 export default function AddDataDialog() {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
     <AddDataProvider>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <Button color="success">Tambah Data</Button>
         </DialogTrigger>
@@ -24,12 +41,15 @@ export default function AddDataDialog() {
             <DialogDescription>Tambahkan data transaksi</DialogDescription>
           </DialogHeader>
 
-          {/* FORM */}
-          <AddDataForm
-            AddButton={<AddData />}
-            AddMoreButton={<AddMoreData />}
-            CloseButton={<CloseForm />}
-          />
+          {/* Penggunaan Context bawaan React agar tidak perlu penambahan props pada komponen props */}
+          <DialogContext.Provider value={{ open, setOpen }}>
+            {/* FORM */}
+            <AddDataForm
+              AddButton={<AddData />}
+              AddMoreButton={<AddMoreData />}
+              CloseButton={<CloseForm />}
+            />
+          </DialogContext.Provider>
         </DialogContent>
       </Dialog>
     </AddDataProvider>
@@ -38,8 +58,18 @@ export default function AddDataDialog() {
 
 // TODO : Buat logic ini
 const AddData = () => {
+  const { setOpen } = useContext(DialogContext);
+
+  const clickHandler = () => {
+    setOpen(false);
+  };
+
   return (
-    <Button color="success" title="Menambahkan data catatan transaksi baru">
+    <Button
+      color="success"
+      onClick={clickHandler}
+      title="Menambahkan data catatan transaksi baru"
+    >
       Tambah
     </Button>
   );
