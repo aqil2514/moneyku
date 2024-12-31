@@ -13,6 +13,7 @@ import AddDataForm from "./components";
 import React, {
   createContext,
   SetStateAction,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -24,6 +25,8 @@ interface DialogContextProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
   fetcher: FetcherWithComponents<BasicHTTPResponse>;
+  isMultiple: boolean;
+  setIsMultiple: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export const DialogContext = createContext<DialogContextProps>(
@@ -32,6 +35,7 @@ export const DialogContext = createContext<DialogContextProps>(
 
 export default function AddDataDialog() {
   const [open, setOpen] = useState<boolean>(false);
+  const [isMultiple, setIsMultiple] = useState<boolean>(false);
   const fetcher = useFetcher<BasicHTTPResponse>();
 
   return (
@@ -47,13 +51,11 @@ export default function AddDataDialog() {
           </DialogHeader>
 
           {/* Penggunaan Context bawaan React agar tidak perlu penambahan props pada komponen props */}
-          <DialogContext.Provider value={{ open, setOpen, fetcher }}>
+          <DialogContext.Provider
+            value={{ open, setOpen, fetcher, isMultiple, setIsMultiple }}
+          >
             {/* FORM */}
-            <AddDataForm
-              AddButton={<AddData />}
-              AddMoreButton={<AddMoreData />}
-              CloseButton={<CloseForm />}
-            />
+            <AddDataForm AddButton={<AddData />} CloseButton={<CloseForm />} />
           </DialogContext.Provider>
         </DialogContent>
       </Dialog>
@@ -61,72 +63,48 @@ export default function AddDataDialog() {
   );
 }
 
-// TODO : FIX BUG  DI SNI
 const AddData = () => {
-  const { setOpen, fetcher } = useContext(DialogContext);
+  const { setOpen, fetcher, isMultiple, setIsMultiple } =
+    useContext(DialogContext);
+  const { formRef, setCategory, setNominal, setNominalBill, setIsBill, setDate } = useFormData();
   const isLoading = fetcher.state !== "idle";
 
-  useEffect(() => {
-    if (fetcher.data && fetcher.data.status === "success") {
-      setOpen(false);
-    }
-  }, [fetcher.data, setOpen]);
+  const resetAllFields = useCallback(() => {
+    setCategory("Pemasukan");
+    setNominal("Rp. 0");
+    setNominalBill("Rp. 0");
+    setIsBill(false);
+    setDate(undefined);
+    formRef.current?.reset(); // Jika form memiliki elemen HTML yang perlu di-reset
+  }, [setCategory, setNominal, setNominalBill, setIsBill, setDate, formRef]);
 
-  const clickHandler = () => {
+  useEffect(() => {
     if (!fetcher.data) return;
 
-    console.log(fetcher.data)
+    const { status } = fetcher.data;
 
-    const status = fetcher.data.status;
     if (status === "error") {
       setOpen(true);
+    } else if (status === "success") {
+      if (isMultiple && formRef.current) {
+        setOpen(true);
+        resetAllFields()
+      } else if (!isMultiple) {
+        setOpen(false);
+        resetAllFields()
+      }
+
+      fetcher.load("/api/transaction")
     }
-  };
+  }, [fetcher.data, setOpen, isMultiple, setIsMultiple, formRef, fetcher, resetAllFields]);
 
   return (
     <Button
       color="success"
-      onClick={clickHandler}
       disabled={isLoading}
       title="Menambahkan data catatan transaksi baru"
     >
       {isLoading ? "Menambah Data..." : "Tambah"}
-    </Button>
-  );
-};
-
-// TODO : FIX BUG  DI SNI
-
-const AddMoreData = () => {
-  const { fetcher, setOpen } = useContext(DialogContext);
-  const { formRef } = useFormData();
-  const isLoading = fetcher.state !== "idle";
-
-  useEffect(() => {
-    if (fetcher.data && fetcher.data.status === "success" && formRef.current) {
-      formRef.current.reset();  
-      setOpen(true);
-    }
-  }, [fetcher.data, formRef, setOpen]);
-
-  const clickHandler = () => {
-    if (!fetcher.data) return;
-
-    const status = fetcher.data.status;
-    if (status === "success") {
-      console.log(fetcher.data)
-      formRef.current?.reset(); 
-    }
-  };
-
-  return (
-    <Button
-      color="info"
-      disabled={isLoading}
-      onClick={clickHandler}
-      title="Menambahkan data catatan transaksi baru dan membuat baru lagi"
-    >
-      Buat Lagi
     </Button>
   );
 };

@@ -19,20 +19,17 @@ interface TransactionTypeSelectProps {
 
 interface AddDataFormProps {
   AddButton: JSX.Element;
-  AddMoreButton: JSX.Element;
   CloseButton: JSX.Element;
 }
 
 export default function AddDataForm({
   AddButton,
-  AddMoreButton,
   CloseButton,
 }: AddDataFormProps) {
   const { fetcher } = useContext(DialogContext);
   const { category, date, formRef } = useFormData();
 
   return (
-    // TODO : Pastiin ini ini. formRef beneran berguna apa enggak?
     <fetcher.Form method="POST" action="/api/transaction" ref={formRef}>
       {/* Tipe-tipe transaksi yang akan dibuat (Pemasukan, Pengeluaran, dan Transfer) */}
       <TransactionType />
@@ -75,12 +72,10 @@ export default function AddDataForm({
       {/* Deskripsi transaksi */}
       <FormDescription />
 
+      <Config_IsMultiple />
       <div className="flex gap-4 my-4">
         {/* Tambahkan data transaksi */}
         {AddButton}
-
-        {/* Tambahkan data transaksi dan langsung buat lagi */}
-        {AddMoreButton}
 
         {/* Tutup dan batalkan transaksi */}
         {CloseButton}
@@ -88,6 +83,32 @@ export default function AddDataForm({
     </fetcher.Form>
   );
 }
+
+const Config_IsMultiple = () => {
+  const { isMultiple, setIsMultiple } = useContext(DialogContext);
+  return (
+    <div className="items-top flex space-x-2 my-2">
+      <Checkbox
+        id="isMultiple"
+        checked={isMultiple}
+        onCheckedChange={(e) =>
+          e ? setIsMultiple(true) : setIsMultiple(false)
+        }
+      />
+      <div className="grid gap-1.5 leading-none">
+        <label
+          htmlFor="isMultiple"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Tambah lagi?
+        </label>
+        <p className="text-sm text-muted-foreground">
+          Langsung tambah data kembali tanpa menutup menu
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export const TypeTransactionSelect: React.FC<TransactionTypeSelectProps> = ({
   label,
