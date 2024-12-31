@@ -20,11 +20,19 @@ export interface BasicResponse {
   success: boolean;
 }
 
-export interface BasicHTTPResponse<T = unknown> {
+export interface ApiHandler {
+  POST: (args: { request: Request }) => Promise<unknown>;
+  PUT: (args: { request: Request }) => Promise<unknown>;
+  GET: (args: { request: Request }) => Promise<unknown>;
+  DELETE: (args: { request: Request }) => Promise<unknown>;
+}
+
+export interface BasicHTTPResponse<Data = unknown, Error = unknown> {
   status: "success" | "error" | "idle";
   statusCode?: number;
   message: string;
-  data?: T;
+  errors?: Error;
+  data?: Data;
 }
 
 export interface ErrorResponse {
@@ -52,11 +60,19 @@ export interface FormDataHandler {
   transaction: (formData: FormData) => TransactionAddFormData;
 }
 
-export interface FormValidationError {
+export interface FormValidation<T = unknown>{
+  succes: boolean;
+  errors?: FormValidationError[];
+  data?: T;
+}
+
+export interface FormValidationError<T = string> {
   /** Nama field yang terjadi error */
-  fieldName: string;
+  fieldName: T;
   /** Pesan error */
   message: string;
+  /** Notifikasi pesan error */
+  notifMessage: string;
 }
 
 /**
@@ -108,6 +124,8 @@ export interface LoginResult {
   success: boolean;
   message: string;
 }
+
+export type MethodRequest = "POST" | "PUT" | "DELETE" | "GET";
 
 export interface MiscData {
   readonly securityQuestionsData: string[];

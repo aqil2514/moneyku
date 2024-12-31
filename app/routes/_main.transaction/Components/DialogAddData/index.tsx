@@ -8,26 +8,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "components/ui/dialog";
-import AddDataProvider from "../../Providers/AddDataProvider";
+import AddDataProvider, { useFormData } from "../../Providers/AddDataProvider";
 import AddDataForm from "./components";
 import React, {
   createContext,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
+import { FetcherWithComponents, useFetcher } from "@remix-run/react";
+import { BasicHTTPResponse } from "~/@types/General";
 
 interface DialogContextProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
+  fetcher: FetcherWithComponents<BasicHTTPResponse>;
 }
 
-const DialogContext = createContext<DialogContextProps>(
+export const DialogContext = createContext<DialogContextProps>(
   {} as DialogContextProps
 );
 
 export default function AddDataDialog() {
   const [open, setOpen] = useState<boolean>(false);
+  const fetcher = useFetcher<BasicHTTPResponse>();
 
   return (
     <AddDataProvider>
@@ -42,7 +47,7 @@ export default function AddDataDialog() {
           </DialogHeader>
 
           {/* Penggunaan Context bawaan React agar tidak perlu penambahan props pada komponen props */}
-          <DialogContext.Provider value={{ open, setOpen }}>
+          <DialogContext.Provider value={{ open, setOpen, fetcher }}>
             {/* FORM */}
             <AddDataForm
               AddButton={<AddData />}
@@ -56,32 +61,69 @@ export default function AddDataDialog() {
   );
 }
 
-// TODO : Buat logic ini
+// TODO : FIX BUG  DI SNI
 const AddData = () => {
-  const { setOpen } = useContext(DialogContext);
+  const { setOpen, fetcher } = useContext(DialogContext);
+  const isLoading = fetcher.state !== "idle";
+
+  useEffect(() => {
+    if (fetcher.data && fetcher.data.status === "success") {
+      setOpen(false);
+    }
+  }, [fetcher.data, setOpen]);
 
   const clickHandler = () => {
-    setOpen(false);
+    if (!fetcher.data) return;
+
+    console.log(fetcher.data)
+
+    const status = fetcher.data.status;
+    if (status === "error") {
+      setOpen(true);
+    }
   };
 
   return (
     <Button
       color="success"
       onClick={clickHandler}
+      disabled={isLoading}
       title="Menambahkan data catatan transaksi baru"
     >
-      Tambah
+      {isLoading ? "Menambah Data..." : "Tambah"}
     </Button>
   );
 };
 
+// TODO : FIX BUG  DI SNI
+
 const AddMoreData = () => {
-  {
-    /* TODO : Buat logic ini */
-  }
+  const { fetcher, setOpen } = useContext(DialogContext);
+  const { formRef } = useFormData();
+  const isLoading = fetcher.state !== "idle";
+
+  useEffect(() => {
+    if (fetcher.data && fetcher.data.status === "success" && formRef.current) {
+      formRef.current.reset();  
+      setOpen(true);
+    }
+  }, [fetcher.data, formRef, setOpen]);
+
+  const clickHandler = () => {
+    if (!fetcher.data) return;
+
+    const status = fetcher.data.status;
+    if (status === "success") {
+      console.log(fetcher.data)
+      formRef.current?.reset(); 
+    }
+  };
+
   return (
     <Button
       color="info"
+      disabled={isLoading}
+      onClick={clickHandler}
       title="Menambahkan data catatan transaksi baru dan membuat baru lagi"
     >
       Buat Lagi

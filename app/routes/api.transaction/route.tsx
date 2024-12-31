@@ -1,21 +1,26 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import { jsonWithSuccess } from "remix-toast";
+import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/server/account";
 import { removeCurrencyFormat } from "utils/general";
+import { TransactionAddFormData, TypeTransaction } from "~/@types/Transaction";
 import {
-  TransactionAddFormData,
-  TypeTransaction,
-} from "~/@types/Transaction";
+  ApiHandler,
+  BasicHTTPResponse,
+  FormValidation,
+  FormValidationError,
+  MethodRequest,
+} from "~/@types/General";
+import { z } from "zod";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   // const formData = await request.formData();
   // const data = getFormData(formData);
   const user = await getUser(request);
-  const method = request.method;
+  const method = request.method as MethodRequest;
 
   if (!user) throw new Error("Data user tidak ditemukan");
 
-  if (method === "POST") return apiHandler[method]({ request });
+  return await apiHandler[method]({ request });
 
   // if (request.method === "PUT") {
   //   try {
@@ -66,8 +71,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   // }
 };
 
-const apiHandler = {
-  POST: async ({ request }: { request: Request }) => postHandler({ request }),
+// **********************
+// **********************
+// API HANDLER AREA START
+// **********************
+// **********************
+
+const apiHandler: ApiHandler = {
+  POST: async ({ request }) => postHandler({ request }),
+  PUT: async ({ request }) => postHandler({ request }),
+  GET: async ({ request }) => postHandler({ request }),
+  DELETE: async ({ request }) => postHandler({ request }),
 };
 
 async function postHandler({ request }: { request: Request }) {
@@ -75,9 +89,40 @@ async function postHandler({ request }: { request: Request }) {
   const formData = await request.formData();
   const data = getFormData(formData, user.uid as string);
 
-  console.log(data);
-  return jsonWithSuccess({ data: "OK" }, "OK");
+  const validation = await validateTransactionData(data);
+  const isValidationSucces =
+    validation.errors && validation.errors.length === 0;
+
+  if (!isValidationSucces) {
+    const responseData: BasicHTTPResponse<
+      TransactionAddFormData,
+      FormValidation
+    > = {
+      status: "error",
+      message: validation.errors![0].notifMessage,
+      errors: validation,
+    };
+
+    return jsonWithError(responseData, validation.errors![0].notifMessage);
+  }
+
+  const responseData: BasicHTTPResponse<
+    TransactionAddFormData,
+    FormValidation
+  > = {
+    status: "success",
+    message: "Tambah data berhasil",
+    data,
+  };
+
+  return jsonWithSuccess(responseData, responseData.message);
 }
+
+// **********************
+// **********************
+// API HANDLER AREA END
+// **********************
+// **********************
 
 /* Ambil semua data yang telah diisi dari client side */
 const getFormData = (formData: FormData, userId: string) => {
@@ -97,4 +142,44 @@ const getFormData = (formData: FormData, userId: string) => {
   };
 
   return data;
+};
+
+const transactionSchema = z.object({
+  userId: z.string().min(1, "User ID tidak boleh kosong."),
+  typeTransaction: z.string().min(1, "Jenis transaksi harus diisi."),
+  dateTransaction: z.date({ message: "Tanggal tidak Valid" }),
+  totalTransaction: z.number().positive("Total transaksi harus lebih dari 0."),
+  categoryTransaction: z.string().min(1, "Kategori transaksi harus diisi."),
+  noteTransaction: z.string().min(1, "Catatan transaksi tidak boleh kosong."),
+  fromAsset: z.string().min(1, "Aset sumber harus diisi."),
+  toAsset: z.string().min(1, "Aset tujuan harus diisi."),
+  descriptionTransaction: z
+    .string()
+    .min(1, "Deskripsi transaksi tidak boleh kosong."),
+});
+
+const validateTransactionData = async (
+  formData: TransactionAddFormData
+): Promise<FormValidation<TransactionAddFormData>> => {
+  const validation = await transactionSchema.spa(formData);
+  const result: FormValidation<TransactionAddFormData> = {
+    succes: false,
+    errors: [],
+  };
+
+  // Jika validasinya sukses, errornya ada 0 atau tidak ada
+  if (validation.success) return result;
+  const issues = validation.error.issues;
+
+  for (const issue of issues) {
+    const error: FormValidationError = {
+      fieldName: String(issue.path[0]),
+      message: `${issue.code} : ${issue.message}`,
+      notifMessage: issue.message,
+    };
+
+    result.errors!.push(error);
+  }
+
+  return result;
 };

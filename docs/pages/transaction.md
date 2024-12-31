@@ -7,7 +7,7 @@ Route ini digunakan untuk mengelola data transaksi dalam aplikasi. Fitur ini men
 ## **File yang terkait**
 - **[Main Route](/app/routes/_main.transaction/route.tsx)**  
   File utama yang menangani routing dan rendering halaman transaksi.
-- **[API Endpoint](/app/routes/_main.transaction/route.tsx)**  
+- **[API Endpoint](/app/routes/api.transaction/route.tsx)**  
   File penanganan server-side untuk operasi seperti penambahan, pengeditan, dan penghapusan data transaksi.
 
 ---
@@ -30,3 +30,4 @@ export interface TransactionAddFormData {
   toAsset: string; // Aset tujuan (contoh: rekening bank lain, e-wallet)
   descriptionTransaction: string; // Deskripsi transaksi
 }
+```

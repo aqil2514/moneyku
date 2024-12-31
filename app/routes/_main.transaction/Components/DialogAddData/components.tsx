@@ -1,5 +1,5 @@
 import Button from "components/Inputs/Button";
-import React from "react";
+import React, { useContext } from "react";
 import { TypeTransaction } from "~/@types/Transaction";
 import { useFormData } from "../../Providers/AddDataProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "components/ui/popover";
@@ -11,7 +11,7 @@ import { Input } from "components/ui/input";
 import { rupiahConvert } from "utils/client/general";
 import { Checkbox } from "components/ui/checkbox";
 import { Textarea } from "components/ui/textarea";
-import { useFetcher } from "@remix-run/react";
+import { DialogContext } from ".";
 
 interface TransactionTypeSelectProps {
   label: TypeTransaction;
@@ -28,7 +28,7 @@ export default function AddDataForm({
   AddMoreButton,
   CloseButton,
 }: AddDataFormProps) {
-  const fetcher = useFetcher();
+  const { fetcher } = useContext(DialogContext);
   const { category, date, formRef } = useFormData();
 
   return (
