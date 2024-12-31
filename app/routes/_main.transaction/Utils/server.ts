@@ -7,8 +7,6 @@ import { BasicHTTPResponse, GeneralDataResponse } from "~/@types/General";
 export async function getTransactionPromise(request: Request) {
   const user = await getUser(request);
 
-  console.log(user.uid);
-
   const res = await axios.get<BasicHTTPResponse<GeneralDataResponse>>(
     `${endpoint}/transaction`,
     {
