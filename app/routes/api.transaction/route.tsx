@@ -11,6 +11,8 @@ import {
   MethodRequest,
 } from "~/@types/General";
 import { z } from "zod";
+import axios from "axios";
+import { endpoint } from "lib/server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   // const formData = await request.formData();
@@ -106,6 +108,10 @@ async function postHandler({ request }: { request: Request }) {
     return jsonWithError(responseData, validation.errors![0].notifMessage);
   }
 
+  const serverResponse = await axios.post(`${endpoint}/transaction`, data);
+
+  console.log(serverResponse)
+
   const responseData: BasicHTTPResponse<
     TransactionAddFormData,
     FormValidation
@@ -148,14 +154,11 @@ const transactionSchema = z.object({
   userId: z.string().min(1, "User ID tidak boleh kosong."),
   typeTransaction: z.string().min(1, "Jenis transaksi harus diisi."),
   dateTransaction: z.date({ message: "Tanggal tidak Valid" }),
+  noteTransaction: z.string().min(1, "Nama transaksi tidak boleh kosong."),
   totalTransaction: z.number().positive("Total transaksi harus lebih dari 0."),
   categoryTransaction: z.string().min(1, "Kategori transaksi harus diisi."),
-  noteTransaction: z.string().min(1, "Catatan transaksi tidak boleh kosong."),
   fromAsset: z.string().min(1, "Aset sumber harus diisi."),
   toAsset: z.string().min(1, "Aset tujuan harus diisi."),
-  descriptionTransaction: z
-    .string()
-    .min(1, "Deskripsi transaksi tidak boleh kosong."),
 });
 
 const validateTransactionData = async (

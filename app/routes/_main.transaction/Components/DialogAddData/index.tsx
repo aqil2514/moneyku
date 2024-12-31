@@ -63,6 +63,7 @@ export default function AddDataDialog() {
   );
 }
 
+// Komponen button Tambah Data
 const AddData = () => {
   const { setOpen, fetcher, isMultiple, setIsMultiple } =
     useContext(DialogContext);
@@ -109,6 +110,7 @@ const AddData = () => {
   );
 };
 
+// Komponen button tutup dialog
 const CloseForm = () => (
   <DialogClose
     title="Batalkan penambahan data"
