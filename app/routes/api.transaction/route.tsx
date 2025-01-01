@@ -1,4 +1,4 @@
-import { ActionFunctionArgs } from "@remix-run/node";
+import { ActionFunctionArgs, json } from "@remix-run/node";
 import { getUser } from "utils/server/account";
 import { removeCurrencyFormat } from "utils/general";
 import {
@@ -17,7 +17,7 @@ import { z } from "zod";
 import axios from "axios";
 import { endpoint } from "lib/server";
 import chalk from "chalk";
-import { jsonWithError, jsonWithSuccess } from "remix-toast";
+import { jsonWithError } from "remix-toast";
 
 const log = console.log;
 
@@ -33,7 +33,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return jsonWithError(response, response.message)
     }
 
-    return jsonWithSuccess(response, response.message)
+    return json(response)
   }
   catch(error){
     console.error("Error komunikasi dengan server:", error);

@@ -20,6 +20,7 @@ import React, {
 } from "react";
 import { FetcherWithComponents, useFetcher } from "@remix-run/react";
 import { BasicHTTPResponse } from "~/@types/General";
+import { toast } from "react-toastify";
 
 interface DialogContextProps {
   open: boolean;
@@ -94,7 +95,8 @@ const AddData = () => {
         setOpen(false);
         resetAllFields()
       }
-
+      
+      toast.success(fetcher.data.message)
       fetcher.load("/api/transaction")
     }
   }, [fetcher.data, setOpen, isMultiple, setIsMultiple, formRef, fetcher, resetAllFields]);
