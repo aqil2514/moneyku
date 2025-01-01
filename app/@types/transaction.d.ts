@@ -23,6 +23,40 @@ export interface TransactionErrors {
   noteTransaction?: string;
 }
 
+/** Interface untuk transaksi */
+export interface Transaction {
+  /** ID Transaksi */
+  id: TransactionId;
+  /** User ID */
+  userId: string;
+  /** Transaksi dibuat pada tanggal */
+  created_at: Date;
+  /** Transaksi diupdate pada tanggal */
+  updated_at: Date;
+  /** Transaksi diupdate pada tanggal */
+  transaction_at: Date;
+  /** Nama transaksi */
+  name_transaction: string;
+  /** Penjelasan transaksi */
+  description?: string;
+  /** Tipe transaksi */
+  type_transaction: TypeTransaction;
+  /** Kategori ID */
+  category_id: `trc-${string}`;
+  /** Tag Transaksi */
+  tag?: string[];
+  /** Informasi tambahan, seperti foto, pdf, atau link */
+  attachment?: string;
+  /** Nominal transaksi */
+  nominal: {
+    /** Asal akun */
+    account_id: `acc-${string}`;
+    /** Jumlah transaksi */
+    amount: number;
+    /** Mata uang */
+    currency?: string;
+  };
+}
 export interface TransactionType {
   id?: string;
   header: string;

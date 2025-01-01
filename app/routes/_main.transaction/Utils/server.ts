@@ -19,8 +19,6 @@ export async function getTransactionPromise(request: Request) {
   }
   const resData = res.data.data;
 
-  console.log(resData);
-
   const response = makeHttpResponse.success<typeof resData>(
     "Ambil data sukses",
     resData

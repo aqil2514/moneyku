@@ -20,11 +20,17 @@ export interface BasicResponse {
   success: boolean;
 }
 
-export interface ApiHandler {
-  POST: (args: { request: Request }) => Promise<unknown>;
-  PUT: (args: { request: Request }) => Promise<unknown>;
-  GET: (args: { request: Request }) => Promise<unknown>;
-  DELETE: (args: { request: Request }) => Promise<unknown>;
+export interface ApiHandler<T=unknown,E=unknown> {
+  [method:string]: (args: {request:Request}) => Promise<T,E>;
+  // POST: (args: { request: Request }) => Promise<unknown>;
+  // PUT: (args: { request: Request }) => Promise<unknown>;
+  // GET: (args: { request: Request }) => Promise<unknown>;
+  // DELETE: (args: { request: Request }) => Promise<unknown>;
+}
+
+interface ApiHandlerPostResponse<T, E> {
+  responseData: BasicHTTPResponse<T, E>;
+  message: string;
 }
 
 export interface BasicHTTPResponse<Data = unknown, Error = unknown> {

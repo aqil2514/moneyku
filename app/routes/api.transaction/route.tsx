@@ -1,8 +1,11 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import { jsonWithError, jsonWithSuccess } from "remix-toast";
 import { getUser } from "utils/server/account";
 import { removeCurrencyFormat } from "utils/general";
-import { TransactionAddFormData, TypeTransaction } from "~/@types/Transaction";
+import {
+  Transaction,
+  TransactionAddFormData,
+  TypeTransaction,
+} from "~/@types/Transaction";
 import {
   ApiHandler,
   BasicHTTPResponse,
@@ -13,64 +16,29 @@ import {
 import { z } from "zod";
 import axios from "axios";
 import { endpoint } from "lib/server";
+import chalk from "chalk";
+import { jsonWithError, jsonWithSuccess } from "remix-toast";
+
+const log = console.log;
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  // const formData = await request.formData();
-  // const data = getFormData(formData);
   const user = await getUser(request);
   const method = request.method as MethodRequest;
 
   if (!user) throw new Error("Data user tidak ditemukan");
 
-  return await apiHandler[method]({ request });
+  try{
+    const response = await apiHandler[method]({ request }) as BasicHTTPResponse<Transaction, FormValidation>;
+    if(response.status === "error"){
+      return jsonWithError(response, response.message)
+    }
 
-  // if (request.method === "PUT") {
-  //   try {
-  //     const res = await axios.put(`${endpoint}/transaction`, data, {
-  //       headers: {
-  //         "User-ID": String(user.uid),
-  //       },
-  //     });
-
-  //     const response = {
-  //       success: true,
-  //       data: res.data,
-  //     };
-
-  //     return jsonWithSuccess({ response }, res.data.message);
-  //   } catch (error) {
-  //     if (isAxiosError(error)) {
-  //       const errorValidation = error.response?.data.errors;
-  //       const response = {
-  //         success: false,
-  //         data: errorValidation,
-  //       };
-
-  //       return jsonWithError({ response }, response.data[0].notifMessage);
-  //     }
-  //   }
-  // } else if (request.method === "DELETE") {
-  //   const uid = formData.get("transaction-uid");
-  //   const id = formData.get("main-id");
-
-  //   try {
-  //     const res = await axios.delete<BasicHTTPResponse>(
-  //       `${endpoint}/transaction`,
-  //       {
-  //         data: { uid, id },
-  //         headers: {
-  //           "User-ID": String(user.uid),
-  //         },
-  //       }
-  //     );
-
-  //     return jsonWithSuccess({ data: res.data }, res.data.message);
-  //   } catch (error) {
-  //     if (isAxiosError(error)) {
-  //       console.error(error);
-  //     }
-  //   }
-  // }
+    return jsonWithSuccess(response, response.message)
+  }
+  catch(error){
+    console.error("Error komunikasi dengan server:", error);
+    throw new Error("Gagal komunikasi dengan server");
+  }
 };
 
 // **********************
@@ -86,7 +54,7 @@ const apiHandler: ApiHandler = {
   DELETE: async ({ request }) => postHandler({ request }),
 };
 
-async function postHandler({ request }: { request: Request }) {
+async function postHandler({ request }: { request: Request }):Promise<BasicHTTPResponse<Transaction, FormValidation>>  {
   const user = await getUser(request);
   const formData = await request.formData();
   const data = getFormData(formData, user.uid as string);
@@ -97,7 +65,7 @@ async function postHandler({ request }: { request: Request }) {
 
   if (!isValidationSucces) {
     const responseData: BasicHTTPResponse<
-      TransactionAddFormData,
+      Transaction,
       FormValidation
     > = {
       status: "error",
@@ -105,23 +73,31 @@ async function postHandler({ request }: { request: Request }) {
       errors: validation,
     };
 
-    return jsonWithError(responseData, validation.errors![0].notifMessage);
+    return responseData;
   }
 
-  const serverResponse = await axios.post(`${endpoint}/transaction`, data);
+  try {
+    log(chalk.bgWhite.black("Komunikasi dengan server..."));
+    const serverResponse = await axios.post<BasicHTTPResponse<Transaction>>(
+      `${endpoint}/transaction`,
+      data
+    );
 
-  console.log(serverResponse)
+    log(chalk.bgGreenBright.green("Komunikasi dengan server berhasil!"));
 
-  const responseData: BasicHTTPResponse<
-    TransactionAddFormData,
-    FormValidation
-  > = {
-    status: "success",
-    message: "Tambah data berhasil",
-    data,
-  };
+    const responseData: BasicHTTPResponse<Transaction, FormValidation> = {
+      status: "success",
+      message: "Data transaksi berhasil dibuat",
+      data: serverResponse.data.data,
+    };
 
-  return jsonWithSuccess(responseData, responseData.message);
+    log(chalk.bgCyan.blue("Data transaksi berhasil dibuat"));
+
+    return responseData;
+  } catch (error) {
+    console.error("Error komunikasi dengan server:", error);
+    throw new Error("Gagal komunikasi dengan server");
+  }
 }
 
 // **********************
@@ -186,3 +162,53 @@ const validateTransactionData = async (
 
   return result;
 };
+
+//Sengaja ga dihapus kemungkinan masih kepakek
+
+// if (request.method === "PUT") {
+//   try {
+//     const res = await axios.put(`${endpoint}/transaction`, data, {
+//       headers: {
+//         "User-ID": String(user.uid),
+//       },
+//     });
+
+//     const response = {
+//       success: true,
+//       data: res.data,
+//     };
+
+//     return jsonWithSuccess({ response }, res.data.message);
+//   } catch (error) {
+//     if (isAxiosError(error)) {
+//       const errorValidation = error.response?.data.errors;
+//       const response = {
+//         success: false,
+//         data: errorValidation,
+//       };
+
+//       return jsonWithError({ response }, response.data[0].notifMessage);
+//     }
+//   }
+// } else if (request.method === "DELETE") {
+//   const uid = formData.get("transaction-uid");
+//   const id = formData.get("main-id");
+
+//   try {
+//     const res = await axios.delete<BasicHTTPResponse>(
+//       `${endpoint}/transaction`,
+//       {
+//         data: { uid, id },
+//         headers: {
+//           "User-ID": String(user.uid),
+//         },
+//       }
+//     );
+
+//     return jsonWithSuccess({ data: res.data }, res.data.message);
+//   } catch (error) {
+//     if (isAxiosError(error)) {
+//       console.error(error);
+//     }
+//   }
+// }
